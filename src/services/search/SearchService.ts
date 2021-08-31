@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe'
 import { ISearchDTO } from '../../dtos/ISearchDTO'
 import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
+import { IUnityRepository } from '../../repositories/IUnityRepository'
 
 @injectable()
 class SearchService {
@@ -11,7 +12,10 @@ class SearchService {
     private reserveInvasionRepository: IReserveInvasionRepository,
 
     @inject('InvasionRepository')
-    private invasionRepository: IInvasionRepository
+    private invasionRepository: IInvasionRepository,
+
+    @inject('UnityRepository')
+    private unityRepository: IUnityRepository
   ) {}
 
   async execute(searchTerm: string): Promise<ISearchDTO[]> {
@@ -30,10 +34,13 @@ class SearchService {
     unityCompanies.forEach((company) =>
       companiesMap.set(company.value, company)
     )
-
     const companies = Array.from(companiesMap.values())
 
-    return companies
+    const unities = await this.unityRepository.searchByName(searchTerm)
+
+    const results = companies.concat(unities)
+
+    return results
   }
 }
 
