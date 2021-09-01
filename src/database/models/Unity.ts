@@ -11,8 +11,7 @@ const UnitySchema = new mongoose.Schema<IUnity>({
     geometriaA: String,
     anoCriacao: Number,
     sigla: String,
-    areaHa: String,
-    areaK2: String,
+    areaHa: Number,
     perimetroM: Number,
     atoLegal: String,
     administra: String,
@@ -25,7 +24,6 @@ const UnitySchema = new mongoose.Schema<IUnity>({
     fusoAbrang: String,
     UORG: String,
     nomeabrev: String,
-    en_nome: String,
   },
   geometry: {},
 })

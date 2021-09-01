@@ -8,8 +8,7 @@ interface IReserve {
     etnia_nome: string
     municipio_: string
     uf_sigla: string
-    superfice: string
-    superficieK2: string
+    superfice: number
     fase_ti: string
     modalidade: string
     reestudo_t: string

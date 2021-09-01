@@ -7,8 +7,7 @@ interface IUnity {
     geometriaA: string
     anoCriacao: number
     sigla: string
-    areaHa: string
-    areaK2: string
+    areaHa: number
     perimetroM: number
     atoLegal: string
     administra: string
@@ -21,7 +20,6 @@ interface IUnity {
     fusoAbrang: string
     UORG: string
     nomeabrev: string
-    en_nome: string
   }
   geometry: {}
 }

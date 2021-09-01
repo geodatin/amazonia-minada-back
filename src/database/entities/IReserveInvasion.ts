@@ -5,8 +5,7 @@ interface IReserveInvasion {
     ID: string
     NUMERO: number
     ANO: number
-    AREA_HA: string
-    AREA_K2: string
+    AREA_HA: number
     FASE: string
     ULT_EVENTO: string
     NOME: string
@@ -20,9 +19,6 @@ interface IReserveInvasion {
     TI_SUPERFICIE: string
     TI_FASE: string
     TI_MODALIDADE: string
-    ANO_ATUAL: number
-    EN_FASE: string
-    EN_SUBS: string
   }
   geometry: {}
 }
