@@ -8,7 +8,7 @@ const router = Router()
 const searchController = new SearchController()
 const listInvasionsController = new ListInvasionsController()
 
-router.get('/search', searchController.handle)
+router.get('/search/:searchTerm', searchController.handle)
 router.post('/invasions', listInvasionsController.handle)
 
 export { router }

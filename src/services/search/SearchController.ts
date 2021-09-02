@@ -5,7 +5,7 @@ import { SearchService } from './SearchService'
 
 class SearchController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { searchTerm } = request.query
+    const { searchTerm } = request.params
 
     const searchService = container.resolve(SearchService)
 
