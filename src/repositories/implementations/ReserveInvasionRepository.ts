@@ -28,9 +28,9 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     }
 
     if (filters.state) {
-      const acronymsRegex = filters.state
-        .map((state) => getStateAcronym(state))
-        .map((acronym) => new RegExp(`.*${acronym}.*`, 'i'))
+      const acronymsRegex = filters.state.map(
+        (state) => new RegExp(`.*${getStateAcronym(state)}.*`, 'i')
+      )
       match['properties.UF'] = {
         $in: acronymsRegex,
       }
