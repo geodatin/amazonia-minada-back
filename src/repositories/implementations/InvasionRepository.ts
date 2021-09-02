@@ -2,6 +2,7 @@ import { Invasion } from '../../database/models/Invasion'
 import { IFiltersDTO } from '../../dtos/IFiltersDTO'
 import { IInvasionDTO } from '../../dtos/IInvasionDTO'
 import { ISearchDTO } from '../../dtos/ISearchDTO'
+import { getStateAcronym } from '../../utils/states'
 import { IInvasionRepository } from '../IInvasionRepository'
 
 class InvasionRepository implements IInvasionRepository {
@@ -26,11 +27,21 @@ class InvasionRepository implements IInvasionRepository {
       }
     }
 
+    if (filters.state) {
+      const acronymsRegex = filters.state
+        .map((state) => getStateAcronym(state))
+        .map((acronym) => new RegExp(`.*${acronym}.*`, 'i'))
+      match['properties.UF'] = {
+        $in: acronymsRegex,
+      }
+    }
+
     const invasions = await Invasion.find(match, {
       company: '$properties.NOME',
       process: '$properties.PROCESSO',
       area: '$properties.AREA_HA',
       year: '$properties.ANO',
+      state: '$properties.UF',
       territory: '$properties.UC_NOME',
       type: 'Unidade de Conservação',
       _id: 0,

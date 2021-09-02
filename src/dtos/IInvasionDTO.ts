@@ -3,6 +3,7 @@ interface IInvasionDTO {
   process: string
   area: number
   year: number
+  state: string
   territory: string
   type: string
 }

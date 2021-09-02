@@ -5,6 +5,7 @@ import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
 import { IReserveRepository } from '../../repositories/IReserveRepository'
 import { IUnityRepository } from '../../repositories/IUnityRepository'
+import { searchStates } from '../../utils/states'
 
 @injectable()
 class SearchService {
@@ -23,6 +24,8 @@ class SearchService {
   ) {}
 
   async execute(searchTerm: string): Promise<ISearchDTO[]> {
+    const states = searchStates(searchTerm)
+
     const reserveCompanies = await this.reserveInvasionRepository.searchCompany(
       searchTerm
     )
@@ -44,7 +47,7 @@ class SearchService {
 
     const reserves = await this.reserveRepository.searchByName(searchTerm)
 
-    const results = companies.concat(unities, reserves)
+    const results = states.concat(companies, unities, reserves)
 
     return results
   }
