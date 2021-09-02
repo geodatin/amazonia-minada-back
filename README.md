@@ -92,6 +92,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "company": [], //Array de strings com o nome das empresas
       "reserve": [], //Array de strings com o nome das Terras Indígenas
       "unity": [], //Array de strings com o nome das Unidades de Conservação
+      "year": [], //Array de inteiros com os anos
     }
   }
   ```
