@@ -14,4 +14,4 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api', router)
 
-app.listen(8080, () => console.log('Server is running!'))
+app.listen(5000, () => console.log('Server is running!'))

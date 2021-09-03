@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/usr/app
     ports:
-      - 8080:8080
+      - 5000:5000
     links:
       - database
     depends_on:
