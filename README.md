@@ -61,7 +61,7 @@ Método que permite uma busca geral para Estado, Solicitante (Empresa), Terras I
       **Conteúdo:**
       ```javascript
       {
-        message: 'Internal Server Error'
+        "message": "Internal Server Error"
       }
       ```
       **Descrição:** Erro interno do servidor.
@@ -138,7 +138,83 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       **Conteúdo:**
       ```javascript
       {
-        message: 'Internal Server Error'
+        "message": "Internal Server Error"
+      }
+      ```
+      **Descrição:** Erro interno do servidor.
+
+**Estatísticas**
+----
+Método que retorna as estatísticas gerais (número de requerimentos e área) de Terras Indígenas e Unidades de Conservação de acordo com os filtros.
+
+* **URL:**
+  
+      /api/statistics
+
+* **Método:**
+
+  `POST`
+
+* **Parâmetros na URL:**
+
+  Nenhum
+
+* **Parâmetros no Body:**
+
+  ```javascript
+  {
+    "filters": {
+      "state": [], //Array de strings com o nome dos estados
+      "company": [], //Array de strings com o nome das empresas
+      "reserve": [], //Array de strings com o nome das Terras Indígenas
+      "unity": [], //Array de strings com o nome das Unidades de Conservação
+      "year": [], //Array de inteiros com os anos
+    }
+  }
+  ```
+  **Descrição:** Todos os filtros são parâmetros opcionais e podem ser combinados.
+
+* **Exemplo:**
+
+  **Rota:**
+      /api/statistics
+
+  **Body:**
+    ```javascript
+    {
+      "filters": {
+        "state": ["Amazonas"],
+        "reserve": ["Andirá-Marau"]
+      }
+    }
+    ```
+
+* **Resposta:**
+
+    * **Código:** <span style="color:green">**200**</span> <br/>
+      **Conteúdo:**
+
+      ```javascript
+        {
+          "requirementsIncidence": {
+            "reserve": 19,
+            "unity": 0,
+            "total": 19
+          },
+          "requiredArea": {
+            "reserve": 40742.13,
+            "unity": 0,
+            "total": 40742.13
+          }
+        }
+      ```
+      **Descrição:** Retorna um objeto contendo as estatísticas dos requerimentos que se enquadram nos filtros definidos.
+      
+    * **Código:** <span style="color:red">**500**</span> <br />
+      **Conteúdo:**
+      ```javascript
+      {
+        "message": "Internal Server Error"
       }
       ```
       **Descrição:** Erro interno do servidor.
