@@ -1,7 +1,9 @@
 import { Invasion } from '../../database/models/Invasion'
 import { IFiltersDTO } from '../../dtos/IFiltersDTO'
 import { IInvasionDTO } from '../../dtos/IInvasionDTO'
+import { IRequestRankingDTO, IResponseRankingDTO } from '../../dtos/IRankingDTO'
 import { ISearchDTO } from '../../dtos/ISearchDTO'
+import { rankingFilter } from '../../utils/rankingFilter'
 import { getStateAcronym } from '../../utils/states'
 import { IInvasionRepository } from '../IInvasionRepository'
 
@@ -70,6 +72,35 @@ class InvasionRepository implements IInvasionRepository {
       },
     ])
     return companies
+  }
+
+  async invasionRanking({
+    territoryType,
+    dataType,
+  }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
+    const propertie = rankingFilter[territoryType]
+    let aggregation
+    if (dataType === 'frequency') {
+      aggregation = 1
+    } else if (dataType === 'value') {
+      aggregation = '$properties.AREA_HA'
+    }
+    const territories = await Invasion.aggregate([
+      {
+        $group: {
+          _id: propertie,
+          count: { $sum: aggregation },
+        },
+      },
+      {
+        $project: {
+          x: '$_id',
+          y: '$count',
+          _id: 0,
+        },
+      },
+    ])
+    return territories
   }
 }
 
