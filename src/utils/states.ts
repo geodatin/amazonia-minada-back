@@ -44,3 +44,7 @@ export function searchStates(searchTerm: string): ISearchDTO[] {
 export function getStateAcronym(state: string): string | undefined {
   return states.get(state)
 }
+
+export function getStateFromAcronym(acronym: string): string {
+  return stateNames.find((key) => states.get(key) === acronym) || acronym
+}
