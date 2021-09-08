@@ -38,16 +38,20 @@ class InvasionRepository implements IInvasionRepository {
       }
     }
 
-    const invasions = await Invasion.find(match, {
-      company: '$properties.NOME',
-      process: '$properties.PROCESSO',
-      area: '$properties.AREA_HA',
-      year: '$properties.ANO',
-      state: '$properties.UF',
-      territory: '$properties.UC_NOME',
-      type: 'Unidade de Conservação',
-      _id: 0,
-    })
+    const invasions = await Invasion.find(
+      match,
+      {
+        company: '$properties.NOME',
+        process: '$properties.PROCESSO',
+        area: '$properties.AREA_HA',
+        year: '$properties.ANO',
+        state: '$properties.UF',
+        territory: '$properties.UC_NOME',
+        type: 'Unidade de Conservação',
+        _id: 0,
+      },
+      { lean: true }
+    )
 
     return invasions
   }

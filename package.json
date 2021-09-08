@@ -6,7 +6,7 @@
   "author": "Iago Machado <iagomachadocs@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/server.ts"
+    "dev": "./node_modules/.bin/ts-node-dev --transpile-only --ignore-watch node_modules --respawn src/server.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
