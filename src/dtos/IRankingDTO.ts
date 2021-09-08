@@ -1,6 +1,12 @@
-interface IRankingDTO {
+interface IResponseRankingDTO {
   x: string
   y: number
 }
 
-export { IRankingDTO }
+interface IRequestRankingDTO {
+  territoryType: string
+  page: number
+  dataType: string
+}
+
+export { IRequestRankingDTO, IResponseRankingDTO }
