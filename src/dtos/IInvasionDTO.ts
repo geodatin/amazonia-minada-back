@@ -4,6 +4,7 @@ interface IInvasionDTO {
   area: number
   year: number
   state: string
+  miningProcess: string
   territory: string
   type: string
 }

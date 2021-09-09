@@ -10,5 +10,5 @@ export function paginate(
   const offset = (page - 1) * pageSize
 
   const pageValues = values.slice(offset, offset + pageSize)
-  return { values: pageValues, pages }
+  return { values: pageValues, pages, results: arraySize }
 }

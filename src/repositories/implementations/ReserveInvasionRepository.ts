@@ -47,7 +47,8 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
         year: '$properties.ANO',
         state: '$properties.UF',
         territory: '$properties.TI_NOME',
-        type: 'Terra Indígena',
+        miningProcess: '$properties.FASE',
+        type: 'indigenousLand',
         _id: 0,
       },
       { lean: true }

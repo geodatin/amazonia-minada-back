@@ -4,6 +4,8 @@ interface IFiltersDTO {
   unity?: string[]
   company?: string[]
   year?: string[]
+  enableUnity: boolean
+  enableReserve: boolean
 }
 
 export { IFiltersDTO }

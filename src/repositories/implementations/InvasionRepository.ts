@@ -47,7 +47,8 @@ class InvasionRepository implements IInvasionRepository {
         year: '$properties.ANO',
         state: '$properties.UF',
         territory: '$properties.UC_NOME',
-        type: 'Unidade de Conservação',
+        miningProcess: '$properties.FASE',
+        type: 'protectedArea',
         _id: 0,
       },
       { lean: true }
