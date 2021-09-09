@@ -218,3 +218,87 @@ Método que retorna as estatísticas gerais (número de requerimentos e área) d
       }
       ```
       **Descrição:** Erro interno do servidor.
+
+**Ranking de frequência e de área**
+----
+Método que retorna o ranking de acordo com o território e o tipo de dado especificado
+
+* **URL:**
+  
+      /api/invasions/ranking/:territoryType/:dataType
+
+* **Método:**
+
+  `GET`
+
+* **Parâmetros na URL:**
+
+  - territoryType:[string] - Tipo de território a ser utilizado na construção do ranking('company', 'state', 'unity', 'reserve').
+  - dataType:[string] - Tipo de dado a ser retornado, 'incidenceRequiriments' para a frequencia de requerimentos em território e 'requiredArea' para área total dos requerimentos por território.
+  - page?:[number] - Número da página de registros a ser retornada, retorna todos os registros caso um número não seja informado.
+
+* **Parâmetros no Body:**
+
+  Nenhum
+
+* **Exemplo:**
+
+  **Rota:**
+      /api/invasions/ranking/company/value?page=1
+
+* **Resposta:**
+
+    * **Código:** <span style="color:green">**200**</span> <br/>
+      **Conteúdo:**
+
+      ```javascript
+        {
+          "x": [
+            "VALE S.A.",
+            "MINERAÇÃO SERRA MORENA LTDA",
+            "Iguape Sociedade de Mineração Iguape Ltda",
+            "Rio Grande Mineração S A",
+            "Mineração Guanhães Ltda"
+          ],
+          "position": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "series": [
+            {
+              "name": "indigenousLand",
+              "data": [
+                447938.31,
+                469529.25,
+                446421.21,
+                429561.29,
+                276058.67
+              ]
+            },
+            {
+              "name": "protectedArea",
+              "data": [
+                112761.6,
+                49983.95,
+                0,
+                7460.83,
+                80000
+              ]
+            }
+          ],
+          "pageAmount": 125
+        }
+      ```
+      **Descrição:** Retorna um array de series que contém os valores de cada tipo de dado, um array com as respectivas posições e um com os nomes dos territórios.
+      
+    * **Código:** <span style="color:red">**500**</span> <br />
+      **Conteúdo:**
+      ```javascript
+      {
+        "message": "Internal Server Error"
+      }
+      ```
+      **Descrição:** Erro interno do servidor.

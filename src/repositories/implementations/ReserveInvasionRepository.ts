@@ -1,7 +1,9 @@
 import { ReserveInvasion } from '../../database/models/ReserveInvasion'
 import { IFiltersDTO } from '../../dtos/IFiltersDTO'
 import { IInvasionDTO } from '../../dtos/IInvasionDTO'
+import { IRequestRankingDTO, IResponseRankingDTO } from '../../dtos/IRankingDTO'
 import { ISearchDTO } from '../../dtos/ISearchDTO'
+import { rankingFilter } from '../../utils/rankingFilter'
 import { getStateAcronym } from '../../utils/states'
 import { IReserveInvasionRepository } from '../IReserveInvasionRepository'
 
@@ -75,6 +77,37 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       },
     ])
     return companies
+  }
+
+  async reserveInvasionRanking({
+    territoryType,
+    dataType,
+  }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
+    const propertie = rankingFilter[territoryType]
+    let aggregation
+    if (dataType === 'incidenceRequirements') {
+      aggregation = 1
+    } else if (dataType === 'requiredArea') {
+      aggregation = '$properties.AREA_HA'
+    }
+    const territories = await ReserveInvasion.aggregate([
+      {
+        $group: {
+          _id: propertie,
+          count: { $sum: aggregation },
+        },
+      },
+      { $sort: { count: -1 } },
+      {
+        $project: {
+          x: '$_id',
+          y: '$count',
+          _id: 0,
+        },
+      },
+    ])
+
+    return territories
   }
 }
 
