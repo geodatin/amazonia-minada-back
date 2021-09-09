@@ -84,9 +84,9 @@ class InvasionRepository implements IInvasionRepository {
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
     const propertie = rankingFilter[territoryType]
     let aggregation
-    if (dataType === 'frequency') {
+    if (dataType === 'incidenceRequirements') {
       aggregation = 1
-    } else if (dataType === 'value') {
+    } else if (dataType === 'requiredArea') {
       aggregation = '$properties.AREA_HA'
     }
     const territories = await Invasion.aggregate([
