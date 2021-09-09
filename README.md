@@ -145,9 +145,10 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
             }
           ],
           "pages": 10
+          "results": 20
         }
       ```
-      **Descrição:** Retorna um array de objetos contendo os dados de cada requerimento que se enquadra nos filtros definidos e o número de páginas.
+      **Descrição:** Retorna um array de objetos contendo os dados de cada requerimento que se enquadra nos filtros definidos, o número de páginas e a quantidade de requerimentos.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
