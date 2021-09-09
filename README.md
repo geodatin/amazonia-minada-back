@@ -81,7 +81,8 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
 
 * **Parâmetros na URL:**
 
-  Nenhum
+  - page?:[number] - Número da página de registros a ser retornada, retorna a primeira página caso um número não seja informado.
+  - pageSize?:[number] - Número de requerimentos por página, caso não seja informado são retornados 10 por página.
 
 * **Parâmetros no Body:**
 
@@ -101,15 +102,14 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
 * **Exemplo:**
 
   **Rota:**
-      /api/invasions
+      /api/invasions?page=1&pageSize=2
 
   **Body:**
     ```javascript
     {
       "filters": {
         "state": ["Amazonas"],
-        "reserve": ["Andirá-Marau"],
-        "company": ["José Aparecido da Silva"]
+        "reserve": ["Andirá-Marau"]
       }
     }
     ```
@@ -120,19 +120,31 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       **Conteúdo:**
 
       ```javascript
-        [
-          {
-            "company": "José Aparecido da Silva",
-            "process": "880039/2009",
-            "area": 9603.9,
-            "year": 2009,
-            "state": "AM",
-            "territory": "Andirá-Marau",
-            "type": "Terra Indígena"
-          }
-        ]
+        {
+          "values": [
+            {
+              "company": "Falcon Metais Ltda",
+              "process": "880816/2008",
+              "area": 9928.68,
+              "year": 2008,
+              "state": "AM",
+              "territory": "Andirá-Marau",
+              "type": "Terra Indígena"
+            },
+            {
+              "company": "Falcon Metais Ltda",
+              "process": "880819/2008",
+              "area": 9932.87,
+              "year": 2008,
+              "state": "AM",
+              "territory": "Andirá-Marau",
+              "type": "Terra Indígena"
+            }
+          ],
+          "pages": 10
+        }
       ```
-      **Descrição:** Retorna um array de objetos contendo os dados de cada requerimento que se enquadra nos filtros definidos.
+      **Descrição:** Retorna um array de objetos contendo os dados de cada requerimento que se enquadra nos filtros definidos e o número de páginas.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**

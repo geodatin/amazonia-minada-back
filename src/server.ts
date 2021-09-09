@@ -1,7 +1,9 @@
 import 'reflect-metadata'
 import cors from 'cors'
 import express from 'express'
+import 'express-async-errors'
 
+import { handleErrors } from './errors'
 import { router } from './routes'
 
 import './database'
@@ -13,5 +15,6 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api', router)
+app.use(handleErrors)
 
 app.listen(5000, () => console.log('Server is running!'))
