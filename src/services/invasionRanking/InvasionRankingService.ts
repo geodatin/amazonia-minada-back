@@ -66,10 +66,10 @@ class InvasionFrequencyService {
       pos.push(i + 1)
     })
     return {
-      x: paginate(x, page),
-      position: paginate(pos, page),
-      series: [{ name: name, data: paginate(y, page) }],
-      pageAmount: Math.ceil(y.length / 5),
+      x: paginate(x, page, 5).values,
+      position: paginate(pos, page, 5).values,
+      series: [{ name: name, data: paginate(y, page, 5).values }],
+      pageAmount: paginate(pos, page, 5).pages,
     }
   }
 
@@ -110,19 +110,19 @@ class InvasionFrequencyService {
         pos.push(i + 1)
       })
     return {
-      x: paginate(x, page),
-      position: paginate(pos, page),
+      x: paginate(x, page, 5).values,
+      position: paginate(pos, page, 5).values,
       series: [
         {
           name: 'indigenousLand',
-          data: paginate(invasionY, page),
+          data: paginate(invasionY, page, 5).values,
         },
         {
           name: 'protectedArea',
-          data: paginate(reserveY, page),
+          data: paginate(reserveY, page, 5).values,
         },
       ],
-      pageAmount: Math.ceil(newRanking.length / 5),
+      pageAmount: paginate(pos, page, 5).pages,
     }
   }
 }
