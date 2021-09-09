@@ -25,13 +25,19 @@ class ListInvasionsService {
     let reserveInvasions: IInvasionDTO[] = []
     let invasions: IInvasionDTO[] = []
 
-    if ((!filters.reserve && !filters.unity) || filters.reserve) {
+    if (
+      ((!filters.reserve && !filters.unity) || filters.reserve) &&
+      filters.enableReserve
+    ) {
       reserveInvasions = await this.reserveInvasionRepository.listInvasions(
         filters
       )
     }
 
-    if ((!filters.reserve && !filters.unity) || filters.unity) {
+    if (
+      ((!filters.reserve && !filters.unity) || filters.unity) &&
+      filters.enableUnity
+    ) {
       invasions = await this.invasionRepository.listInvasions(filters)
     }
 
