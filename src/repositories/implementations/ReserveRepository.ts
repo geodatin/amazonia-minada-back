@@ -13,7 +13,7 @@ class ReserveRepository implements IReserveRepository {
         value: '$properties.terrai_nom',
         _id: 0,
       }
-    ).sort({ value: 1 })
+    )
     return reserves
   }
 }

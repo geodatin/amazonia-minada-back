@@ -5,14 +5,15 @@ import { ListInvasionsService } from './ListInvasionsService'
 
 class ListInvasionsController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { filters, page, pageSize } = request.body
+    const { filters } = request.body
+    const { page, pageSize } = request.query
 
     const listInvasionsService = container.resolve(ListInvasionsService)
 
     const invasions = await listInvasionsService.execute(
       filters,
-      page,
-      pageSize
+      Number(page) || undefined,
+      Number(pageSize) || undefined
     )
 
     return response.json(invasions)
