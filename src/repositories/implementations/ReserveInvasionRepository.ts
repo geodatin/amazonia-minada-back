@@ -11,25 +11,25 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
     const match: any = {}
 
-    if (filters.reserve) {
+    if (filters.reserve && filters.reserve.length > 0) {
       match['properties.TI_NOME'] = {
         $in: filters.reserve,
       }
     }
 
-    if (filters.company) {
+    if (filters.company && filters.company.length > 0) {
       match['properties.NOME'] = {
         $in: filters.company,
       }
     }
 
-    if (filters.year) {
+    if (filters.year && filters.year.length > 0) {
       match['properties.ANO'] = {
         $in: filters.year,
       }
     }
 
-    if (filters.state) {
+    if (filters.state && filters.state.length > 0) {
       const acronymsRegex = filters.state.map(
         (state) => new RegExp(`.*${getStateAcronym(state)}.*`, 'i')
       )
