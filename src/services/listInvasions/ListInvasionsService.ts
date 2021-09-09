@@ -2,8 +2,10 @@ import { inject, injectable } from 'tsyringe'
 
 import { IFiltersDTO } from '../../dtos/IFiltersDTO'
 import { IInvasionDTO } from '../../dtos/IInvasionDTO'
+import { IPaginationDTO } from '../../dtos/IPaginationDTO'
 import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
+import { paginate } from '../../utils/pagination'
 
 @injectable()
 class ListInvasionsService {
@@ -15,7 +17,11 @@ class ListInvasionsService {
     private invasionRepository: IInvasionRepository
   ) {}
 
-  async execute(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
+  async execute(
+    filters: IFiltersDTO,
+    page: number = 1,
+    pageSize: number = 10
+  ): Promise<IPaginationDTO> {
     let reserveInvasions: IInvasionDTO[] = []
     let invasions: IInvasionDTO[] = []
 
@@ -30,8 +36,13 @@ class ListInvasionsService {
     }
 
     const results = invasions.concat(reserveInvasions)
+    const sortedResults = results.sort((a, b) => {
+      if (a.company > b.company) return 1
+      if (a.company < b.company) return -1
+      return 0
+    })
 
-    return results
+    return paginate(sortedResults, page, pageSize)
   }
 }
 

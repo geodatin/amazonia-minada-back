@@ -13,7 +13,7 @@ class UnityRepository implements IUnityRepository {
         value: '$properties.nome',
         _id: 0,
       }
-    )
+    ).sort({ value: 1 })
     return unities
   }
 }
