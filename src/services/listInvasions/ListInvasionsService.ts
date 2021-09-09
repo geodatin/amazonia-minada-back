@@ -19,6 +19,8 @@ class ListInvasionsService {
 
   async execute(
     filters: IFiltersDTO,
+    enableUnity: boolean = true,
+    enableReserve: boolean = true,
     page: number = 1,
     pageSize: number = 10
   ): Promise<IPaginationDTO> {
@@ -27,7 +29,7 @@ class ListInvasionsService {
 
     if (
       ((!filters.reserve && !filters.unity) || filters.reserve) &&
-      filters.enableReserve
+      enableReserve
     ) {
       reserveInvasions = await this.reserveInvasionRepository.listInvasions(
         filters
@@ -36,7 +38,7 @@ class ListInvasionsService {
 
     if (
       ((!filters.reserve && !filters.unity) || filters.unity) &&
-      filters.enableUnity
+      enableUnity
     ) {
       invasions = await this.invasionRepository.listInvasions(filters)
     }
