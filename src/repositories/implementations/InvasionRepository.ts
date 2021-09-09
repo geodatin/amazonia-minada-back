@@ -49,6 +49,7 @@ class InvasionRepository implements IInvasionRepository {
         territory: '$properties.UC_NOME',
         miningProcess: '$properties.FASE',
         type: 'protectedArea',
+        id: '$_id',
         _id: 0,
       },
       { lean: true }

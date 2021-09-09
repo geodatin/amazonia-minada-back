@@ -49,6 +49,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
         territory: '$properties.TI_NOME',
         miningProcess: '$properties.FASE',
         type: 'indigenousLand',
+        id: '$_id',
         _id: 0,
       },
       { lean: true }
