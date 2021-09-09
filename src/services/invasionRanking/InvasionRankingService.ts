@@ -16,8 +16,6 @@ class InvasionFrequencyService {
   ) {}
 
   async execute({ territoryType, page, dataType }: IRequestRankingDTO) {
-    const name =
-      dataType === 'frequency' ? 'requirementsIncidence' : 'requiredArea'
     if (territoryType === 'state' || territoryType === 'company') {
       const reserveResults =
         await this.reserveInvasionRepository.reserveInvasionRanking({
@@ -42,7 +40,7 @@ class InvasionFrequencyService {
         page,
         dataType,
       })
-      return await this.formatSingleRanking(results, name, page)
+      return await this.formatSingleRanking(results, dataType, page)
     } else if (territoryType === 'reserve') {
       const results =
         await this.reserveInvasionRepository.reserveInvasionRanking({
@@ -50,7 +48,7 @@ class InvasionFrequencyService {
           page,
           dataType,
         })
-      return await this.formatSingleRanking(results, name, page)
+      return await this.formatSingleRanking(results, dataType, page)
     }
   }
 
