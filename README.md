@@ -94,7 +94,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "reserve": [], //Array de strings com o nome das Terras Indígenas
       "unity": [], //Array de strings com o nome das Unidades de Conservação
       "year": [], //Array de inteiros com os anos
-    }
+    },
     "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
     "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
   }
