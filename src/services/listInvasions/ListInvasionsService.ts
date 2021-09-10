@@ -45,9 +45,7 @@ class ListInvasionsService {
 
     const results = invasions.concat(reserveInvasions)
     const sortedResults = results.sort((a, b) => {
-      if (a.company > b.company) return 1
-      if (a.company < b.company) return -1
-      return 0
+      return b.year - a.year
     })
 
     return paginate(sortedResults, page, pageSize)
