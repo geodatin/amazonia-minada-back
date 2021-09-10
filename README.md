@@ -126,22 +126,26 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
         {
           "values": [
             {
+              "id": "601cc05d3bd42e00190c8ff5",
               "company": "Falcon Metais Ltda",
               "process": "880816/2008",
               "area": 9928.68,
               "year": 2008,
               "state": "AM",
               "territory": "Andirá-Marau",
-              "type": "Terra Indígena"
+              "type": "Terra Indígena",
+              "miningProcess": "REQUERIMENTO DE PESQUISA"
             },
             {
+              "id": "5fae1a510a4baf00bf57cf7c",
               "company": "Falcon Metais Ltda",
               "process": "880819/2008",
               "area": 9932.87,
               "year": 2008,
               "state": "AM",
               "territory": "Andirá-Marau",
-              "type": "Terra Indígena"
+              "type": "Terra Indígena",
+              "miningProcess": "REQUERIMENTO DE PESQUISA"
             }
           ],
           "pages": 10
