@@ -112,7 +112,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "filters": {
         "state": ["Amazonas"],
         "reserve": ["Andirá-Marau"],
-      }
+      },
       "enableReserve": true
     }
     ```
@@ -148,7 +148,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "miningProcess": "REQUERIMENTO DE PESQUISA"
             }
           ],
-          "pages": 10
+          "pages": 10,
           "results": 20
         }
       ```
