@@ -1,5 +1,4 @@
 interface IInvasionDTO {
-  id: string
   company: string
   process: string
   area: number

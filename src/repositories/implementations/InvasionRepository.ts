@@ -38,22 +38,33 @@ class InvasionRepository implements IInvasionRepository {
       }
     }
 
-    const invasions = await Invasion.find(
-      match,
+    const invasions = await Invasion.aggregate([
+      { $match: match },
       {
-        company: '$properties.NOME',
-        process: '$properties.PROCESSO',
-        area: '$properties.AREA_HA',
-        year: '$properties.ANO',
-        state: '$properties.UF',
-        territory: '$properties.UC_NOME',
-        miningProcess: '$properties.FASE',
-        type: 'protectedArea',
-        id: '$_id',
-        _id: 0,
+        $group: {
+          _id: '$properties.PROCESSO',
+          company: { $first: '$properties.NOME' },
+          area: { $sum: '$properties.AREA_HA' },
+          year: { $first: '$properties.ANO' },
+          state: { $first: '$properties.UF' },
+          territory: { $first: '$properties.UC_NOME' },
+          miningProcess: { $first: '$properties.FASE' },
+        },
       },
-      { lean: true }
-    )
+      {
+        $project: {
+          company: '$company',
+          process: '$_id',
+          area: '$area',
+          year: '$year',
+          state: '$state',
+          miningProcess: '$miningProcess',
+          territory: '$territory',
+          type: 'protectedArea',
+          _id: 0,
+        },
+      },
+    ])
 
     return invasions
   }

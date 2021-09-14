@@ -38,22 +38,33 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       }
     }
 
-    const invasions = await ReserveInvasion.find(
-      match,
+    const invasions = await ReserveInvasion.aggregate([
+      { $match: match },
       {
-        company: '$properties.NOME',
-        process: '$properties.PROCESSO',
-        area: '$properties.AREA_HA',
-        year: '$properties.ANO',
-        state: '$properties.UF',
-        territory: '$properties.TI_NOME',
-        miningProcess: '$properties.FASE',
-        type: 'indigenousLand',
-        id: '$_id',
-        _id: 0,
+        $group: {
+          _id: '$properties.PROCESSO',
+          company: { $first: '$properties.NOME' },
+          area: { $sum: '$properties.AREA_HA' },
+          year: { $first: '$properties.ANO' },
+          state: { $first: '$properties.UF' },
+          territory: { $first: '$properties.TI_NOME' },
+          miningProcess: { $first: '$properties.FASE' },
+        },
       },
-      { lean: true }
-    )
+      {
+        $project: {
+          company: '$company',
+          process: '$_id',
+          area: '$area',
+          year: '$year',
+          state: '$state',
+          miningProcess: '$miningProcess',
+          territory: '$territory',
+          type: 'indigenousLand',
+          _id: 0,
+        },
+      },
+    ])
 
     return invasions
   }
