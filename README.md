@@ -309,7 +309,8 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
               ]
             }
           ],
-          "pageAmount": 125
+          "pageAmount": 125,
+          "dataType": "requiredArea"
         }
       ```
       **Descrição:** Retorna um array de series que contém os valores de cada tipo de dado, um array com as respectivas posições e um com os nomes dos territórios.

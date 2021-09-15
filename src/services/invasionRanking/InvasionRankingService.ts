@@ -31,6 +31,7 @@ class InvasionFrequencyService {
       return await this.formatDoubleRanking(
         reserveResults,
         invasionResults,
+        dataType,
         territoryType,
         page
       )
@@ -70,12 +71,14 @@ class InvasionFrequencyService {
       position: paginate(pos, page, 5).values,
       series: [{ id: name, data: paginate(y, page, 5).values }],
       pageAmount: paginate(pos, page, 5).pages,
+      dataType: name,
     }
   }
 
   async formatDoubleRanking(
     invasionResults: IResponseRankingDTO[],
     reserveResults: IResponseRankingDTO[],
+    dataType: string,
     territoryType: string,
     page: number
   ) {
@@ -123,6 +126,7 @@ class InvasionFrequencyService {
         },
       ],
       pageAmount: paginate(pos, page, 5).pages,
+      dataType,
     }
   }
 }
