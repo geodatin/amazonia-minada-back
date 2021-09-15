@@ -68,7 +68,7 @@ class InvasionFrequencyService {
     return {
       x: paginate(x, page, 5).values,
       position: paginate(pos, page, 5).values,
-      series: [{ name: name, data: paginate(y, page, 5).values }],
+      series: [{ id: name, data: paginate(y, page, 5).values }],
       pageAmount: paginate(pos, page, 5).pages,
     }
   }
@@ -114,11 +114,11 @@ class InvasionFrequencyService {
       position: paginate(pos, page, 5).values,
       series: [
         {
-          name: 'indigenousLand',
+          id: 'indigenousLand',
           data: paginate(invasionY, page, 5).values,
         },
         {
-          name: 'protectedArea',
+          id: 'protectedArea',
           data: paginate(reserveY, page, 5).values,
         },
       ],

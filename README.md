@@ -289,7 +289,7 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
           ],
           "series": [
             {
-              "name": "indigenousLand",
+              "id": "indigenousLand",
               "data": [
                 447938.31,
                 469529.25,
@@ -299,7 +299,7 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
               ]
             },
             {
-              "name": "protectedArea",
+              "id": "protectedArea",
               "data": [
                 112761.6,
                 49983.95,
