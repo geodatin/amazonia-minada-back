@@ -41,7 +41,12 @@ class InvasionFrequencyService {
         page,
         dataType,
       })
-      return await this.formatSingleRanking(results, dataType, page)
+      return await this.formatSingleRanking(
+        results,
+        dataType,
+        'protectedArea',
+        page
+      )
     } else if (territoryType === 'reserve') {
       const results =
         await this.reserveInvasionRepository.reserveInvasionRanking({
@@ -49,13 +54,19 @@ class InvasionFrequencyService {
           page,
           dataType,
         })
-      return await this.formatSingleRanking(results, dataType, page)
+      return await this.formatSingleRanking(
+        results,
+        dataType,
+        'indigenousLand',
+        page
+      )
     }
   }
 
   async formatSingleRanking(
     results: IResponseRankingDTO[],
-    name: string,
+    dataType: string,
+    id: string,
     page: number
   ) {
     const x: string[] = []
@@ -69,9 +80,9 @@ class InvasionFrequencyService {
     return {
       x: paginate(x, page, 5).values,
       position: paginate(pos, page, 5).values,
-      series: [{ id: name, data: paginate(y, page, 5).values }],
+      series: [{ id, data: paginate(y, page, 5).values }],
       pageAmount: paginate(pos, page, 5).pages,
-      dataType: name,
+      dataType,
     }
   }
 
