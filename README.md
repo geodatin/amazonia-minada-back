@@ -2,7 +2,7 @@
 
 **Busca Geral**
 ----
-Método que permite uma busca geral para Estado, Solicitante (Empresa), Terras Indígenas ou Unidades de Conservação, retornando as opções disponíveis no Banco de Dados que são iniciadas com a string fornecida.
+Método que permite uma busca geral para Substância, Estado, Solicitante (Empresa), Terras Indígenas ou Unidades de Conservação, retornando as opções disponíveis no Banco de Dados que são iniciadas com a string fornecida.
 
 * **URL:**
   
@@ -55,7 +55,7 @@ Método que permite uma busca geral para Estado, Solicitante (Empresa), Terras I
           }
         ]
       ```
-      **Descrição:** Retorna um array de objetos contendo o tipo de dado [company (solicitante), state (estado), reserve (terra indígena) ou unity (unidade de conservação)] e o valor (nome) das opções que são iniciadas pela string determinada.
+      **Descrição:** Retorna um array de objetos contendo o tipo de dado [substance (substância), company (solicitante), state (estado), reserve (terra indígena) ou unity (unidade de conservação)] e o valor (nome) das opções que são iniciadas pela string determinada.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
