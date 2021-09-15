@@ -38,6 +38,12 @@ class InvasionRepository implements IInvasionRepository {
       }
     }
 
+    if (filters.substance && filters.substance.length > 0) {
+      match['properties.SUBS'] = {
+        $in: filters.substance,
+      }
+    }
+
     const invasions = await Invasion.aggregate([
       { $match: match },
       {
@@ -49,6 +55,7 @@ class InvasionRepository implements IInvasionRepository {
           state: { $first: '$properties.UF' },
           territory: { $first: '$properties.UC_NOME' },
           miningProcess: { $first: '$properties.FASE' },
+          substance: { $first: '$properties.SUBS' },
         },
       },
       {
@@ -61,6 +68,7 @@ class InvasionRepository implements IInvasionRepository {
           miningProcess: '$miningProcess',
           territory: '$territory',
           type: 'protectedArea',
+          substance: '$substance',
           _id: 0,
         },
       },
