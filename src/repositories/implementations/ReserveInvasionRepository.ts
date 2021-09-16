@@ -110,8 +110,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
         $group: {
           _id: propertie,
           count: {
-            $sum:
-              dataType === 'incidenceRequirements' ? 1 : '$properties.AREA_HA',
+            $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
           },
         },
       },
