@@ -2,7 +2,7 @@
 
 **Busca Geral**
 ----
-Método que permite uma busca geral para Estado, Solicitante (Empresa), Terras Indígenas ou Unidades de Conservação, retornando as opções disponíveis no Banco de Dados que são iniciadas com a string fornecida.
+Método que permite uma busca geral para Substância, Estado, Solicitante (Empresa), Terras Indígenas ou Unidades de Conservação, retornando as opções disponíveis no Banco de Dados que são iniciadas com a string fornecida.
 
 * **URL:**
   
@@ -55,7 +55,7 @@ Método que permite uma busca geral para Estado, Solicitante (Empresa), Terras I
           }
         ]
       ```
-      **Descrição:** Retorna um array de objetos contendo o tipo de dado [company (solicitante), state (estado), reserve (terra indígena) ou unity (unidade de conservação)] e o valor (nome) das opções que são iniciadas pela string determinada.
+      **Descrição:** Retorna um array de objetos contendo o tipo de dado [substance (substância), company (solicitante), state (estado), reserve (terra indígena) ou unity (unidade de conservação)] e o valor (nome) das opções que são iniciadas pela string determinada.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
@@ -94,7 +94,9 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "reserve": [], //Array de strings com o nome das Terras Indígenas
       "unity": [], //Array de strings com o nome das Unidades de Conservação
       "year": [], //Array de inteiros com os anos
-    }
+    },
+    "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
+    "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
   }
   ```
   **Descrição:** Todos os filtros são parâmetros opcionais e podem ser combinados.
@@ -109,8 +111,9 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
     {
       "filters": {
         "state": ["Amazonas"],
-        "reserve": ["Andirá-Marau"]
-      }
+        "reserve": ["Andirá-Marau"],
+      },
+      "enableReserve": true
     }
     ```
 
@@ -123,28 +126,33 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
         {
           "values": [
             {
+              "id": "601cc05d3bd42e00190c8ff5",
               "company": "Falcon Metais Ltda",
               "process": "880816/2008",
               "area": 9928.68,
               "year": 2008,
               "state": "AM",
               "territory": "Andirá-Marau",
-              "type": "Terra Indígena"
+              "type": "Terra Indígena",
+              "miningProcess": "REQUERIMENTO DE PESQUISA"
             },
             {
+              "id": "5fae1a510a4baf00bf57cf7c",
               "company": "Falcon Metais Ltda",
               "process": "880819/2008",
               "area": 9932.87,
               "year": 2008,
               "state": "AM",
               "territory": "Andirá-Marau",
-              "type": "Terra Indígena"
+              "type": "Terra Indígena",
+              "miningProcess": "REQUERIMENTO DE PESQUISA"
             }
           ],
-          "pages": 10
+          "pages": 10,
+          "results": 20
         }
       ```
-      **Descrição:** Retorna um array de objetos contendo os dados de cada requerimento que se enquadra nos filtros definidos e o número de páginas.
+      **Descrição:** Retorna um array de objetos contendo os dados de cada requerimento que se enquadra nos filtros definidos, o número de páginas e a quantidade de requerimentos.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
@@ -281,7 +289,7 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
           ],
           "series": [
             {
-              "name": "indigenousLand",
+              "id": "indigenousLand",
               "data": [
                 447938.31,
                 469529.25,
@@ -291,7 +299,7 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
               ]
             },
             {
-              "name": "protectedArea",
+              "id": "protectedArea",
               "data": [
                 112761.6,
                 49983.95,
@@ -301,7 +309,8 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
               ]
             }
           ],
-          "pageAmount": 125
+          "pageAmount": 125,
+          "dataType": "requiredArea"
         }
       ```
       **Descrição:** Retorna um array de series que contém os valores de cada tipo de dado, um array com as respectivas posições e um com os nomes dos territórios.

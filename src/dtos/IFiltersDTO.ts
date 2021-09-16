@@ -4,6 +4,7 @@ interface IFiltersDTO {
   unity?: string[]
   company?: string[]
   year?: string[]
+  substance?: string[]
 }
 
 export { IFiltersDTO }

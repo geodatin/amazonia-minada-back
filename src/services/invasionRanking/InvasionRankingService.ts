@@ -31,6 +31,7 @@ class InvasionFrequencyService {
       return await this.formatDoubleRanking(
         reserveResults,
         invasionResults,
+        dataType,
         territoryType,
         page
       )
@@ -40,7 +41,12 @@ class InvasionFrequencyService {
         page,
         dataType,
       })
-      return await this.formatSingleRanking(results, dataType, page)
+      return await this.formatSingleRanking(
+        results,
+        page,
+        dataType,
+        'protectedArea'
+      )
     } else if (territoryType === 'reserve') {
       const results =
         await this.reserveInvasionRepository.reserveInvasionRanking({
@@ -48,14 +54,20 @@ class InvasionFrequencyService {
           page,
           dataType,
         })
-      return await this.formatSingleRanking(results, dataType, page)
+      return await this.formatSingleRanking(
+        results,
+        page,
+        dataType,
+        'indigenousLand'
+      )
     }
   }
 
   async formatSingleRanking(
     results: IResponseRankingDTO[],
-    name: string,
-    page = 1
+    page = 1,
+    dataType: string,
+    id: string
   ) {
     const x: string[] = []
     const y: number[] = []
@@ -68,14 +80,16 @@ class InvasionFrequencyService {
     return {
       x: paginate(x, page, 5).values,
       position: paginate(pos, page, 5).values,
-      series: [{ id: name, data: paginate(y, page, 5).values }],
+      series: [{ id, data: paginate(y, page, 5).values }],
       pageAmount: paginate(pos, page, 5).pages,
+      dataType,
     }
   }
 
   async formatDoubleRanking(
     invasionResults: IResponseRankingDTO[],
     reserveResults: IResponseRankingDTO[],
+    dataType: string,
     territoryType: string,
     page = 1
   ) {
@@ -123,6 +137,7 @@ class InvasionFrequencyService {
         },
       ],
       pageAmount: paginate(pos, page, 5).pages,
+      dataType,
     }
   }
 }

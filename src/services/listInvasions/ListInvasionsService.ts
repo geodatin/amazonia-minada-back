@@ -19,27 +19,33 @@ class ListInvasionsService {
 
   async execute(
     filters: IFiltersDTO,
+    enableUnity: boolean = true,
+    enableReserve: boolean = true,
     page: number = 1,
     pageSize: number = 10
   ): Promise<IPaginationDTO> {
     let reserveInvasions: IInvasionDTO[] = []
     let invasions: IInvasionDTO[] = []
 
-    if ((!filters.reserve && !filters.unity) || filters.reserve) {
+    if (
+      ((!filters.reserve && !filters.unity) || filters.reserve) &&
+      enableReserve
+    ) {
       reserveInvasions = await this.reserveInvasionRepository.listInvasions(
         filters
       )
     }
 
-    if ((!filters.reserve && !filters.unity) || filters.unity) {
+    if (
+      ((!filters.reserve && !filters.unity) || filters.unity) &&
+      enableUnity
+    ) {
       invasions = await this.invasionRepository.listInvasions(filters)
     }
 
     const results = invasions.concat(reserveInvasions)
     const sortedResults = results.sort((a, b) => {
-      if (a.company > b.company) return 1
-      if (a.company < b.company) return -1
-      return 0
+      return b.year - a.year
     })
 
     return paginate(sortedResults, page, pageSize)

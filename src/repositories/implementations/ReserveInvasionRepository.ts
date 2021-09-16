@@ -11,25 +11,25 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
     const match: any = {}
 
-    if (filters.reserve) {
+    if (filters.reserve && filters.reserve.length > 0) {
       match['properties.TI_NOME'] = {
         $in: filters.reserve,
       }
     }
 
-    if (filters.company) {
+    if (filters.company && filters.company.length > 0) {
       match['properties.NOME'] = {
         $in: filters.company,
       }
     }
 
-    if (filters.year) {
+    if (filters.year && filters.year.length > 0) {
       match['properties.ANO'] = {
         $in: filters.year,
       }
     }
 
-    if (filters.state) {
+    if (filters.state && filters.state.length > 0) {
       const acronymsRegex = filters.state.map(
         (state) => new RegExp(`.*${getStateAcronym(state)}.*`, 'i')
       )
@@ -38,20 +38,41 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       }
     }
 
-    const invasions = await ReserveInvasion.find(
-      match,
+    if (filters.substance && filters.substance.length > 0) {
+      match['properties.SUBS'] = {
+        $in: filters.substance,
+      }
+    }
+
+    const invasions = await ReserveInvasion.aggregate([
+      { $match: match },
       {
-        company: '$properties.NOME',
-        process: '$properties.PROCESSO',
-        area: '$properties.AREA_HA',
-        year: '$properties.ANO',
-        state: '$properties.UF',
-        territory: '$properties.TI_NOME',
-        type: 'Terra Indígena',
-        _id: 0,
+        $group: {
+          _id: '$properties.PROCESSO',
+          company: { $first: '$properties.NOME' },
+          area: { $sum: '$properties.AREA_HA' },
+          year: { $first: '$properties.ANO' },
+          state: { $first: '$properties.UF' },
+          territory: { $first: '$properties.TI_NOME' },
+          miningProcess: { $first: '$properties.FASE' },
+          substance: { $first: '$properties.SUBS' },
+        },
       },
-      { lean: true }
-    )
+      {
+        $project: {
+          company: '$company',
+          process: '$_id',
+          area: '$area',
+          year: '$year',
+          state: '$state',
+          miningProcess: '$miningProcess',
+          territory: '$territory',
+          type: 'indigenousLand',
+          substance: '$substance',
+          _id: 0,
+        },
+      },
+    ])
 
     return invasions
   }

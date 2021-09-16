@@ -11,25 +11,25 @@ class InvasionRepository implements IInvasionRepository {
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
     const match: any = {}
 
-    if (filters.unity) {
+    if (filters.unity && filters.unity.length > 0) {
       match['properties.UC_NOME'] = {
         $in: filters.unity,
       }
     }
 
-    if (filters.company) {
+    if (filters.company && filters.company.length > 0) {
       match['properties.NOME'] = {
         $in: filters.company,
       }
     }
 
-    if (filters.year) {
+    if (filters.year && filters.year.length > 0) {
       match['properties.ANO'] = {
         $in: filters.year,
       }
     }
 
-    if (filters.state) {
+    if (filters.state && filters.state.length > 0) {
       const acronymsRegex = filters.state.map(
         (state) => new RegExp(`.*${getStateAcronym(state)}.*`, 'i')
       )
@@ -38,20 +38,41 @@ class InvasionRepository implements IInvasionRepository {
       }
     }
 
-    const invasions = await Invasion.find(
-      match,
+    if (filters.substance && filters.substance.length > 0) {
+      match['properties.SUBS'] = {
+        $in: filters.substance,
+      }
+    }
+
+    const invasions = await Invasion.aggregate([
+      { $match: match },
       {
-        company: '$properties.NOME',
-        process: '$properties.PROCESSO',
-        area: '$properties.AREA_HA',
-        year: '$properties.ANO',
-        state: '$properties.UF',
-        territory: '$properties.UC_NOME',
-        type: 'Unidade de Conservação',
-        _id: 0,
+        $group: {
+          _id: '$properties.PROCESSO',
+          company: { $first: '$properties.NOME' },
+          area: { $sum: '$properties.AREA_HA' },
+          year: { $first: '$properties.ANO' },
+          state: { $first: '$properties.UF' },
+          territory: { $first: '$properties.UC_NOME' },
+          miningProcess: { $first: '$properties.FASE' },
+          substance: { $first: '$properties.SUBS' },
+        },
       },
-      { lean: true }
-    )
+      {
+        $project: {
+          company: '$company',
+          process: '$_id',
+          area: '$area',
+          year: '$year',
+          state: '$state',
+          miningProcess: '$miningProcess',
+          territory: '$territory',
+          type: 'protectedArea',
+          substance: '$substance',
+          _id: 0,
+        },
+      },
+    ])
 
     return invasions
   }
