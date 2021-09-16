@@ -94,6 +94,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "reserve": [], //Array de strings com o nome das Terras Indígenas
       "unity": [], //Array de strings com o nome das Unidades de Conservação
       "year": [], //Array de inteiros com os anos
+      "substance": [], //Array de strings com o nome das substâncias
     },
     "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
     "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
@@ -126,7 +127,6 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
         {
           "values": [
             {
-              "id": "601cc05d3bd42e00190c8ff5",
               "company": "Falcon Metais Ltda",
               "process": "880816/2008",
               "area": 9928.68,
@@ -134,10 +134,10 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "state": "AM",
               "territory": "Andirá-Marau",
               "type": "Terra Indígena",
-              "miningProcess": "REQUERIMENTO DE PESQUISA"
+              "miningProcess": "REQUERIMENTO DE PESQUISA",
+              "substance": "OURO"
             },
             {
-              "id": "5fae1a510a4baf00bf57cf7c",
               "company": "Falcon Metais Ltda",
               "process": "880819/2008",
               "area": 9932.87,
@@ -145,7 +145,8 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "state": "AM",
               "territory": "Andirá-Marau",
               "type": "Terra Indígena",
-              "miningProcess": "REQUERIMENTO DE PESQUISA"
+              "miningProcess": "REQUERIMENTO DE PESQUISA",
+              "substance": "OURO"
             }
           ],
           "pages": 10,
@@ -189,6 +190,7 @@ Método que retorna as estatísticas gerais (número de requerimentos e área) d
       "reserve": [], //Array de strings com o nome das Terras Indígenas
       "unity": [], //Array de strings com o nome das Unidades de Conservação
       "year": [], //Array de inteiros com os anos
+      "substance": [], //Array de strings com o nome das substâncias
     }
   }
   ```
@@ -229,6 +231,57 @@ Método que retorna as estatísticas gerais (número de requerimentos e área) d
         }
       ```
       **Descrição:** Retorna um objeto contendo as estatísticas dos requerimentos que se enquadram nos filtros definidos.
+      
+    * **Código:** <span style="color:red">**500**</span> <br />
+      **Conteúdo:**
+      ```javascript
+      {
+        "message": "Internal Server Error"
+      }
+      ```
+      **Descrição:** Erro interno do servidor.
+
+**Listar Fases do Processo de Homologação das Terras Indígenas**
+----
+Método que retorna as opções de fase do processo de homologação de terras indígenas.
+
+* **URL:**
+  
+      /api/reserves/phase
+
+* **Método:**
+
+  `GET`
+
+* **Parâmetros na URL:**
+
+  Nenhum
+
+* **Parâmetros no Body:**
+
+  Nenhum
+
+* **Exemplo:**
+
+  **Rota:**
+      /api/reserves/phase
+
+* **Resposta:**
+
+    * **Código:** <span style="color:green">**200**</span> <br/>
+      **Conteúdo:**
+
+      ```javascript
+        [
+          "Declarada",
+          "Delimitada",
+          "Em Estudo",
+          "Encaminhada RI",
+          "Homologada",
+          "Regularizada"
+        ]
+      ```
+      **Descrição:** Retorna um array contendo as opções das fases do processo de homologação de terras indígenas.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
