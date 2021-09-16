@@ -16,6 +16,11 @@ class ReserveRepository implements IReserveRepository {
     )
     return reserves
   }
+
+  async getHomologationPhases(): Promise<String[]> {
+    const homologationPhases = await Reserve.distinct('properties.fase_ti')
+    return homologationPhases
+  }
 }
 
 export { ReserveRepository }

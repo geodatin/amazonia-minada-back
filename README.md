@@ -241,6 +241,57 @@ Método que retorna as estatísticas gerais (número de requerimentos e área) d
       ```
       **Descrição:** Erro interno do servidor.
 
+**Listar Fases do Processo de Homologação das Terras Indígenas**
+----
+Método que retorna as opções de fase do processo de homologação de terras indígenas.
+
+* **URL:**
+  
+      /api/reserves/phase
+
+* **Método:**
+
+  `GET`
+
+* **Parâmetros na URL:**
+
+  Nenhum
+
+* **Parâmetros no Body:**
+
+  Nenhum
+
+* **Exemplo:**
+
+  **Rota:**
+      /api/reserves/phase
+
+* **Resposta:**
+
+    * **Código:** <span style="color:green">**200**</span> <br/>
+      **Conteúdo:**
+
+      ```javascript
+        [
+          "Declarada",
+          "Delimitada",
+          "Em Estudo",
+          "Encaminhada RI",
+          "Homologada",
+          "Regularizada"
+        ]
+      ```
+      **Descrição:** Retorna um array contendo as opções das fases do processo de homologação de terras indígenas.
+      
+    * **Código:** <span style="color:red">**500**</span> <br />
+      **Conteúdo:**
+      ```javascript
+      {
+        "message": "Internal Server Error"
+      }
+      ```
+      **Descrição:** Erro interno do servidor.
+
 **Ranking de frequência e de área**
 ----
 Método que retorna o ranking de acordo com o território e o tipo de dado especificado
