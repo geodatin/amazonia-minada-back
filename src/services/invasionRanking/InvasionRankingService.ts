@@ -55,7 +55,7 @@ class InvasionFrequencyService {
   async formatSingleRanking(
     results: IResponseRankingDTO[],
     name: string,
-    page: number
+    page = 1
   ) {
     const x: string[] = []
     const y: number[] = []
@@ -77,7 +77,7 @@ class InvasionFrequencyService {
     invasionResults: IResponseRankingDTO[],
     reserveResults: IResponseRankingDTO[],
     territoryType: string,
-    page: number
+    page = 1
   ) {
     const x: string[] = []
     const invasionY: number[] = []

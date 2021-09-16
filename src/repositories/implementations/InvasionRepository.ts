@@ -93,6 +93,7 @@ class InvasionRepository implements IInvasionRepository {
           },
         },
       },
+      { $sort: { count: -1 } },
       {
         $project: {
           x: '$_id',
