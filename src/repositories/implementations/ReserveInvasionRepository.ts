@@ -50,6 +50,15 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       }
     }
 
+    if (filters.reserveEthnicity && filters.reserveEthnicity.length > 0) {
+      const ethnicitiesRegex = filters.reserveEthnicity.map(
+        (ethnicity) => new RegExp(`.*${ethnicity}.*`, 'i')
+      )
+      match['properties.TI_ETNIA'] = {
+        $in: ethnicitiesRegex,
+      }
+    }
+
     const invasions = await ReserveInvasion.aggregate([
       { $match: match },
       {
@@ -61,6 +70,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           state: { $first: '$properties.UF' },
           territory: { $first: '$properties.TI_NOME' },
           reservePhase: { $first: '$properties.TI_FASE' },
+          reserveEthnicity: { $first: '$properties.TI_ETNIA' },
           miningProcess: { $first: '$properties.FASE' },
           substance: { $first: '$properties.SUBS' },
         },
@@ -75,6 +85,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           miningProcess: '$miningProcess',
           territory: '$territory',
           reservePhase: '$reservePhase',
+          reserveEthnicity: '$reserveEthnicity',
           type: 'indigenousLand',
           substance: '$substance',
           _id: 0,

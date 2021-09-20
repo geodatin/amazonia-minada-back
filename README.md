@@ -2,7 +2,7 @@
 
 **Busca Geral**
 ----
-Método que permite uma busca geral para Substância, Estado, Solicitante (Empresa), Terras Indígenas ou Unidades de Conservação, retornando as opções disponíveis no Banco de Dados que são iniciadas com a string fornecida.
+Método que permite uma busca geral para Substância, Estado, Solicitante (Empresa), Terras Indígenas, Unidades de Conservação ou Etnias de Terras Indígenas, retornando as opções disponíveis no Banco de Dados que são iniciadas com a string fornecida.
 
 * **URL:**
   
@@ -55,7 +55,7 @@ Método que permite uma busca geral para Substância, Estado, Solicitante (Empre
           }
         ]
       ```
-      **Descrição:** Retorna um array de objetos contendo o tipo de dado [substance (substância), company (solicitante), state (estado), reserve (terra indígena) ou unity (unidade de conservação)] e o valor (nome) das opções que são iniciadas pela string determinada.
+      **Descrição:** Retorna um array de objetos contendo o tipo de dado [substance (substância), company (solicitante), state (estado), reserve (terra indígena), unity (unidade de conservação) ou ethnicity (etnia de terras indígenas)] e o valor (nome) das opções que são iniciadas pela string determinada.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
@@ -96,6 +96,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "year": [], //Array de inteiros com os anos
       "substance": [], //Array de strings com o nome das substâncias
       "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
+      "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
     },
     "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
     "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
@@ -135,6 +136,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "state": "AM",
               "territory": "Andirá-Marau",
               "reservePhase": "Regularizada",
+              "reserveEthnicity": "Múra",
               "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
               "substance": "OURO"
@@ -147,6 +149,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "state": "AM",
               "territory": "Andirá-Marau",
               "reservePhase": "Regularizada",
+              "reserveEthnicity": "Múra",
               "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
               "substance": "OURO"
@@ -195,6 +198,7 @@ Método que retorna as estatísticas gerais (número de requerimentos e área) d
       "year": [], //Array de inteiros com os anos
       "substance": [], //Array de strings com o nome das substâncias
       "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
+      "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
     }
   }
   ```

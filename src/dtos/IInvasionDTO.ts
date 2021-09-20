@@ -8,6 +8,7 @@ interface IInvasionDTO {
   substance: string
   territory: string
   reservePhase?: string
+  reserveEthnicity?: string
   type: string
 }
 

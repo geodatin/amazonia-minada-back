@@ -6,6 +6,7 @@ interface IFiltersDTO {
   year?: string[]
   substance?: string[]
   reservePhase?: string[]
+  reserveEthnicity?: string[]
 }
 
 export { IFiltersDTO }
