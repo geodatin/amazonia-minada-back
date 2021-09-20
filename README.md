@@ -97,6 +97,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "substance": [], //Array de strings com o nome das substâncias
       "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
       "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
+      "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
     },
     "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
     "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
@@ -199,6 +200,7 @@ Método que retorna as estatísticas gerais (número de requerimentos e área) d
       "substance": [], //Array de strings com o nome das substâncias
       "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
       "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
+      "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
     }
   }
   ```

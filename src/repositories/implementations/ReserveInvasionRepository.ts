@@ -59,6 +59,12 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       }
     }
 
+    if (filters.requirementPhase && filters.requirementPhase.length > 0) {
+      match['properties.FASE'] = {
+        $in: filters.requirementPhase,
+      }
+    }
+
     const invasions = await ReserveInvasion.aggregate([
       { $match: match },
       {

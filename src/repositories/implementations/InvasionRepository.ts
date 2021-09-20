@@ -44,6 +44,12 @@ class InvasionRepository implements IInvasionRepository {
       }
     }
 
+    if (filters.requirementPhase && filters.requirementPhase.length > 0) {
+      match['properties.FASE'] = {
+        $in: filters.requirementPhase,
+      }
+    }
+
     const invasions = await Invasion.aggregate([
       { $match: match },
       {
