@@ -145,6 +145,11 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
 
     return territories
   }
+
+  async getRequirementsPhase(): Promise<String[]> {
+    const requirementsPhase = await ReserveInvasion.distinct('properties.FASE')
+    return requirementsPhase
+  }
 }
 
 export { ReserveInvasionRepository }

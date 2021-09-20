@@ -124,6 +124,11 @@ class InvasionRepository implements IInvasionRepository {
     ])
     return territories
   }
+
+  async getRequirementsPhase(): Promise<String[]> {
+    const requirementsPhase = await Invasion.distinct('properties.FASE')
+    return requirementsPhase
+  }
 }
 
 export { InvasionRepository }

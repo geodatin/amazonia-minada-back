@@ -300,6 +300,63 @@ Método que retorna as opções de fase do processo de homologação de terras i
       ```
       **Descrição:** Erro interno do servidor.
 
+**Listar Fases do Requerimento de Mineração**
+----
+Método que retorna as opções de fase do requerimento de mineração.
+
+* **URL:**
+  
+      /api/invasions/phase
+
+* **Método:**
+
+  `GET`
+
+* **Parâmetros na URL:**
+
+  Nenhum
+
+* **Parâmetros no Body:**
+
+  Nenhum
+
+* **Exemplo:**
+
+  **Rota:**
+      /api/invasions/phase
+
+* **Resposta:**
+
+    * **Código:** <span style="color:green">**200**</span> <br/>
+      **Conteúdo:**
+
+      ```javascript
+        [
+          "APTO PARA DISPONIBILIDADE",
+          "AUTORIZAÇÃO DE PESQUISA",
+          "CONCESSÃO DE LAVRA",
+          "DIREITO DE REQUERER A LAVRA",
+          "DISPONIBILIDADE",
+          "LAVRA GARIMPEIRA",
+          "LICENCIAMENTO",
+          "REQUERIMENTO DE LAVRA",
+          "REQUERIMENTO DE LAVRA GARIMPEIRA",
+          "REQUERIMENTO DE LICENCIAMENTO",
+          "REQUERIMENTO DE PESQUISA",
+          "REQUERIMENTO DE REGISTRO DE EXTRAÇÃO"
+        ]
+      ```
+      **Descrição:** Retorna um array contendo as opções das fases dos requerimentos de mineração.
+      
+    * **Código:** <span style="color:red">**500**</span> <br />
+      **Conteúdo:**
+      ```javascript
+      {
+        "message": "Internal Server Error"
+      }
+      ```
+      **Descrição:** Erro interno do servidor.
+
 **Ranking de frequência e de área**
 ----
 Método que retorna o ranking de acordo com o território e o tipo de dado especificado
