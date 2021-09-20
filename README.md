@@ -83,6 +83,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
 
   - page?:[number] - Número da página de registros a ser retornada, retorna a primeira página caso um número não seja informado.
   - pageSize?:[number] - Número de requerimentos por página, caso não seja informado são retornados 10 por página.
+  - output?:[string] - Formato de saída (permitidos: csv).
 
 * **Parâmetros no Body:**
 
