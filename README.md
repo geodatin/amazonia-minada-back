@@ -269,11 +269,6 @@ Método que retorna as opções de fase do processo de homologação de terras i
 
   Nenhum
 
-* **Exemplo:**
-
-  **Rota:**
-      /api/reserves/phase
-
 * **Resposta:**
 
     * **Código:** <span style="color:green">**200**</span> <br/>
@@ -319,11 +314,6 @@ Método que retorna as opções de fase do requerimento de mineração.
 * **Parâmetros no Body:**
 
   Nenhum
-
-* **Exemplo:**
-
-  **Rota:**
-      /api/invasions/phase
 
 * **Resposta:**
 
