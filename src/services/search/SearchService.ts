@@ -38,7 +38,15 @@ class SearchService {
 
     const substances = await this.licenseRepository.searchSubstance(searchTerm)
 
-    const results = states.concat(companies, unities, reserves, substances)
+    const ethnicities = await this.reserveRepository.searchEthnicity(searchTerm)
+
+    const results = states.concat(
+      companies,
+      unities,
+      reserves,
+      substances,
+      ethnicities
+    )
 
     return results
   }
