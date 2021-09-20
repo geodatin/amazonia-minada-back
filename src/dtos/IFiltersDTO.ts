@@ -5,6 +5,7 @@ interface IFiltersDTO {
   company?: string[]
   year?: string[]
   substance?: string[]
+  reservePhase?: string[]
 }
 
 export { IFiltersDTO }

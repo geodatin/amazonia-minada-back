@@ -44,6 +44,12 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       }
     }
 
+    if (filters.reservePhase && filters.reservePhase.length > 0) {
+      match['properties.TI_FASE'] = {
+        $in: filters.reservePhase,
+      }
+    }
+
     const invasions = await ReserveInvasion.aggregate([
       { $match: match },
       {
@@ -54,6 +60,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           year: { $first: '$properties.ANO' },
           state: { $first: '$properties.UF' },
           territory: { $first: '$properties.TI_NOME' },
+          reservePhase: { $first: '$properties.TI_FASE' },
           miningProcess: { $first: '$properties.FASE' },
           substance: { $first: '$properties.SUBS' },
         },
@@ -67,6 +74,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           state: '$state',
           miningProcess: '$miningProcess',
           territory: '$territory',
+          reservePhase: '$reservePhase',
           type: 'indigenousLand',
           substance: '$substance',
           _id: 0,

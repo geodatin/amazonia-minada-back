@@ -95,6 +95,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "unity": [], //Array de strings com o nome das Unidades de Conservação
       "year": [], //Array de inteiros com os anos
       "substance": [], //Array de strings com o nome das substâncias
+      "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
     },
     "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
     "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
@@ -133,7 +134,8 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "year": 2008,
               "state": "AM",
               "territory": "Andirá-Marau",
-              "type": "Terra Indígena",
+              "reservePhase": "Regularizada",
+              "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
               "substance": "OURO"
             },
@@ -144,7 +146,8 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "year": 2008,
               "state": "AM",
               "territory": "Andirá-Marau",
-              "type": "Terra Indígena",
+              "reservePhase": "Regularizada",
+              "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
               "substance": "OURO"
             }
@@ -191,6 +194,7 @@ Método que retorna as estatísticas gerais (número de requerimentos e área) d
       "unity": [], //Array de strings com o nome das Unidades de Conservação
       "year": [], //Array de inteiros com os anos
       "substance": [], //Array de strings com o nome das substâncias
+      "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
     }
   }
   ```
