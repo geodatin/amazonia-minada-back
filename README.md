@@ -2,7 +2,7 @@
 
 **Busca Geral**
 ----
-Método que permite uma busca geral para Substância, Estado, Solicitante (Empresa), Terras Indígenas ou Unidades de Conservação, retornando as opções disponíveis no Banco de Dados que são iniciadas com a string fornecida.
+Método que permite uma busca geral para Substância, Estado, Solicitante (Empresa), Terras Indígenas, Unidades de Conservação ou Etnias de Terras Indígenas, retornando as opções disponíveis no Banco de Dados que são iniciadas com a string fornecida.
 
 * **URL:**
   
@@ -55,7 +55,7 @@ Método que permite uma busca geral para Substância, Estado, Solicitante (Empre
           }
         ]
       ```
-      **Descrição:** Retorna um array de objetos contendo o tipo de dado [substance (substância), company (solicitante), state (estado), reserve (terra indígena) ou unity (unidade de conservação)] e o valor (nome) das opções que são iniciadas pela string determinada.
+      **Descrição:** Retorna um array de objetos contendo o tipo de dado [substance (substância), company (solicitante), state (estado), reserve (terra indígena), unity (unidade de conservação) ou ethnicity (etnia de terras indígenas)] e o valor (nome) das opções que são iniciadas pela string determinada.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
@@ -83,6 +83,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
 
   - page?:[number] - Número da página de registros a ser retornada, retorna a primeira página caso um número não seja informado.
   - pageSize?:[number] - Número de requerimentos por página, caso não seja informado são retornados 10 por página.
+  - output?:[string] - Formato de saída (permitidos: csv).
 
 * **Parâmetros no Body:**
 
@@ -95,6 +96,9 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "unity": [], //Array de strings com o nome das Unidades de Conservação
       "year": [], //Array de inteiros com os anos
       "substance": [], //Array de strings com o nome das substâncias
+      "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
+      "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
+      "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
     },
     "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
     "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
@@ -133,7 +137,9 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "year": 2008,
               "state": "AM",
               "territory": "Andirá-Marau",
-              "type": "Terra Indígena",
+              "reservePhase": "Regularizada",
+              "reserveEthnicity": "Múra",
+              "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
               "substance": "OURO"
             },
@@ -144,7 +150,9 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "year": 2008,
               "state": "AM",
               "territory": "Andirá-Marau",
-              "type": "Terra Indígena",
+              "reservePhase": "Regularizada",
+              "reserveEthnicity": "Múra",
+              "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
               "substance": "OURO"
             }
@@ -191,6 +199,9 @@ Método que retorna as estatísticas gerais (número de requerimentos e área) d
       "unity": [], //Array de strings com o nome das Unidades de Conservação
       "year": [], //Array de inteiros com os anos
       "substance": [], //Array de strings com o nome das substâncias
+      "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
+      "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
+      "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
     }
   }
   ```
@@ -292,6 +303,58 @@ Método que retorna as opções de fase do processo de homologação de terras i
         ]
       ```
       **Descrição:** Retorna um array contendo as opções das fases do processo de homologação de terras indígenas.
+      
+    * **Código:** <span style="color:red">**500**</span> <br />
+      **Conteúdo:**
+      ```javascript
+      {
+        "message": "Internal Server Error"
+      }
+      ```
+      **Descrição:** Erro interno do servidor.
+
+**Listar Fases do Requerimento de Mineração**
+----
+Método que retorna as opções de fase do requerimento de mineração.
+
+* **URL:**
+  
+      /api/invasions/phase
+
+* **Método:**
+
+  `GET`
+
+* **Parâmetros na URL:**
+
+  Nenhum
+
+* **Parâmetros no Body:**
+
+  Nenhum
+
+* **Resposta:**
+
+    * **Código:** <span style="color:green">**200**</span> <br/>
+      **Conteúdo:**
+
+      ```javascript
+        [
+          "APTO PARA DISPONIBILIDADE",
+          "AUTORIZAÇÃO DE PESQUISA",
+          "CONCESSÃO DE LAVRA",
+          "DIREITO DE REQUERER A LAVRA",
+          "DISPONIBILIDADE",
+          "LAVRA GARIMPEIRA",
+          "LICENCIAMENTO",
+          "REQUERIMENTO DE LAVRA",
+          "REQUERIMENTO DE LAVRA GARIMPEIRA",
+          "REQUERIMENTO DE LICENCIAMENTO",
+          "REQUERIMENTO DE PESQUISA",
+          "REQUERIMENTO DE REGISTRO DE EXTRAÇÃO"
+        ]
+      ```
+      **Descrição:** Retorna um array contendo as opções das fases dos requerimentos de mineração.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**

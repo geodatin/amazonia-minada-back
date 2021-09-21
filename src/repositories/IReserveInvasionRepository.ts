@@ -10,6 +10,7 @@ interface IReserveInvasionRepository {
     territoryType,
     dataType,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]>
+  getRequirementsPhase(): Promise<String[]>
 }
 
 export { IReserveInvasionRepository }

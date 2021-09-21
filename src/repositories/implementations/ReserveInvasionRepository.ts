@@ -11,6 +11,27 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
     const match = await this.getMatchProperty(filters)
 
+    if (filters.reservePhase && filters.reservePhase.length > 0) {
+      match['properties.TI_FASE'] = {
+        $in: filters.reservePhase,
+      }
+    }
+
+    if (filters.reserveEthnicity && filters.reserveEthnicity.length > 0) {
+      const ethnicitiesRegex = filters.reserveEthnicity.map(
+        (ethnicity) => new RegExp(`.*${ethnicity}.*`, 'i')
+      )
+      match['properties.TI_ETNIA'] = {
+        $in: ethnicitiesRegex,
+      }
+    }
+
+    if (filters.requirementPhase && filters.requirementPhase.length > 0) {
+      match['properties.FASE'] = {
+        $in: filters.requirementPhase,
+      }
+    }
+
     const invasions = await ReserveInvasion.aggregate([
       { $match: match },
       {
@@ -21,6 +42,8 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           year: { $first: '$properties.ANO' },
           state: { $first: '$properties.UF' },
           territory: { $first: '$properties.TI_NOME' },
+          reservePhase: { $first: '$properties.TI_FASE' },
+          reserveEthnicity: { $first: '$properties.TI_ETNIA' },
           miningProcess: { $first: '$properties.FASE' },
           substance: { $first: '$properties.SUBS' },
         },
@@ -34,6 +57,8 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           state: '$state',
           miningProcess: '$miningProcess',
           territory: '$territory',
+          reservePhase: '$reservePhase',
+          reserveEthnicity: '$reserveEthnicity',
           type: 'indigenousLand',
           substance: '$substance',
           _id: 0,
@@ -134,6 +159,11 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     }
 
     return match
+  }
+
+  async getRequirementsPhase(): Promise<String[]> {
+    const requirementsPhase = await ReserveInvasion.distinct('properties.FASE')
+    return requirementsPhase
   }
 }
 

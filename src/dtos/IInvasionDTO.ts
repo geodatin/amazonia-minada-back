@@ -7,6 +7,8 @@ interface IInvasionDTO {
   miningProcess: string
   substance: string
   territory: string
+  reservePhase?: string
+  reserveEthnicity?: string
   type: string
 }
 

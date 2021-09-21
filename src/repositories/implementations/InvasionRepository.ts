@@ -11,6 +11,12 @@ class InvasionRepository implements IInvasionRepository {
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
     const match = await this.getMatchProperty(filters)
 
+    if (filters.requirementPhase && filters.requirementPhase.length > 0) {
+      match['properties.FASE'] = {
+        $in: filters.requirementPhase,
+      }
+    }
+
     const invasions = await Invasion.aggregate([
       { $match: match },
       {
@@ -132,6 +138,11 @@ class InvasionRepository implements IInvasionRepository {
     }
 
     return match
+  }
+
+  async getRequirementsPhase(): Promise<String[]> {
+    const requirementsPhase = await Invasion.distinct('properties.FASE')
+    return requirementsPhase
   }
 }
 

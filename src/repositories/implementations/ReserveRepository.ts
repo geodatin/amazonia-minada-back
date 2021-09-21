@@ -17,6 +17,31 @@ class ReserveRepository implements IReserveRepository {
     return reserves
   }
 
+  async searchEthnicity(searchTerm: string): Promise<ISearchDTO[]> {
+    const ethnicities: ISearchDTO[] = await Reserve.aggregate([
+      {
+        $project: {
+          ethnicity: {
+            $split: ['$properties.etnia_nome', ', '],
+          },
+        },
+      },
+      { $unwind: '$ethnicity' },
+      { $project: { ethnicity: { $trim: { input: '$ethnicity' } } } },
+      { $group: { _id: '$ethnicity' } },
+      { $match: { _id: { $regex: new RegExp(`^${searchTerm}`, 'i') } } },
+      {
+        $project: {
+          type: 'ethnicity',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+      { $sort: { value: 1 } },
+    ])
+    return ethnicities
+  }
+
   async getHomologationPhases(): Promise<String[]> {
     const homologationPhases = await Reserve.distinct('properties.fase_ti')
     return homologationPhases
