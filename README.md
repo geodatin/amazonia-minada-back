@@ -266,6 +266,16 @@ Método que retorna as opções de fase do processo de homologação de terras i
   **Rota:**
       /api/reserves/phase
 
+  **Body:**
+    ```javascript
+    {
+      "filters": {
+        "state": ["Amazonas"],
+        "reserve": ["Andirá-Marau"]
+      }
+    }
+    ```
+
 * **Resposta:**
 
     * **Código:** <span style="color:green">**200**</span> <br/>
@@ -302,17 +312,28 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
 
 * **Método:**
 
-  `GET`
+  `POST`
 
 * **Parâmetros na URL:**
 
   - territoryType:[string] - Tipo de território a ser utilizado na construção do ranking('company', 'state', 'unity', 'reserve').
-  - dataType:[string] - Tipo de dado a ser retornado, 'incidenceRequiriments' para a frequencia de requerimentos em território e 'requiredArea' para área total dos requerimentos por território.
+  - dataType:[string] - Tipo de dado a ser retornado, 'requirementsIncidence' para a frequencia de requerimentos em território e 'requiredArea' para área total dos requerimentos por território.
   - page?:[number] - Número da página de registros a ser retornada, retorna todos os registros caso um número não seja informado.
 
 * **Parâmetros no Body:**
 
-  Nenhum
+  ```javascript
+  {
+    "filters": {
+      "state": [], //Array de strings com o nome dos estados
+      "company": [], //Array de strings com o nome das empresas
+      "reserve": [], //Array de strings com o nome das Terras Indígenas
+      "unity": [], //Array de strings com o nome das Unidades de Conservação
+      "year": [], //Array de inteiros com os anos
+      "substance": [], //Array de strings com o nome das substâncias
+    }
+  }
+  ```
 
 * **Exemplo:**
 
