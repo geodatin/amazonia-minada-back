@@ -9,40 +9,7 @@ import { IInvasionRepository } from '../IInvasionRepository'
 
 class InvasionRepository implements IInvasionRepository {
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
-    const match: any = {}
-
-    if (filters.unity && filters.unity.length > 0) {
-      match['properties.UC_NOME'] = {
-        $in: filters.unity,
-      }
-    }
-
-    if (filters.company && filters.company.length > 0) {
-      match['properties.NOME'] = {
-        $in: filters.company,
-      }
-    }
-
-    if (filters.year && filters.year.length > 0) {
-      match['properties.ANO'] = {
-        $in: filters.year,
-      }
-    }
-
-    if (filters.state && filters.state.length > 0) {
-      const acronymsRegex = filters.state.map(
-        (state) => new RegExp(`.*${getStateAcronym(state)}.*`, 'i')
-      )
-      match['properties.UF'] = {
-        $in: acronymsRegex,
-      }
-    }
-
-    if (filters.substance && filters.substance.length > 0) {
-      match['properties.SUBS'] = {
-        $in: filters.substance,
-      }
-    }
+    const match = await this.getMatchProperty(filters)
 
     const invasions = await Invasion.aggregate([
       { $match: match },
@@ -102,9 +69,12 @@ class InvasionRepository implements IInvasionRepository {
   async invasionRanking({
     territoryType,
     dataType,
+    filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
     const propertie = rankingFilter[territoryType]
+    const match = await this.getMatchProperty(filters)
     const territories = await Invasion.aggregate([
+      { $match: match },
       {
         $group: {
           _id: propertie,
@@ -123,6 +93,45 @@ class InvasionRepository implements IInvasionRepository {
       },
     ])
     return territories
+  }
+
+  private async getMatchProperty(filters: IFiltersDTO) {
+    const match: any = {}
+
+    if (filters.unity && filters.unity.length > 0) {
+      match['properties.UC_NOME'] = {
+        $in: filters.unity,
+      }
+    }
+
+    if (filters.company && filters.company.length > 0) {
+      match['properties.NOME'] = {
+        $in: filters.company,
+      }
+    }
+
+    if (filters.year && filters.year.length > 0) {
+      match['properties.ANO'] = {
+        $in: filters.year,
+      }
+    }
+
+    if (filters.state && filters.state.length > 0) {
+      const acronymsRegex = filters.state.map(
+        (state) => new RegExp(`.*${getStateAcronym(state)}.*`, 'i')
+      )
+      match['properties.UF'] = {
+        $in: acronymsRegex,
+      }
+    }
+
+    if (filters.substance && filters.substance.length > 0) {
+      match['properties.SUBS'] = {
+        $in: filters.substance,
+      }
+    }
+
+    return match
   }
 }
 
