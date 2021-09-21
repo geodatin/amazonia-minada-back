@@ -16,7 +16,7 @@ const getReservesPhaseController = new GetReservesPhaseController()
 
 router.get('/search/:searchTerm', searchController.handle)
 router.post('/invasions', listInvasionsController.handle)
-router.get(
+router.post(
   '/invasions/ranking/:territoryType/:dataType',
   invasionFrequencyController.handle
 )
