@@ -41,7 +41,18 @@ class ListInvasionsService {
 
     const results = invasions.concat(reserveInvasions)
     const sortedResults = results.sort((a, b) => {
-      return b.year - a.year
+      if (b.year > a.year) {
+        return 1
+      } else if (b.year < a.year) {
+        return -1
+      } else {
+        if (b.process > a.process) {
+          return 1
+        } else if (b.process < a.process) {
+          return -1
+        }
+        return 0
+      }
     })
 
     return sortedResults

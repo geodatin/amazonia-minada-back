@@ -3,13 +3,42 @@ import { IFiltersDTO } from '../../dtos/IFiltersDTO'
 import { IInvasionDTO } from '../../dtos/IInvasionDTO'
 import { IRequestRankingDTO, IResponseRankingDTO } from '../../dtos/IRankingDTO'
 import { ISearchDTO } from '../../dtos/ISearchDTO'
+import { IShapeDTO } from '../../dtos/IShapeDTO'
 import { rankingFilter } from '../../utils/rankingFilter'
 import { getStateAcronym } from '../../utils/states'
 import { IReserveInvasionRepository } from '../IReserveInvasionRepository'
 
 class ReserveInvasionRepository implements IReserveInvasionRepository {
+  async getShape(filters: IFiltersDTO): Promise<IShapeDTO[]> {
+    const match = this.getMatchProperty(filters)
+    const invasions: IShapeDTO[] = await ReserveInvasion.aggregate([
+      { $match: match },
+      {
+        $project: {
+          _id: 0,
+          type: '$type',
+          properties: {
+            company: '$properties.NOME',
+            process: '$properties.PROCESSO',
+            area: '$properties.AREA_HA',
+            year: '$properties.ANO',
+            state: '$properties.UF',
+            miningProcess: '$properties.FASE',
+            territory: '$properties.TI_NOME',
+            reservePhase: '$properties.TI_FASE',
+            reserveEthnicity: '$properties.TI_ETNIA',
+            type: 'indigenousLand',
+            substance: '$properties.SUBS',
+          },
+          geometry: '$geometry',
+        },
+      },
+    ])
+    return invasions
+  }
+
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
-    const match = await this.getMatchProperty(filters)
+    const match = this.getMatchProperty(filters)
 
     const invasions = await ReserveInvasion.aggregate([
       { $match: match },
@@ -43,6 +72,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           _id: 0,
         },
       },
+      { $sort: { year: -1, process: 1 } },
     ])
 
     return invasions
@@ -77,7 +107,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
     const propertie = rankingFilter[territoryType]
-    const match = await this.getMatchProperty(filters)
+    const match = this.getMatchProperty(filters)
     const territories = await ReserveInvasion.aggregate([
       { $match: match },
       {
@@ -101,7 +131,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     return territories
   }
 
-  private async getMatchProperty(filters: IFiltersDTO) {
+  private getMatchProperty(filters: IFiltersDTO) {
     const match: any = {}
 
     if (filters.reserve && filters.reserve.length > 0) {

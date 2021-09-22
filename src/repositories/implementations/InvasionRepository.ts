@@ -9,7 +9,7 @@ import { IInvasionRepository } from '../IInvasionRepository'
 
 class InvasionRepository implements IInvasionRepository {
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
-    const match = await this.getMatchProperty(filters)
+    const match = this.getMatchProperty(filters)
 
     const invasions = await Invasion.aggregate([
       { $match: match },
@@ -39,6 +39,7 @@ class InvasionRepository implements IInvasionRepository {
           _id: 0,
         },
       },
+      { $sort: { year: -1, process: 1 } },
     ])
 
     return invasions
@@ -72,7 +73,7 @@ class InvasionRepository implements IInvasionRepository {
     filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
     const propertie = rankingFilter[territoryType]
-    const match = await this.getMatchProperty(filters)
+    const match = this.getMatchProperty(filters)
     const territories = await Invasion.aggregate([
       { $match: match },
       {
@@ -95,7 +96,7 @@ class InvasionRepository implements IInvasionRepository {
     return territories
   }
 
-  private async getMatchProperty(filters: IFiltersDTO) {
+  private getMatchProperty(filters: IFiltersDTO) {
     const match: any = {}
 
     if (filters.unity && filters.unity.length > 0) {
