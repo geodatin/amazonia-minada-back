@@ -1,9 +1,11 @@
 import { inject, injectable } from 'tsyringe'
 
 import { IFiltersDTO } from '../../dtos/IFiltersDTO'
+import { IInvasionDTO } from '../../dtos/IInvasionDTO'
 import { IStatisticsDTO } from '../../dtos/IStatisticsDTO'
 import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
+import { groupInvasions } from '../../utils/group'
 
 @injectable()
 class GetStatisticsService {
@@ -29,9 +31,13 @@ class GetStatisticsService {
       },
     }
 
+    let reserveInvasions: IInvasionDTO[] = []
+    let invasions: IInvasionDTO[] = []
+
     if ((!filters.reserve && !filters.unity) || filters.reserve) {
-      const reserveInvasions =
-        await this.reserveInvasionRepository.listInvasions(filters)
+      reserveInvasions = await this.reserveInvasionRepository.listInvasions(
+        filters
+      )
       statistics.requirementsIncidence.reserve = reserveInvasions.length
 
       let sumArea = 0.0
@@ -40,7 +46,7 @@ class GetStatisticsService {
     }
 
     if ((!filters.reserve && !filters.unity) || filters.unity) {
-      const invasions = await this.invasionRepository.listInvasions(filters)
+      invasions = await this.invasionRepository.listInvasions(filters)
       statistics.requirementsIncidence.unity = invasions.length
 
       let sumArea = 0.0
@@ -48,12 +54,13 @@ class GetStatisticsService {
       statistics.requiredArea.unity = parseFloat(sumArea.toFixed(2))
     }
 
-    statistics.requirementsIncidence.total =
-      statistics.requirementsIncidence.reserve +
-      statistics.requirementsIncidence.unity
+    const groupedInvasions = groupInvasions(reserveInvasions, invasions)
 
-    statistics.requiredArea.total =
-      statistics.requiredArea.reserve + statistics.requiredArea.unity
+    statistics.requirementsIncidence.total = groupedInvasions.length
+
+    let sumArea = 0.0
+    groupedInvasions.forEach((invasion) => (sumArea += invasion.area || 0))
+    statistics.requiredArea.total = parseFloat(sumArea.toFixed(2))
 
     return statistics
   }
