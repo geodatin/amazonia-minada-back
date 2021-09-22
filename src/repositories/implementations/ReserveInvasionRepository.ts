@@ -11,27 +11,6 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
     const match = await this.getMatchProperty(filters)
 
-    if (filters.reservePhase && filters.reservePhase.length > 0) {
-      match['properties.TI_FASE'] = {
-        $in: filters.reservePhase,
-      }
-    }
-
-    if (filters.reserveEthnicity && filters.reserveEthnicity.length > 0) {
-      const ethnicitiesRegex = filters.reserveEthnicity.map(
-        (ethnicity) => new RegExp(`.*${ethnicity}.*`, 'i')
-      )
-      match['properties.TI_ETNIA'] = {
-        $in: ethnicitiesRegex,
-      }
-    }
-
-    if (filters.requirementPhase && filters.requirementPhase.length > 0) {
-      match['properties.FASE'] = {
-        $in: filters.requirementPhase,
-      }
-    }
-
     const invasions = await ReserveInvasion.aggregate([
       { $match: match },
       {
@@ -155,6 +134,27 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     if (filters.substance && filters.substance.length > 0) {
       match['properties.SUBS'] = {
         $in: filters.substance,
+      }
+    }
+
+    if (filters.reservePhase && filters.reservePhase.length > 0) {
+      match['properties.TI_FASE'] = {
+        $in: filters.reservePhase,
+      }
+    }
+
+    if (filters.reserveEthnicity && filters.reserveEthnicity.length > 0) {
+      const ethnicitiesRegex = filters.reserveEthnicity.map(
+        (ethnicity) => new RegExp(`.*${ethnicity}.*`, 'i')
+      )
+      match['properties.TI_ETNIA'] = {
+        $in: ethnicitiesRegex,
+      }
+    }
+
+    if (filters.requirementPhase && filters.requirementPhase.length > 0) {
+      match['properties.FASE'] = {
+        $in: filters.requirementPhase,
       }
     }
 
