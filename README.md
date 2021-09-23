@@ -172,6 +172,114 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       ```
       **Descrição:** Erro interno do servidor.
 
+**Shape dos Requerimentos**
+----
+Método que retorna os shapes dos requerimentos minerários em Unidades de Conservação e em Terras Indígenas de acordo com os filtros.
+
+* **URL:**
+  
+      /api/invasions/shape
+
+* **Método:**
+
+  `POST`
+
+* **Parâmetros na URL:**
+
+  Nenhum
+
+* **Parâmetros no Body:**
+
+  ```javascript
+  {
+    "filters": {
+      "state": [], //Array de strings com o nome dos estados
+      "company": [], //Array de strings com o nome das empresas
+      "reserve": [], //Array de strings com o nome das Terras Indígenas
+      "unity": [], //Array de strings com o nome das Unidades de Conservação
+      "year": [], //Array de inteiros com os anos
+      "substance": [], //Array de strings com o nome das substâncias
+      "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
+      "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
+      "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
+    },
+    "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
+    "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
+  }
+  ```
+  **Descrição:** Todos os filtros são parâmetros opcionais e podem ser combinados.
+
+* **Exemplo:**
+
+  **Body:**
+    ```javascript
+    {
+      "filters": {
+        "company": ["Willian Araújo dos Santos"],
+        "state": ["Amazonas"],
+        "year": [2021],
+        "substance": ["MINÉRIO DE ESTANHO"]
+      },
+      "enableReserve": false
+    }
+    ```
+
+* **Resposta:**
+
+    * **Código:** <span style="color:green">**200**</span> <br/>
+      **Conteúdo:**
+
+      ```javascript
+        {
+          "reserve": {
+            "type": "FeatureCollection",
+            "features": []
+          },
+          "unity": {
+            "type": "FeatureCollection",
+            "features": [
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Polygon",
+                  "coordinates": [
+                    [
+                      [
+                        -65.12691752799992,
+                        -0.32426850299992793
+                      ],
+                      ...
+                    ]
+                  ]
+                },
+                "properties": {
+                  "company": "Willian Araújo dos Santos",
+                  "process": "880084/2021",
+                  "area": 176.54,
+                  "year": 2021,
+                  "state": "AM",
+                  "miningProcess": "REQUERIMENTO DE PESQUISA",
+                  "territory": "PARQUE NACIONAL DO PICO DA NEBLINA",
+                  "type": "protectedArea",
+                  "substance": "MINÉRIO DE ESTANHO"
+                }
+              },
+              ...
+            ]
+          }
+        }
+      ```
+      **Descrição:** Retorna um objeto que contém os requerimentos em terras indígenas (reserve) e os requerimentos em unidades de conservação (unity) como FeatureCollections.
+      
+    * **Código:** <span style="color:red">**500**</span> <br />
+      **Conteúdo:**
+      ```javascript
+      {
+        "message": "Internal Server Error"
+      }
+      ```
+      **Descrição:** Erro interno do servidor.
+
 **Estatísticas**
 ----
 Método que retorna as estatísticas gerais (número de requerimentos e área) de Terras Indígenas e Unidades de Conservação de acordo com os filtros.

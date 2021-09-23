@@ -2,6 +2,7 @@ import { IFiltersDTO } from '../dtos/IFiltersDTO'
 import { IInvasionDTO } from '../dtos/IInvasionDTO'
 import { IRequestRankingDTO, IResponseRankingDTO } from '../dtos/IRankingDTO'
 import { ISearchDTO } from '../dtos/ISearchDTO'
+import { IShapeDTO } from '../dtos/IShapeDTO'
 
 interface IInvasionRepository {
   searchCompany(searchTerm: string): Promise<ISearchDTO[]>
@@ -11,6 +12,7 @@ interface IInvasionRepository {
     dataType,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]>
   getRequirementsPhase(): Promise<String[]>
+  getShape(filters: IFiltersDTO): Promise<IShapeDTO[]>
 }
 
 export { IInvasionRepository }

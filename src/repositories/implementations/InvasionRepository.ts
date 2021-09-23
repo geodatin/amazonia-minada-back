@@ -3,11 +3,35 @@ import { IFiltersDTO } from '../../dtos/IFiltersDTO'
 import { IInvasionDTO } from '../../dtos/IInvasionDTO'
 import { IRequestRankingDTO, IResponseRankingDTO } from '../../dtos/IRankingDTO'
 import { ISearchDTO } from '../../dtos/ISearchDTO'
+import { IShapeDTO } from '../../dtos/IShapeDTO'
 import { rankingFilter } from '../../utils/rankingFilter'
 import { getStateAcronym } from '../../utils/states'
 import { IInvasionRepository } from '../IInvasionRepository'
 
 class InvasionRepository implements IInvasionRepository {
+  async getShape(filters: IFiltersDTO): Promise<IShapeDTO[]> {
+    const match = this.getMatchProperty(filters)
+    const invasions: IShapeDTO[] = await Invasion.aggregate([
+      { $match: match },
+      {
+        $project: {
+          _id: 0,
+          company: '$properties.NOME',
+          process: '$properties.PROCESSO',
+          area: '$properties.AREA_HA',
+          year: '$properties.ANO',
+          state: '$properties.UF',
+          miningProcess: '$properties.FASE',
+          territory: '$properties.UC_NOME',
+          type: 'protectedArea',
+          substance: '$properties.SUBS',
+          geometry: '$geometry',
+        },
+      },
+    ])
+    return invasions
+  }
+
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
     const match = this.getMatchProperty(filters)
 
