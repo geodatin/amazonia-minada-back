@@ -3,7 +3,7 @@ interface IFiltersDTO {
   reserve?: string[]
   unity?: string[]
   company?: string[]
-  year?: string[]
+  year?: number[]
   substance?: string[]
   requirementPhase?: string[]
   reservePhase?: string[]

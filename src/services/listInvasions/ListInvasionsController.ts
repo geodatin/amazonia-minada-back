@@ -1,14 +1,24 @@
 import { Request, Response } from 'express'
 import json2csv from 'json2csv'
 import { container } from 'tsyringe'
+import * as yup from 'yup'
 
 import { paginate } from '../../utils/pagination'
+import { filterSchema } from '../../yup/schemas/filterSchema'
 import { ListInvasionsService } from './ListInvasionsService'
 
 class ListInvasionsController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { filters, enableUnity, enableReserve } = request.body
     const { page, pageSize, output } = request.query
+
+    const schema = yup.object().shape({
+      filters: filterSchema,
+      enableUnity: yup.boolean(),
+      enableReserve: yup.boolean(),
+    })
+
+    await schema.validate(request.body, { abortEarly: false })
 
     const listInvasionsService = container.resolve(ListInvasionsService)
 
