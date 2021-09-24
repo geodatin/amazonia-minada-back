@@ -4,16 +4,27 @@ import { IReserveRepository } from '../IReserveRepository'
 
 class ReserveRepository implements IReserveRepository {
   async searchByName(searchTerm: string): Promise<ISearchDTO[]> {
-    const reserves = await Reserve.find(
+    const reserves = await Reserve.aggregate([
       {
-        'properties.terrai_nom': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+        $match: {
+          'properties.terrai_nom': {
+            $regex: new RegExp(`^${searchTerm}`, 'i'),
+          },
+        },
       },
       {
-        type: 'reserve',
-        value: '$properties.terrai_nom',
-        _id: 0,
-      }
-    )
+        $group: {
+          _id: '$properties.terrai_nom',
+        },
+      },
+      {
+        $project: {
+          type: 'reserve',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+    ])
     return reserves
   }
 
