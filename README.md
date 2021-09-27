@@ -380,21 +380,6 @@ Método que retorna as opções de fase do processo de homologação de terras i
 
   Nenhum
 
-* **Exemplo:**
-
-  **Rota:**
-      /api/reserves/phase
-
-  **Body:**
-    ```javascript
-    {
-      "filters": {
-        "state": ["Amazonas"],
-        "reserve": ["Andirá-Marau"]
-      }
-    }
-    ```
-
 * **Resposta:**
 
     * **Código:** <span style="color:green">**200**</span> <br/>
@@ -561,7 +546,7 @@ Método que retorna o ranking de acordo com a propiedade e o tipo de dado especi
           "dataType": "requiredArea"
         }
       ```
-      **Descrição:** Retorna um array de series que contém os valores de cada tipo de dado, um array com as respectivas posições e um com os nomes dos territórios.
+      **Descrição:** Retorna um array de series que contém os valores de cada tipo de dado, um array com as respectivas posições e um com os valores da propriedade escolhida.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
