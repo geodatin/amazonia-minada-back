@@ -1,22 +1,22 @@
 import { Request, Response } from 'express'
 import { container } from 'tsyringe'
 
-import { InvasionFrequencyService } from './InvasionRankingService'
+import { InvasionRankingService } from './InvasionRankingService'
 
-class InvasionFrequencyController {
+class InvasionRankingController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const { territoryType, dataType } = request.params
+    const { propertyType, dataType } = request.params
     const { filters } = request.body
     const { page } = request.query
-    const invasionFrequencyService = container.resolve(InvasionFrequencyService)
-    const rankingData = await invasionFrequencyService.execute({
-      territoryType,
+    const invasionRankingService = container.resolve(InvasionRankingService)
+    const rankingData = await invasionRankingService.execute({
+      propertyType,
       dataType,
-      page: Number(page),
+      page: Number(page) || 1,
       filters,
     })
     return response.status(200).json(rankingData)
   }
 }
 
-export { InvasionFrequencyController }
+export { InvasionRankingController }

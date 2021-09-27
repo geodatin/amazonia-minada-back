@@ -475,11 +475,11 @@ Método que retorna as opções de fase do requerimento de mineração.
 
 **Ranking de frequência e de área**
 ----
-Método que retorna o ranking de acordo com o território e o tipo de dado especificado
+Método que retorna o ranking de acordo com a propiedade e o tipo de dado especificado
 
 * **URL:**
   
-      /api/invasions/ranking/:territoryType/:dataType
+      /api/invasions/ranking/:propertyType/:dataType
 
 * **Método:**
 
@@ -487,9 +487,9 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
 
 * **Parâmetros na URL:**
 
-  - territoryType:[string] - Tipo de território a ser utilizado na construção do ranking('company', 'state', 'unity', 'reserve').
+  - propertyType:[string] - Tipo de propriedade a ser utilizada na construção do ranking ('company', 'state', 'unity', 'reserve', 'ethnicity').
   - dataType:[string] - Tipo de dado a ser retornado, 'requirementsIncidence' para a frequencia de requerimentos em território e 'requiredArea' para área total dos requerimentos por território.
-  - page?:[number] - Número da página de registros a ser retornada, retorna todos os registros caso um número não seja informado.
+  - page?:[number] - Número da página de registros a ser retornada, retorna a primeira página caso um número não seja informado.
 
 * **Parâmetros no Body:**
 
@@ -502,6 +502,9 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
       "unity": [], //Array de strings com o nome das Unidades de Conservação
       "year": [], //Array de inteiros com os anos
       "substance": [], //Array de strings com o nome das substâncias
+      "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
+      "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
+      "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
     }
   }
   ```
@@ -509,7 +512,7 @@ Método que retorna o ranking de acordo com o território e o tipo de dado espec
 * **Exemplo:**
 
   **Rota:**
-      /api/invasions/ranking/company/value?page=1
+      /api/invasions/ranking/company/requiredArea?page=1
 
 * **Resposta:**
 

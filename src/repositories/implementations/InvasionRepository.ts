@@ -92,17 +92,17 @@ class InvasionRepository implements IInvasionRepository {
   }
 
   async invasionRanking({
-    territoryType,
+    propertyType,
     dataType,
     filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
-    const propertie = rankingFilter[territoryType]
+    const property = rankingFilter[propertyType]
     const match = this.getMatchProperty(filters)
     const territories = await Invasion.aggregate([
       { $match: match },
       {
         $group: {
-          _id: propertie,
+          _id: property,
           count: {
             $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
           },

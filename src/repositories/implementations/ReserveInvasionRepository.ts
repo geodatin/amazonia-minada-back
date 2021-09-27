@@ -98,18 +98,67 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     return companies
   }
 
+  async ethnicityRanking(
+    dataType: string,
+    filters: IFiltersDTO
+  ): Promise<IResponseRankingDTO[]> {
+    const match = this.getMatchProperty(filters)
+    const ethnicities = await ReserveInvasion.aggregate([
+      { $match: match },
+      {
+        $group: {
+          _id: '$properties.PROCESSO',
+          area: { $sum: '$properties.AREA_HA' },
+          ethnicity: { $first: '$properties.TI_ETNIA' },
+        },
+      },
+      {
+        $project: {
+          ethnicity: {
+            $split: ['$ethnicity', ', '],
+          },
+          area: 1,
+        },
+      },
+      { $unwind: '$ethnicity' },
+      {
+        $project: {
+          ethnicity: { $trim: { input: '$ethnicity' } },
+          area: 1,
+        },
+      },
+      {
+        $group: {
+          _id: '$ethnicity',
+          count: {
+            $sum: dataType === 'requiredArea' ? '$area' : 1,
+          },
+        },
+      },
+      { $sort: { count: -1 } },
+      {
+        $project: {
+          x: '$_id',
+          y: '$count',
+          _id: 0,
+        },
+      },
+    ])
+    return ethnicities
+  }
+
   async reserveInvasionRanking({
-    territoryType,
+    propertyType,
     dataType,
     filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
-    const propertie = rankingFilter[territoryType]
+    const property = rankingFilter[propertyType]
     const match = this.getMatchProperty(filters)
     const territories = await ReserveInvasion.aggregate([
       { $match: match },
       {
         $group: {
-          _id: propertie,
+          _id: property,
           count: {
             $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
           },

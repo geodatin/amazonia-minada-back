@@ -8,9 +8,14 @@ interface IReserveInvasionRepository {
   searchCompany(searchTerm: string): Promise<ISearchDTO[]>
   listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]>
   reserveInvasionRanking({
-    territoryType,
+    propertyType,
     dataType,
+    filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]>
+  ethnicityRanking(
+    dataType: string,
+    filters: IFiltersDTO
+  ): Promise<IResponseRankingDTO[]>
   getRequirementsPhase(): Promise<String[]>
   getShape(filters: IFiltersDTO): Promise<IShapeDTO[]>
 }

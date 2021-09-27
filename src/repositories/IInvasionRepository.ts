@@ -8,7 +8,7 @@ interface IInvasionRepository {
   searchCompany(searchTerm: string): Promise<ISearchDTO[]>
   listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]>
   invasionRanking({
-    territoryType,
+    propertyType,
     dataType,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]>
   getRequirementsPhase(): Promise<String[]>

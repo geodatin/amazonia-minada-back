@@ -6,7 +6,7 @@ interface IResponseRankingDTO {
 }
 
 interface IRequestRankingDTO {
-  territoryType: string
+  propertyType: string
   page: number
   dataType: string
   filters: IFiltersDTO

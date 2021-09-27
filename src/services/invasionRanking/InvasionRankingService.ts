@@ -7,7 +7,7 @@ import { paginate } from '../../utils/pagination'
 import { getStateFromAcronym } from '../../utils/states'
 
 @injectable()
-class InvasionFrequencyService {
+class InvasionRankingService {
   constructor(
     @inject('ReserveInvasionRepository')
     private reserveInvasionRepository: IReserveInvasionRepository,
@@ -15,64 +15,55 @@ class InvasionFrequencyService {
     private invasionRepository: IInvasionRepository
   ) {}
 
-  async execute({
-    territoryType,
-    page,
-    dataType,
-    filters,
-  }: IRequestRankingDTO) {
-    if (territoryType === 'state' || territoryType === 'company') {
+  async execute({ propertyType, page, dataType, filters }: IRequestRankingDTO) {
+    if (propertyType === 'state' || propertyType === 'company') {
       const reserveResults =
         await this.reserveInvasionRepository.reserveInvasionRanking({
-          territoryType,
+          propertyType,
           page,
           dataType,
           filters,
         })
       const invasionResults = await this.invasionRepository.invasionRanking({
-        territoryType,
+        propertyType,
         page,
         dataType,
         filters,
       })
-      return await this.formatDoubleRanking(
+      return this.formatDoubleRanking(
         reserveResults,
         invasionResults,
         dataType,
-        territoryType,
+        propertyType,
         page
       )
-    } else if (territoryType === 'unity') {
+    } else if (propertyType === 'unity') {
       const results = await this.invasionRepository.invasionRanking({
-        territoryType,
+        propertyType,
         page,
         dataType,
         filters,
       })
-      return await this.formatSingleRanking(
-        results,
-        page,
-        dataType,
-        'protectedArea'
-      )
-    } else if (territoryType === 'reserve') {
+      return this.formatSingleRanking(results, page, dataType, 'protectedArea')
+    } else if (propertyType === 'reserve') {
       const results =
         await this.reserveInvasionRepository.reserveInvasionRanking({
-          territoryType,
+          propertyType,
           page,
           dataType,
           filters,
         })
-      return await this.formatSingleRanking(
-        results,
-        page,
+      return this.formatSingleRanking(results, page, dataType, 'indigenousLand')
+    } else if (propertyType === 'ethnicity') {
+      const results = await this.reserveInvasionRepository.ethnicityRanking(
         dataType,
-        'indigenousLand'
+        filters
       )
+      return this.formatSingleRanking(results, page, dataType, 'indigenousLand')
     }
   }
 
-  async formatSingleRanking(
+  formatSingleRanking(
     results: IResponseRankingDTO[],
     page = 1,
     dataType: string,
@@ -95,11 +86,11 @@ class InvasionFrequencyService {
     }
   }
 
-  async formatDoubleRanking(
+  formatDoubleRanking(
     invasionResults: IResponseRankingDTO[],
     reserveResults: IResponseRankingDTO[],
     dataType: string,
-    territoryType: string,
+    propertyType: string,
     page = 1
   ) {
     const x: string[] = []
@@ -123,7 +114,7 @@ class InvasionFrequencyService {
         return 0
       })
       .forEach((element, i) => {
-        if (territoryType === 'state') {
+        if (propertyType === 'state') {
           x.push(getStateFromAcronym(element.name))
         } else {
           x.push(element.name)
@@ -151,4 +142,4 @@ class InvasionFrequencyService {
   }
 }
 
-export { InvasionFrequencyService }
+export { InvasionRankingService }
