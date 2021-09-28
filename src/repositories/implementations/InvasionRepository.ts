@@ -101,6 +101,11 @@ class InvasionRepository implements IInvasionRepository {
     const territories = await Invasion.aggregate([
       { $match: match },
       {
+        $match: {
+          'properties.AREA_HA': { $ne: NaN },
+        },
+      },
+      {
         $group: {
           _id: property,
           count: {

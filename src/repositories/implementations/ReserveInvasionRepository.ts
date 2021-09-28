@@ -157,6 +157,11 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     const territories = await ReserveInvasion.aggregate([
       { $match: match },
       {
+        $match: {
+          'properties.AREA_HA': { $ne: NaN },
+        },
+      },
+      {
         $group: {
           _id: property,
           count: {
