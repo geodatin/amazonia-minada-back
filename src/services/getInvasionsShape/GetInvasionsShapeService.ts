@@ -25,14 +25,16 @@ class GetInvasionsShapeService {
     let reserveInvasions: IShapeDTO[] = []
     let invasions: IShapeDTO[] = []
     if (
-      ((!filters.reserve && !filters.unity) || filters.reserve) &&
+      (!(filters.unity && filters.unity.length > 0) ||
+        (filters.reserve && filters.reserve.length > 0)) &&
       enableReserve
     ) {
       reserveInvasions = await this.reserveInvasionRepository.getShape(filters)
     }
 
     if (
-      ((!filters.reserve && !filters.unity) || filters.unity) &&
+      (!(filters.reserve && filters.reserve.length > 0) ||
+        (filters.unity && filters.unity.length > 0)) &&
       enableUnity
     ) {
       invasions = await this.invasionRepository.getShape(filters)

@@ -34,7 +34,10 @@ class GetStatisticsService {
     let reserveInvasions: IInvasionDTO[] = []
     let invasions: IInvasionDTO[] = []
 
-    if ((!filters.reserve && !filters.unity) || filters.reserve) {
+    if (
+      !(filters.unity && filters.unity.length > 0) ||
+      (filters.reserve && filters.reserve.length > 0)
+    ) {
       reserveInvasions = await this.reserveInvasionRepository.listInvasions(
         filters
       )
@@ -45,7 +48,10 @@ class GetStatisticsService {
       statistics.requiredArea.reserve = parseFloat(sumArea.toFixed(2))
     }
 
-    if ((!filters.reserve && !filters.unity) || filters.unity) {
+    if (
+      !(filters.reserve && filters.reserve.length > 0) ||
+      (filters.unity && filters.unity.length > 0)
+    ) {
       invasions = await this.invasionRepository.listInvasions(filters)
       statistics.requirementsIncidence.unity = invasions.length
 
