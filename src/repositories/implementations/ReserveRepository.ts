@@ -24,6 +24,7 @@ class ReserveRepository implements IReserveRepository {
           _id: 0,
         },
       },
+      { $sort: { value: 1 } },
     ])
     return reserves
   }
