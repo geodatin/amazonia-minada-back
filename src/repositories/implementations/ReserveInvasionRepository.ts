@@ -103,6 +103,13 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     filters: IFiltersDTO
   ): Promise<IResponseRankingDTO[]> {
     const match = this.getMatchProperty(filters)
+
+    if (dataType === 'requiredArea') {
+      match['properties.AREA_HA'] = {
+        $ne: NaN,
+      }
+    }
+
     const ethnicities = await ReserveInvasion.aggregate([
       { $match: match },
       {
@@ -154,13 +161,15 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
     const property = rankingFilter[propertyType]
     const match = this.getMatchProperty(filters)
+
+    if (dataType === 'requiredArea') {
+      match['properties.AREA_HA'] = {
+        $ne: NaN,
+      }
+    }
+
     const territories = await ReserveInvasion.aggregate([
       { $match: match },
-      {
-        $match: {
-          'properties.AREA_HA': { $ne: NaN },
-        },
-      },
       {
         $group: {
           _id: property,
