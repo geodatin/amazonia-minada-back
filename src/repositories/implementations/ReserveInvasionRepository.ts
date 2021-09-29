@@ -34,6 +34,29 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     return invasions
   }
 
+  async searchSubstance(searchTerm: string): Promise<ISearchDTO[]> {
+    const substances = await ReserveInvasion.aggregate([
+      {
+        $match: {
+          'properties.SUBS': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+        },
+      },
+      {
+        $group: {
+          _id: '$properties.SUBS',
+        },
+      },
+      {
+        $project: {
+          type: 'substance',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+    ])
+    return substances
+  }
+
   async listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]> {
     const match = this.getMatchProperty(filters)
 

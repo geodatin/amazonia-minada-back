@@ -6,6 +6,7 @@ import { IShapeDTO } from '../dtos/IShapeDTO'
 
 interface IReserveInvasionRepository {
   searchCompany(searchTerm: string): Promise<ISearchDTO[]>
+  searchSubstance(searchTerm: string): Promise<ISearchDTO[]>
   listInvasions(filters: IFiltersDTO): Promise<IInvasionDTO[]>
   reserveInvasionRanking({
     propertyType,

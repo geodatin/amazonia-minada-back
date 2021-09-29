@@ -38,23 +38,20 @@ class SearchService {
       searchTerm
     )
 
-    const companiesMap = new Map<String, ISearchDTO>()
-    reserveCompanies.forEach((company) =>
-      companiesMap.set(company.value, company)
-    )
-    unityCompanies.forEach((company) =>
-      companiesMap.set(company.value, company)
-    )
-    const companies = Array.from(companiesMap.values()).sort(
-      (company1, company2) =>
-        company1.value.toLowerCase() > company2.value.toLowerCase() ? 1 : -1
-    )
+    const companies = this.groupResults(reserveCompanies, unityCompanies)
 
     const unities = await this.unityRepository.searchByName(searchTerm)
 
     const reserves = await this.reserveRepository.searchByName(searchTerm)
 
-    const substances = await this.licenseRepository.searchSubstance(searchTerm)
+    const reserveSubstances =
+      await this.reserveInvasionRepository.searchSubstance(searchTerm)
+
+    const unitySubstances = await this.invasionRepository.searchSubstance(
+      searchTerm
+    )
+
+    const substances = this.groupResults(reserveSubstances, unitySubstances)
 
     const ethnicities = await this.reserveRepository.searchEthnicity(searchTerm)
 
@@ -64,6 +61,27 @@ class SearchService {
       reserves,
       substances,
       ethnicities
+    )
+
+    return results
+  }
+
+  private groupResults(
+    reserveResults: ISearchDTO[],
+    unityResults: ISearchDTO[]
+  ): ISearchDTO[] {
+    const resultsMap = new Map<string, ISearchDTO>()
+
+    reserveResults.forEach((result) => {
+      resultsMap.set(result.value, result)
+    })
+
+    unityResults.forEach((result) => {
+      resultsMap.set(result.value, result)
+    })
+
+    const results = Array.from(resultsMap.values()).sort((a, b) =>
+      a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1
     )
 
     return results

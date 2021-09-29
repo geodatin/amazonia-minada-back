@@ -91,6 +91,29 @@ class InvasionRepository implements IInvasionRepository {
     return companies
   }
 
+  async searchSubstance(searchTerm: string): Promise<ISearchDTO[]> {
+    const substances = await Invasion.aggregate([
+      {
+        $match: {
+          'properties.SUBS': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+        },
+      },
+      {
+        $group: {
+          _id: '$properties.SUBS',
+        },
+      },
+      {
+        $project: {
+          type: 'substance',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+    ])
+    return substances
+  }
+
   async invasionRanking({
     propertyType,
     dataType,
