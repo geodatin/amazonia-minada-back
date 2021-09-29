@@ -30,7 +30,25 @@ class SearchService {
   async execute(searchTerm: string): Promise<ISearchDTO[]> {
     const states = searchStates(searchTerm)
 
-    const companies = await this.licenseRepository.searchCompany(searchTerm)
+    const reserveCompanies = await this.reserveInvasionRepository.searchCompany(
+      searchTerm
+    )
+
+    const unityCompanies = await this.invasionRepository.searchCompany(
+      searchTerm
+    )
+
+    const companiesMap = new Map<String, ISearchDTO>()
+    reserveCompanies.forEach((company) =>
+      companiesMap.set(company.value, company)
+    )
+    unityCompanies.forEach((company) =>
+      companiesMap.set(company.value, company)
+    )
+    const companies = Array.from(companiesMap.values()).sort(
+      (company1, company2) =>
+        company1.value.toLowerCase() > company2.value.toLowerCase() ? 1 : -1
+    )
 
     const unities = await this.unityRepository.searchByName(searchTerm)
 
