@@ -11,10 +11,12 @@ interface IReserveInvasionRepository {
   reserveInvasionRanking({
     propertyType,
     dataType,
+    sortOrder,
     filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]>
   ethnicityRanking(
     dataType: string,
+    sortOrder: string,
     filters: IFiltersDTO
   ): Promise<IResponseRankingDTO[]>
   getRequirementsPhase(): Promise<String[]>

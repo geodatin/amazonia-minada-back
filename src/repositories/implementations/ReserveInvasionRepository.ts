@@ -129,6 +129,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
 
   async ethnicityRanking(
     dataType: string,
+    sortOrder: string,
     filters: IFiltersDTO
   ): Promise<IResponseRankingDTO[]> {
     const match = this.getMatchProperty(filters)
@@ -171,7 +172,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           },
         },
       },
-      { $sort: { count: -1 } },
+      { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
       {
         $project: {
           x: '$_id',
@@ -186,6 +187,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
   async reserveInvasionRanking({
     propertyType,
     dataType,
+    sortOrder,
     filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
     const property = rankingFilter[propertyType]
@@ -207,7 +209,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           },
         },
       },
-      { $sort: { count: -1 } },
+      { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
       {
         $project: {
           x: '$_id',

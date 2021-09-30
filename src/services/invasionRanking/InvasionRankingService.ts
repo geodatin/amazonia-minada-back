@@ -15,19 +15,27 @@ class InvasionRankingService {
     private invasionRepository: IInvasionRepository
   ) {}
 
-  async execute({ propertyType, page, dataType, filters }: IRequestRankingDTO) {
+  async execute({
+    propertyType,
+    page,
+    dataType,
+    sortOrder,
+    filters,
+  }: IRequestRankingDTO) {
     if (propertyType === 'state' || propertyType === 'company') {
       const reserveResults =
         await this.reserveInvasionRepository.reserveInvasionRanking({
           propertyType,
           page,
           dataType,
+          sortOrder,
           filters,
         })
       const invasionResults = await this.invasionRepository.invasionRanking({
         propertyType,
         page,
         dataType,
+        sortOrder,
         filters,
       })
       return this.formatDoubleRanking(
@@ -35,6 +43,7 @@ class InvasionRankingService {
         invasionResults,
         dataType,
         propertyType,
+        sortOrder,
         page
       )
     } else if (propertyType === 'unity') {
@@ -42,6 +51,7 @@ class InvasionRankingService {
         propertyType,
         page,
         dataType,
+        sortOrder,
         filters,
       })
       return this.formatSingleRanking(results, page, dataType, 'protectedArea')
@@ -51,12 +61,14 @@ class InvasionRankingService {
           propertyType,
           page,
           dataType,
+          sortOrder,
           filters,
         })
       return this.formatSingleRanking(results, page, dataType, 'indigenousLand')
     } else if (propertyType === 'ethnicity') {
       const results = await this.reserveInvasionRepository.ethnicityRanking(
         dataType,
+        sortOrder,
         filters
       )
       return this.formatSingleRanking(results, page, dataType, 'indigenousLand')
@@ -91,6 +103,7 @@ class InvasionRankingService {
     reserveResults: IResponseRankingDTO[],
     dataType: string,
     propertyType: string,
+    sortOrder: string,
     page = 1
   ) {
     const x: string[] = []
@@ -109,9 +122,10 @@ class InvasionRankingService {
     })
     newRanking
       .sort((a, b) => {
-        if (a.total > b.total) return -1
-        if (a.total < b.total) return 1
-        return 0
+        if (sortOrder === 'ASC') {
+          return a.total - b.total
+        }
+        return b.total - a.total
       })
       .forEach((element, i) => {
         if (propertyType === 'state') {

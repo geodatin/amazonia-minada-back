@@ -9,6 +9,7 @@ interface IRequestRankingDTO {
   propertyType: string
   page: number
   dataType: string
+  sortOrder: string
   filters: IFiltersDTO
 }
 

@@ -123,6 +123,7 @@ class InvasionRepository implements IInvasionRepository {
   async invasionRanking({
     propertyType,
     dataType,
+    sortOrder,
     filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]> {
     const property = rankingFilter[propertyType]
@@ -144,7 +145,7 @@ class InvasionRepository implements IInvasionRepository {
           },
         },
       },
-      { $sort: { count: -1 } },
+      { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
       {
         $project: {
           x: '$_id',

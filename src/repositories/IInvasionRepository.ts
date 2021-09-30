@@ -11,6 +11,8 @@ interface IInvasionRepository {
   invasionRanking({
     propertyType,
     dataType,
+    sortOrder,
+    filters,
   }: IRequestRankingDTO): Promise<IResponseRankingDTO[]>
   getRequirementsPhase(): Promise<String[]>
   getShape(filters: IFiltersDTO): Promise<IShapeDTO[]>
