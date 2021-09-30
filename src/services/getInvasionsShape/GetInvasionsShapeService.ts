@@ -4,6 +4,10 @@ import { IFiltersDTO } from '../../dtos/IFiltersDTO'
 import { IShapeDTO } from '../../dtos/IShapeDTO'
 import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
+import {
+  checkIfShouldListReserveInvasions,
+  checkIfShouldListUnityInvasions,
+} from '../../utils/listVerification'
 
 const geojson = require('geojson')
 
@@ -24,19 +28,11 @@ class GetInvasionsShapeService {
   ): Promise<any> {
     let reserveInvasions: IShapeDTO[] = []
     let invasions: IShapeDTO[] = []
-    if (
-      (!(filters.unity && filters.unity.length > 0) ||
-        (filters.reserve && filters.reserve.length > 0)) &&
-      enableReserve
-    ) {
+    if (checkIfShouldListReserveInvasions(filters) && enableReserve) {
       reserveInvasions = await this.reserveInvasionRepository.getShape(filters)
     }
 
-    if (
-      (!(filters.reserve && filters.reserve.length > 0) ||
-        (filters.unity && filters.unity.length > 0)) &&
-      enableUnity
-    ) {
+    if (checkIfShouldListUnityInvasions(filters) && enableUnity) {
       invasions = await this.invasionRepository.getShape(filters)
     }
 

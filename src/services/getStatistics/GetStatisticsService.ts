@@ -6,6 +6,10 @@ import { IStatisticsDTO } from '../../dtos/IStatisticsDTO'
 import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
 import { groupInvasions } from '../../utils/group'
+import {
+  checkIfShouldListReserveInvasions,
+  checkIfShouldListUnityInvasions,
+} from '../../utils/listVerification'
 
 @injectable()
 class GetStatisticsService {
@@ -34,10 +38,7 @@ class GetStatisticsService {
     let reserveInvasions: IInvasionDTO[] = []
     let invasions: IInvasionDTO[] = []
 
-    if (
-      !(filters.unity && filters.unity.length > 0) ||
-      (filters.reserve && filters.reserve.length > 0)
-    ) {
+    if (checkIfShouldListReserveInvasions(filters)) {
       reserveInvasions = await this.reserveInvasionRepository.listInvasions(
         filters
       )
@@ -48,10 +49,7 @@ class GetStatisticsService {
       statistics.requiredArea.reserve = parseFloat(sumArea.toFixed(2))
     }
 
-    if (
-      !(filters.reserve && filters.reserve.length > 0) ||
-      (filters.unity && filters.unity.length > 0)
-    ) {
+    if (checkIfShouldListUnityInvasions(filters)) {
       invasions = await this.invasionRepository.listInvasions(filters)
       statistics.requirementsIncidence.unity = invasions.length
 

@@ -4,6 +4,10 @@ import { IFiltersDTO } from '../../dtos/IFiltersDTO'
 import { IInvasionDTO } from '../../dtos/IInvasionDTO'
 import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
+import {
+  checkIfShouldListReserveInvasions,
+  checkIfShouldListUnityInvasions,
+} from '../../utils/listVerification'
 
 @injectable()
 class ListInvasionsService {
@@ -23,21 +27,13 @@ class ListInvasionsService {
     let reserveInvasions: IInvasionDTO[] = []
     let invasions: IInvasionDTO[] = []
 
-    if (
-      (!(filters.unity && filters.unity.length > 0) ||
-        (filters.reserve && filters.reserve.length > 0)) &&
-      enableReserve
-    ) {
+    if (checkIfShouldListReserveInvasions(filters) && enableReserve) {
       reserveInvasions = await this.reserveInvasionRepository.listInvasions(
         filters
       )
     }
 
-    if (
-      (!(filters.reserve && filters.reserve.length > 0) ||
-        (filters.unity && filters.unity.length > 0)) &&
-      enableUnity
-    ) {
+    if (checkIfShouldListUnityInvasions(filters) && enableUnity) {
       invasions = await this.invasionRepository.listInvasions(filters)
     }
 
