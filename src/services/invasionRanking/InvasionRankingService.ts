@@ -50,6 +50,22 @@ class InvasionRankingService {
         })
       }
 
+      if (reserveResults.length === 0) {
+        return this.formatSingleRanking(
+          invasionResults,
+          page,
+          dataType,
+          'protectedArea'
+        )
+      } else if (invasionResults.length === 0) {
+        return this.formatSingleRanking(
+          reserveResults,
+          page,
+          dataType,
+          'indigenousLand'
+        )
+      }
+
       return this.formatDoubleRanking(
         invasionResults,
         reserveResults,
