@@ -3,6 +3,10 @@ import { inject, injectable } from 'tsyringe'
 import { IRequestRankingDTO, IResponseRankingDTO } from '../../dtos/IRankingDTO'
 import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
+import {
+  checkIfShouldListReserveInvasions,
+  checkIfShouldListUnityInvasions,
+} from '../../utils/listVerification'
 import { paginate } from '../../utils/pagination'
 import { getStateFromAcronym } from '../../utils/states'
 
@@ -23,55 +27,87 @@ class InvasionRankingService {
     filters,
   }: IRequestRankingDTO) {
     if (propertyType === 'state' || propertyType === 'company') {
-      const reserveResults =
-        await this.reserveInvasionRepository.reserveInvasionRanking({
+      let reserveResults: IResponseRankingDTO[] = []
+      if (checkIfShouldListReserveInvasions(filters)) {
+        reserveResults =
+          await this.reserveInvasionRepository.reserveInvasionRanking({
+            propertyType,
+            page,
+            dataType,
+            sortOrder,
+            filters,
+          })
+      }
+
+      let invasionResults: IResponseRankingDTO[] = []
+      if (checkIfShouldListUnityInvasions(filters)) {
+        invasionResults = await this.invasionRepository.invasionRanking({
           propertyType,
           page,
           dataType,
           sortOrder,
           filters,
         })
-      const invasionResults = await this.invasionRepository.invasionRanking({
-        propertyType,
-        page,
-        dataType,
-        sortOrder,
-        filters,
-      })
+      }
+
       return this.formatDoubleRanking(
-        reserveResults,
         invasionResults,
+        reserveResults,
         dataType,
         propertyType,
         sortOrder,
         page
       )
     } else if (propertyType === 'unity') {
-      const results = await this.invasionRepository.invasionRanking({
-        propertyType,
-        page,
-        dataType,
-        sortOrder,
-        filters,
-      })
-      return this.formatSingleRanking(results, page, dataType, 'protectedArea')
-    } else if (propertyType === 'reserve') {
-      const results =
-        await this.reserveInvasionRepository.reserveInvasionRanking({
+      if (checkIfShouldListUnityInvasions(filters)) {
+        const results = await this.invasionRepository.invasionRanking({
           propertyType,
           page,
           dataType,
           sortOrder,
           filters,
         })
-      return this.formatSingleRanking(results, page, dataType, 'indigenousLand')
+        return this.formatSingleRanking(
+          results,
+          page,
+          dataType,
+          'protectedArea'
+        )
+      }
+      return null
+    } else if (propertyType === 'reserve') {
+      if (checkIfShouldListReserveInvasions(filters)) {
+        const results =
+          await this.reserveInvasionRepository.reserveInvasionRanking({
+            propertyType,
+            page,
+            dataType,
+            sortOrder,
+            filters,
+          })
+        return this.formatSingleRanking(
+          results,
+          page,
+          dataType,
+          'indigenousLand'
+        )
+      }
+      return null
     } else if (propertyType === 'ethnicity') {
-      const results = await this.reserveInvasionRepository.ethnicityRanking(
-        dataType,
-        sortOrder,
-        filters
-      )
-      return this.formatSingleRanking(results, page, dataType, 'indigenousLand')
+      if (checkIfShouldListReserveInvasions(filters)) {
+        const results = await this.reserveInvasionRepository.ethnicityRanking(
+          dataType,
+          sortOrder,
+          filters
+        )
+        return this.formatSingleRanking(
+          results,
+          page,
+          dataType,
+          'indigenousLand'
+        )
+      }
+      return null
     }
   }
 
