@@ -55,7 +55,7 @@ Método que permite uma busca geral para Substância, Estado, Solicitante (Empre
           }
         ]
       ```
-      **Descrição:** Retorna um array de objetos contendo o tipo de dado [substance (substância), company (solicitante), state (estado), reserve (terra indígena), unity (unidade de conservação) ou ethnicity (etnia de terras indígenas)] e o valor (nome) das opções que são iniciadas pela string determinada.
+      **Descrição:** Retorna um array de objetos contendo o tipo de dado [substance (substância), company (solicitante), state (estado), reserve (terra indígena), unity (unidade de conservação) ou reserveEthnicity (etnia de terras indígenas)] e o valor (nome) das opções que são iniciadas pela string determinada.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**

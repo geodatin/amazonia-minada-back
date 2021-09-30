@@ -44,7 +44,7 @@ class ReserveRepository implements IReserveRepository {
       { $match: { _id: { $regex: new RegExp(`^${searchTerm}`, 'i') } } },
       {
         $project: {
-          type: 'ethnicity',
+          type: 'reserveEthnicity',
           value: '$_id',
           _id: 0,
         },
