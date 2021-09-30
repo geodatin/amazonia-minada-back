@@ -38,7 +38,10 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     const substances = await ReserveInvasion.aggregate([
       {
         $match: {
-          'properties.SUBS': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+          'properties.SUBS': {
+            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $ne: 'DADO NÃO CADASTRADO',
+          },
         },
       },
       {
@@ -102,7 +105,10 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     const companies = await ReserveInvasion.aggregate([
       {
         $match: {
-          'properties.NOME': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+          'properties.NOME': {
+            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $ne: 'DADO NÃO CADASTRADO',
+          },
         },
       },
       {

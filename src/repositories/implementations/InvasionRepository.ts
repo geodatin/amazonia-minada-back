@@ -72,7 +72,10 @@ class InvasionRepository implements IInvasionRepository {
     const companies = await Invasion.aggregate([
       {
         $match: {
-          'properties.NOME': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+          'properties.NOME': {
+            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $ne: 'DADO NÃO CADASTRADO',
+          },
         },
       },
       {
@@ -95,7 +98,10 @@ class InvasionRepository implements IInvasionRepository {
     const substances = await Invasion.aggregate([
       {
         $match: {
-          'properties.SUBS': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+          'properties.SUBS': {
+            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $ne: 'DADO NÃO CADASTRADO',
+          },
         },
       },
       {

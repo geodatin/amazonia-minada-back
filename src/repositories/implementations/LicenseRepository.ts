@@ -7,7 +7,10 @@ class LicenseRepository implements ILicenseRepository {
     const companies = await License.aggregate([
       {
         $match: {
-          'properties.NOME': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+          'properties.NOME': {
+            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $ne: 'DADO NÃO CADASTRADO',
+          },
         },
       },
       {
@@ -29,7 +32,10 @@ class LicenseRepository implements ILicenseRepository {
     const substances = await License.aggregate([
       {
         $match: {
-          'properties.SUBS': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+          'properties.SUBS': {
+            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $ne: 'DADO NÃO CADASTRADO',
+          },
         },
       },
       {
