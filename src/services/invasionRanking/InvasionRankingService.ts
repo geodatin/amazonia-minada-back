@@ -55,14 +55,16 @@ class InvasionRankingService {
           invasionResults,
           page,
           dataType,
-          'protectedArea'
+          'protectedArea',
+          propertyType
         )
       } else if (invasionResults.length === 0) {
         return this.formatSingleRanking(
           reserveResults,
           page,
           dataType,
-          'indigenousLand'
+          'indigenousLand',
+          propertyType
         )
       }
 
@@ -87,7 +89,8 @@ class InvasionRankingService {
           results,
           page,
           dataType,
-          'protectedArea'
+          'protectedArea',
+          propertyType
         )
       }
       return null
@@ -105,7 +108,8 @@ class InvasionRankingService {
           results,
           page,
           dataType,
-          'indigenousLand'
+          'indigenousLand',
+          propertyType
         )
       }
       return null
@@ -120,7 +124,8 @@ class InvasionRankingService {
           results,
           page,
           dataType,
-          'indigenousLand'
+          'indigenousLand',
+          propertyType
         )
       }
       return null
@@ -131,13 +136,18 @@ class InvasionRankingService {
     results: IResponseRankingDTO[],
     page = 1,
     dataType: string,
-    id: string
+    id: string,
+    propertyType: string
   ) {
     const x: string[] = []
     const y: number[] = []
     const pos: number[] = []
     results.forEach((invasion, i) => {
-      x.push(invasion.x)
+      if (propertyType === 'state') {
+        x.push(getStateFromAcronym(invasion.x))
+      } else {
+        x.push(invasion.x)
+      }
       y.push(invasion.y)
       pos.push(i + 1)
     })
