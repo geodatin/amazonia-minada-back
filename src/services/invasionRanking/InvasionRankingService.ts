@@ -50,7 +50,9 @@ class InvasionRankingService {
         })
       }
 
-      if (reserveResults.length === 0) {
+      if (reserveResults.length === 0 && invasionResults.length === 0) {
+        return null
+      } else if (reserveResults.length === 0) {
         return this.formatSingleRanking(
           invasionResults,
           page,
@@ -85,6 +87,11 @@ class InvasionRankingService {
           sortOrder,
           filters,
         })
+
+        if (results.length === 0) {
+          return null
+        }
+
         return this.formatSingleRanking(
           results,
           page,
@@ -104,6 +111,9 @@ class InvasionRankingService {
             sortOrder,
             filters,
           })
+        if (results.length === 0) {
+          return null
+        }
         return this.formatSingleRanking(
           results,
           page,
@@ -120,6 +130,9 @@ class InvasionRankingService {
           sortOrder,
           filters
         )
+        if (results.length === 0) {
+          return null
+        }
         return this.formatSingleRanking(
           results,
           page,
