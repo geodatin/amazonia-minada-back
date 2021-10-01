@@ -549,7 +549,7 @@ Método que retorna o ranking de acordo com a propiedade e o tipo de dado especi
           "dataType": "requiredArea"
         }
       ```
-      **Descrição:** Retorna um array de series que contém os valores de cada tipo de dado, um array com as respectivas posições e um com os valores da propriedade escolhida.
+      **Descrição:** Retorna um array de series que contém os valores de cada tipo de dado, um array com as respectivas posições e um com os valores da propriedade escolhida. OBS: quando os filtros resultam em um ranking vazio para uma determinada propriedade o retorno é null.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
