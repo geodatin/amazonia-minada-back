@@ -141,6 +141,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "reserveEthnicity": "Múra",
               "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
+              "miningProcessType": "miningResearchRequest",
               "substance": "OURO"
             },
             {
@@ -154,6 +155,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "reserveEthnicity": "Múra",
               "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
+              "miningProcessType": "miningResearchRequest",
               "substance": "OURO"
             }
           ],
