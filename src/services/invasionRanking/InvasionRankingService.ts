@@ -217,11 +217,11 @@ class InvasionRankingService {
       position: paginate(pos, page, 5).values,
       series: [
         {
-          id: 'indigenousLand',
+          id: 'protectedArea',
           data: paginate(invasionY, page, 5).values,
         },
         {
-          id: 'protectedArea',
+          id: 'indigenousLand',
           data: paginate(reserveY, page, 5).values,
         },
       ],
