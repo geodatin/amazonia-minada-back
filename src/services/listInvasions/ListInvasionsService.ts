@@ -8,6 +8,7 @@ import {
   checkIfShouldListReserveInvasions,
   checkIfShouldListUnityInvasions,
 } from '../../utils/listVerification'
+import { getMiningProcessType } from '../../utils/miningProcess'
 
 @injectable()
 class ListInvasionsService {
@@ -37,7 +38,10 @@ class ListInvasionsService {
       invasions = await this.invasionRepository.listInvasions(filters)
     }
 
-    const results = invasions.concat(reserveInvasions)
+    const results = invasions.concat(reserveInvasions).map((invasion) => {
+      invasion.miningProcessType = getMiningProcessType(invasion.miningProcess)
+      return invasion
+    })
     const sortedResults = results.sort((a, b) => {
       if (b.year > a.year) {
         return 1
