@@ -4,16 +4,23 @@ import { IUnityRepository } from '../IUnityRepository'
 
 class UnityRepository implements IUnityRepository {
   async searchByName(searchTerm: string): Promise<ISearchDTO[]> {
-    const unities = await Unity.find(
+    const unities = await Unity.aggregate([
       {
-        'properties.nome': { $regex: new RegExp(`^${searchTerm}`, 'i') },
+        $match: {
+          'properties.nome': {
+            $regex: new RegExp(`.*${searchTerm}.*`, 'i'),
+          },
+        },
       },
       {
-        type: 'unity',
-        value: '$properties.nome',
-        _id: 0,
-      }
-    ).sort({ value: 1 })
+        $project: {
+          type: 'unity',
+          value: '$properties.nome',
+          _id: 0,
+        },
+      },
+      { $sort: { value: 1 } },
+    ])
     return unities
   }
 }

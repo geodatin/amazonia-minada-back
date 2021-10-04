@@ -8,7 +8,7 @@ class ReserveRepository implements IReserveRepository {
       {
         $match: {
           'properties.terrai_nom': {
-            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $regex: new RegExp(`.*${searchTerm}.*`, 'i'),
           },
         },
       },
@@ -41,7 +41,7 @@ class ReserveRepository implements IReserveRepository {
       { $unwind: '$ethnicity' },
       { $project: { ethnicity: { $trim: { input: '$ethnicity' } } } },
       { $group: { _id: '$ethnicity' } },
-      { $match: { _id: { $regex: new RegExp(`^${searchTerm}`, 'i') } } },
+      { $match: { _id: { $regex: new RegExp(`.*${searchTerm}.*`, 'i') } } },
       {
         $project: {
           type: 'reserveEthnicity',

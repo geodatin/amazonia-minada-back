@@ -8,7 +8,7 @@ class LicenseRepository implements ILicenseRepository {
       {
         $match: {
           'properties.NOME': {
-            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $regex: new RegExp(`.*${searchTerm}.*`, 'i'),
             $ne: 'DADO NÃO CADASTRADO',
           },
         },
@@ -33,7 +33,7 @@ class LicenseRepository implements ILicenseRepository {
       {
         $match: {
           'properties.SUBS': {
-            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $regex: new RegExp(`.*${searchTerm}.*`, 'i'),
             $ne: 'DADO NÃO CADASTRADO',
           },
         },

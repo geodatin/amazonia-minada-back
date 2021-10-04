@@ -73,7 +73,7 @@ class InvasionRepository implements IInvasionRepository {
       {
         $match: {
           'properties.NOME': {
-            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $regex: new RegExp(`.*${searchTerm}.*`, 'i'),
             $ne: 'DADO NÃO CADASTRADO',
           },
         },
@@ -99,7 +99,7 @@ class InvasionRepository implements IInvasionRepository {
       {
         $match: {
           'properties.SUBS': {
-            $regex: new RegExp(`^${searchTerm}`, 'i'),
+            $regex: new RegExp(`.*${searchTerm}.*`, 'i'),
             $ne: 'DADO NÃO CADASTRADO',
           },
         },
