@@ -202,8 +202,28 @@ class InvasionRepository implements IInvasionRepository {
     return match
   }
 
-  async getRequirementsPhase(): Promise<String[]> {
-    const requirementsPhase = await Invasion.distinct('properties.FASE')
+  async getRequirementsPhase(): Promise<ISearchDTO[]> {
+    const requirementsPhase = await Invasion.aggregate([
+      {
+        $match: {
+          'properties.FASE': {
+            $ne: null,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$properties.FASE',
+        },
+      },
+      {
+        $project: {
+          type: 'requirementPhase',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+    ])
     return requirementsPhase
   }
 }

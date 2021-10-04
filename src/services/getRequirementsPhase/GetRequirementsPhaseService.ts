@@ -1,7 +1,9 @@
 import { inject, injectable } from 'tsyringe'
 
+import { ISearchDTO } from '../../dtos/ISearchDTO'
 import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
+import { groupResults } from '../../utils/group'
 
 @injectable()
 class GetRequirementsPhaseService {
@@ -13,20 +15,20 @@ class GetRequirementsPhaseService {
     private invasionRepository: IInvasionRepository
   ) {}
 
-  async execute(): Promise<String[]> {
+  async execute(): Promise<ISearchDTO[]> {
     const reserveRequirementsPhase =
       await this.reserveInvasionRepository.getRequirementsPhase()
 
     const unityRequirementsPhase =
       await this.invasionRepository.getRequirementsPhase()
 
-    const requirementsPhase = new Set([
-      ...reserveRequirementsPhase,
-      ...unityRequirementsPhase,
-    ])
+    const requirementsPhase = groupResults(
+      reserveRequirementsPhase,
+      unityRequirementsPhase
+    )
 
     const requirementsPhaseArray = Array.from(requirementsPhase).filter(
-      (phase) => phase !== 'DADO NÃO CADASTRADO'
+      (phase) => phase.value !== 'DADO NÃO CADASTRADO'
     )
 
     return requirementsPhaseArray

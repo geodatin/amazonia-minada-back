@@ -282,8 +282,28 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     return match
   }
 
-  async getRequirementsPhase(): Promise<String[]> {
-    const requirementsPhase = await ReserveInvasion.distinct('properties.FASE')
+  async getRequirementsPhase(): Promise<ISearchDTO[]> {
+    const requirementsPhase = await ReserveInvasion.aggregate([
+      {
+        $match: {
+          'properties.FASE': {
+            $ne: null,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$properties.FASE',
+        },
+      },
+      {
+        $project: {
+          type: 'requirementPhase',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+    ])
     return requirementsPhase
   }
 }

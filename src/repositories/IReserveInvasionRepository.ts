@@ -19,7 +19,7 @@ interface IReserveInvasionRepository {
     sortOrder: string,
     filters: IFiltersDTO
   ): Promise<IResponseRankingDTO[]>
-  getRequirementsPhase(): Promise<String[]>
+  getRequirementsPhase(): Promise<ISearchDTO[]>
   getShape(filters: IFiltersDTO): Promise<IShapeDTO[]>
 }
 

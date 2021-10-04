@@ -6,6 +6,7 @@ import { ILicenseRepository } from '../../repositories/ILicenseRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
 import { IReserveRepository } from '../../repositories/IReserveRepository'
 import { IUnityRepository } from '../../repositories/IUnityRepository'
+import { groupResults } from '../../utils/group'
 import { searchStates } from '../../utils/states'
 
 @injectable()
@@ -40,7 +41,7 @@ class SearchService {
       searchTerm
     )
 
-    const companies = this.groupResults(reserveCompanies, unityCompanies)
+    const companies = groupResults(reserveCompanies, unityCompanies)
 
     const unities = await this.unityRepository.searchByName(searchTerm)
 
@@ -53,7 +54,7 @@ class SearchService {
       searchTerm
     )
 
-    const substances = this.groupResults(reserveSubstances, unitySubstances)
+    const substances = groupResults(reserveSubstances, unitySubstances)
 
     const ethnicities = await this.reserveRepository.searchEthnicity(searchTerm)
 
@@ -63,27 +64,6 @@ class SearchService {
       reserves,
       substances,
       ethnicities
-    )
-
-    return results
-  }
-
-  private groupResults(
-    reserveResults: ISearchDTO[],
-    unityResults: ISearchDTO[]
-  ): ISearchDTO[] {
-    const resultsMap = new Map<string, ISearchDTO>()
-
-    reserveResults.forEach((result) => {
-      resultsMap.set(result.value, result)
-    })
-
-    unityResults.forEach((result) => {
-      resultsMap.set(result.value, result)
-    })
-
-    const results = Array.from(resultsMap.values()).sort((a, b) =>
-      a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1
     )
 
     return results
