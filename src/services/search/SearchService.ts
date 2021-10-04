@@ -28,6 +28,8 @@ class SearchService {
   ) {}
 
   async execute(searchTerm: string): Promise<ISearchDTO[]> {
+    searchTerm = searchTerm.trim()
+
     const states = searchStates(searchTerm)
 
     const reserveCompanies = await this.reserveInvasionRepository.searchCompany(
