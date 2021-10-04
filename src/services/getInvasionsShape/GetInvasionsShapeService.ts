@@ -36,16 +36,6 @@ class GetInvasionsShapeService {
       invasions = await this.invasionRepository.getShape(filters)
     }
 
-    invasions = invasions.map((invasion) => {
-      invasion.geometry.coordinates = JSON.parse(invasion.geometry.coordinates)
-      return invasion
-    })
-
-    reserveInvasions = reserveInvasions.map((invasion) => {
-      invasion.geometry.coordinates = JSON.parse(invasion.geometry.coordinates)
-      return invasion
-    })
-
     const reserveInvasionsShape = geojson.parse(reserveInvasions, {
       GeoJSON: 'geometry',
     })

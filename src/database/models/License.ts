@@ -22,4 +22,4 @@ const LicenseSchema = new mongoose.Schema<ILicense>({
   geometry: {},
 })
 
-export const License = mongoose.model('License', LicenseSchema, 'License')
+export const License = mongoose.model('License', LicenseSchema)

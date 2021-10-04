@@ -25,4 +25,4 @@ const ReserveSchema = new mongoose.Schema<IReserve>({
   geometry: {},
 })
 
-export const Reserve = mongoose.model('Reserve', ReserveSchema, 'Reserve')
+export const Reserve = mongoose.model('Reserve', ReserveSchema)

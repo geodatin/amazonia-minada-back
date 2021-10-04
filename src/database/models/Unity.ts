@@ -28,4 +28,4 @@ const UnitySchema = new mongoose.Schema<IUnity>({
   geometry: {},
 })
 
-export const Unity = mongoose.model('Unity', UnitySchema, 'Unity')
+export const Unity = mongoose.model('Unity', UnitySchema)

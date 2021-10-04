@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 interface IInvasion {
   type: string
   properties: {
@@ -19,6 +20,11 @@ interface IInvasion {
     UC_BIOMA: string
   }
   geometry: {}
+  tweeted: boolean
+  created_at: Date
+  last_action: string
+  last_update_at: Date
+  changes: []
 }
 
 export { IInvasion }

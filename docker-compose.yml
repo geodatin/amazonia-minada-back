@@ -19,6 +19,7 @@ services:
     environment:
       MONGO_DB_USERNAME: ${MONGO_DB_USERNAME}
       MONGO_DB_PASSWORD: ${MONGO_DB_PASSWORD}
+      MONGO_DB_ADDRESS: ${MONGO_DB_ADDRESS}
 
   database:
     image: mongo

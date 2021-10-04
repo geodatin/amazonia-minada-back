@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 interface IReserveInvasion {
   type: string
   properties: {
@@ -21,6 +22,11 @@ interface IReserveInvasion {
     TI_MODALIDADE: string
   }
   geometry: {}
+  tweeted: boolean
+  created_at: Date
+  last_action: string
+  last_update_at: Date
+  changes: []
 }
 
 export { IReserveInvasion }

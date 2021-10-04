@@ -26,10 +26,32 @@ const ReserveInvasionSchema = new mongoose.Schema<IReserveInvasion>({
     TI_MODALIDADE: String,
   },
   geometry: {},
+  tweeted: {
+    type: Boolean,
+    default: false,
+  },
+  created_at: {
+    type: Date,
+    default: new Date(),
+  },
+  last_action: String,
+  last_update_at: {
+    type: Date,
+    default: new Date(),
+  },
+  changes: [
+    {
+      _id: false,
+      timestamp: {
+        type: Date,
+        default: new Date(),
+      },
+      changes: String,
+    },
+  ],
 })
 
 export const ReserveInvasion = mongoose.model(
   'ReserveInvasion',
-  ReserveInvasionSchema,
-  'ReserveInvasion'
+  ReserveInvasionSchema
 )
