@@ -435,18 +435,19 @@ Método que retorna as opções de fase do requerimento de mineração.
 
       ```javascript
         [
-          "APTO PARA DISPONIBILIDADE",
-          "AUTORIZAÇÃO DE PESQUISA",
-          "CONCESSÃO DE LAVRA",
-          "DIREITO DE REQUERER A LAVRA",
-          "DISPONIBILIDADE",
-          "LAVRA GARIMPEIRA",
-          "LICENCIAMENTO",
-          "REQUERIMENTO DE LAVRA",
-          "REQUERIMENTO DE LAVRA GARIMPEIRA",
-          "REQUERIMENTO DE LICENCIAMENTO",
-          "REQUERIMENTO DE PESQUISA",
-          "REQUERIMENTO DE REGISTRO DE EXTRAÇÃO"
+          {
+            "type": "requirementPhase",
+            "value": "APTO PARA DISPONIBILIDADE"
+          },
+          {
+            "type": "requirementPhase",
+            "value": "AUTORIZAÇÃO DE PESQUISA"
+          },
+          {
+            "type": "requirementPhase",
+            "value": "CONCESSÃO DE LAVRA"
+          },
+          ...
         ]
       ```
       **Descrição:** Retorna um array contendo as opções das fases dos requerimentos de mineração.
