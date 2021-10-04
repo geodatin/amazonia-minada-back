@@ -8,7 +8,7 @@ class UnityRepository implements IUnityRepository {
       {
         $match: {
           'properties.nome': {
-            $regex: new RegExp(`.*${searchTerm}.*`, 'i'),
+            $regex: new RegExp(`^${searchTerm}|.* ${searchTerm}.*`, 'i'),
           },
         },
       },
