@@ -2,7 +2,7 @@
 
 **Busca Geral**
 ----
-Método que permite uma busca geral para Substância, Estado, Solicitante (Empresa), Terras Indígenas, Unidades de Conservação ou Etnias de Terras Indígenas, retornando as opções disponíveis no Banco de Dados que são iniciadas com a string fornecida.
+Método que permite uma busca geral para Substância, Estado, Solicitante (Empresa), Terras Indígenas, Unidades de Conservação ou Etnias de Terras Indígenas, retornando as opções disponíveis no Banco de Dados que são iniciadas ou que possuem alguma palavra iniciada com a string fornecida.
 
 * **URL:**
   
