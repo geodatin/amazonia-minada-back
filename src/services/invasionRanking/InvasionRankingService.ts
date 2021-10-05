@@ -19,13 +19,11 @@ class InvasionRankingService {
     private invasionRepository: IInvasionRepository
   ) {}
 
-  async execute({
-    propertyType,
-    page,
-    dataType,
-    sortOrder,
-    filters,
-  }: IRequestRankingDTO) {
+  async execute(
+    { propertyType, page, dataType, sortOrder, filters }: IRequestRankingDTO,
+    enableUnity: boolean = true,
+    enableReserve: boolean = true
+  ) {
     if (propertyType === 'state' || propertyType === 'company') {
       let reserveResults: IResponseRankingDTO[] = []
       if (checkIfShouldListReserveInvasions(filters)) {
@@ -50,9 +48,12 @@ class InvasionRankingService {
         })
       }
 
-      if (reserveResults.length === 0 && invasionResults.length === 0) {
+      if (
+        (reserveResults.length === 0 && invasionResults.length === 0) ||
+        (!enableUnity && !enableReserve)
+      ) {
         return null
-      } else if (reserveResults.length === 0) {
+      } else if (reserveResults.length === 0 || !enableReserve) {
         return this.formatSingleRanking(
           invasionResults,
           page,
@@ -60,7 +61,7 @@ class InvasionRankingService {
           'protectedArea',
           propertyType
         )
-      } else if (invasionResults.length === 0) {
+      } else if (invasionResults.length === 0 || !enableUnity) {
         return this.formatSingleRanking(
           reserveResults,
           page,
