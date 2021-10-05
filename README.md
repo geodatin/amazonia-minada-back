@@ -389,12 +389,30 @@ Método que retorna as opções de fase do processo de homologação de terras i
 
       ```javascript
         [
-          "Declarada",
-          "Delimitada",
-          "Em Estudo",
-          "Encaminhada RI",
-          "Homologada",
-          "Regularizada"
+          {
+            "type": "reservePhase",
+            "value": "Declarada"
+          },
+          {
+            "type": "reservePhase",
+            "value": "Delimitada"
+          },
+          {
+            "type": "reservePhase",
+            "value": "Em Estudo"
+          },
+          {
+            "type": "reservePhase",
+            "value": "Encaminhada RI"
+          },
+          {
+            "type": "reservePhase",
+            "value": "Homologada"
+          },
+          {
+            "type": "reservePhase",
+            "value": "Regularizada"
+          }
         ]
       ```
       **Descrição:** Retorna um array contendo as opções das fases do processo de homologação de terras indígenas.

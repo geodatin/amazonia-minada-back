@@ -58,8 +58,24 @@ class ReserveRepository implements IReserveRepository {
     return ethnicities
   }
 
-  async getHomologationPhases(): Promise<String[]> {
-    const homologationPhases = await Reserve.distinct('properties.fase_ti')
+  async getHomologationPhases(): Promise<ISearchDTO[]> {
+    const homologationPhases = await Reserve.aggregate([
+      {
+        $group: {
+          _id: '$properties.fase_ti',
+        },
+      },
+      {
+        $project: {
+          type: 'reservePhase',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+      {
+        $sort: { value: 1 },
+      },
+    ])
     return homologationPhases
   }
 }
