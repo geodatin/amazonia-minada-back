@@ -426,6 +426,66 @@ Método que retorna as opções de fase do processo de homologação de terras i
       ```
       **Descrição:** Erro interno do servidor.
 
+**Listar Anos**
+----
+Método que retorna as opções de anos que contém requerimentos em ucs ou terras indígenas no banco de dados.
+
+* **URL:**
+  
+      /api/invasions/years
+
+* **Método:**
+
+  `GET`
+
+* **Parâmetros na URL:**
+
+  Nenhum
+
+* **Parâmetros no Body:**
+
+  Nenhum
+
+* **Resposta:**
+
+    * **Código:** <span style="color:green">**200**</span> <br/>
+      **Conteúdo:**
+
+      ```javascript
+        [
+          {
+            "type": "year",
+            "value": 2017
+          },
+          {
+            "type": "year",
+            "value": 2018
+          },
+          {
+            "type": "year",
+            "value": 2019
+          },
+          {
+            "type": "year",
+            "value": 2020
+          },
+          {
+            "type": "year",
+            "value": 2021
+          }
+        ]
+      ```
+      **Descrição:** Retorna um array contendo as opções de anos.
+      
+    * **Código:** <span style="color:red">**500**</span> <br />
+      **Conteúdo:**
+      ```javascript
+      {
+        "message": "Internal Server Error"
+      }
+      ```
+      **Descrição:** Erro interno do servidor.
+
 **Listar Fases do Requerimento de Mineração**
 ----
 Método que retorna as opções de fase do requerimento de mineração.

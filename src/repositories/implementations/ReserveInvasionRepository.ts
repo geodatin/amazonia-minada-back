@@ -222,6 +222,24 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     return territories
   }
 
+  async getYears(): Promise<ISearchDTO[]> {
+    const years = await ReserveInvasion.aggregate([
+      {
+        $group: {
+          _id: '$properties.ANO',
+        },
+      },
+      {
+        $project: {
+          type: 'year',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+    ])
+    return years
+  }
+
   private getMatchProperty(filters: IFiltersDTO) {
     const match: any = {}
 

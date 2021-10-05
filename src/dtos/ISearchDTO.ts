@@ -1,6 +1,6 @@
 interface ISearchDTO {
   type: string
-  value: string
+  value: string | number
 }
 
 export { ISearchDTO }

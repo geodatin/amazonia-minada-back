@@ -22,7 +22,7 @@ export function groupResults(
   reserveResults: ISearchDTO[],
   unityResults: ISearchDTO[]
 ): ISearchDTO[] {
-  const resultsMap = new Map<string, ISearchDTO>()
+  const resultsMap = new Map<string | number, ISearchDTO>()
 
   reserveResults.forEach((result) => {
     resultsMap.set(result.value, result)
@@ -32,9 +32,12 @@ export function groupResults(
     resultsMap.set(result.value, result)
   })
 
-  const results = Array.from(resultsMap.values()).sort((a, b) =>
-    a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1
-  )
+  const results = Array.from(resultsMap.values()).sort((a, b) => {
+    if (typeof a.value === 'string' && typeof b.value === 'string') {
+      return a.value.toLowerCase() > b.value.toLowerCase() ? 1 : -1
+    }
+    return a.value > b.value ? 1 : -1
+  })
 
   return results
 }
