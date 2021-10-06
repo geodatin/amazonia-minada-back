@@ -203,9 +203,18 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       { $match: match },
       {
         $group: {
+          _id: '$properties.PROCESSO',
+          AREA_HA: { $sum: '$properties.AREA_HA' },
+          UF: { $first: '$properties.UF' },
+          TI_NOME: { $first: '$properties.TI_NOME' },
+          NOME: { $first: '$properties.NOME' },
+        },
+      },
+      {
+        $group: {
           _id: property,
           count: {
-            $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
+            $sum: dataType === 'requiredArea' ? '$AREA_HA' : 1,
           },
         },
       },
