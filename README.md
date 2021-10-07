@@ -1,5 +1,27 @@
 # Amazonia Minada API
 
+Esse repositório contém o código fonte da API REST do Amazônia Minada, projeto do Infoamazônia que monitora os requerimentos minerários em unidades de conservação integral e em terras indígenas na Amazônia Legal brasileira. Essa API contém métodos que calculam estatísticas a respeito dos requerimentos minerários coletados pelo [bot do Amazônia Minada](https://github.com/InfoAmazonia/amazonia-minada), a partir dos dados fornecidos pela Agência Nacional de Mineração (ANM), em termos da área declarada (área total dos requerimentos) e da incidência (quantidade de requerimentos).
+
+**Como executar**
+---
+Para colocar o servidor em execução, inicialmente é necessário criar um arquivo .env com as configurações do banco de dados MongoDB do Amazônia Minada, do qual serão extraídos os dados.
+
+    $ cp .env.example .env
+
+Preencha as informações necessárias no arquivo .env. Em seguida, para rodar a aplicação em ambiente de produção utilizando o docker, execute:
+
+    $ docker-compose up -d --build
+    
+Para executar em ambiente de desenvolvimento, execute o comando para instalar as dependências:
+
+    $ yarn install
+    
+Em seguida, rode o container de desenvolvimento:
+
+    $ docker-compose -f docker-compose-dev.yml up -d --build 
+
+# Documentação da API
+
 **Busca Geral**
 ----
 Método que permite uma busca geral para Substância, Estado, Solicitante (Empresa), Terras Indígenas, Unidades de Conservação ou Etnias de Terras Indígenas, retornando as opções disponíveis no Banco de Dados que são iniciadas ou que possuem alguma palavra iniciada com a string fornecida.
@@ -69,7 +91,7 @@ Método que permite uma busca geral para Substância, Estado, Solicitante (Empre
 
 **Listar Requerimentos**
 ----
-Método que permite uma filtragem dos requerimentos minerários em Unidades de Conservação e em Terras Indígenas.
+Método que permite uma filtragem dos requerimentos minerários em Unidades de Conservação e em Terras Indígenas. Os requerimentos são agrupados pelo número do processo e aqueles que possuem o mesmo número tem seus valores de área somados.
 
 * **URL:**
   
@@ -163,7 +185,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
           "results": 20
         }
       ```
-      **Descrição:** Retorna um array de objetos contendo os dados de cada requerimento que se enquadra nos filtros definidos, o número de páginas e a quantidade de requerimentos.
+      **Descrição:** Retorna um array de objetos contendo os dados de cada requerimento que se enquadra nos filtros definidos, o número de páginas e a quantidade de requerimentos. OBS: Caso o parâmetro output seja definido, o retorno é um arquivo do tipo especificado.
       
     * **Código:** <span style="color:red">**500**</span> <br />
       **Conteúdo:**
@@ -284,7 +306,7 @@ Método que retorna os shapes dos requerimentos minerários em Unidades de Conse
 
 **Estatísticas**
 ----
-Método que retorna as estatísticas gerais (número de requerimentos e área) de Terras Indígenas e Unidades de Conservação de acordo com os filtros.
+Método que retorna as estatísticas gerais (número de requerimentos e área total requerida) de Terras Indígenas e Unidades de Conservação de acordo com os filtros. Os requerimentos são agrupados pelo número do processo e aqueles que possuem o mesmo número tem seus valores de área somados.
 
 * **URL:**
   
