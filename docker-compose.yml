@@ -1,36 +1,20 @@
-version: '2'
-
 services:
   server:
-    build: .
-    container_name: infoamazonia
+    container_name: amazonia-minada-back
+    restart: always
+    build:
+      context: .
+      args:
+        - NODE_ENV=production
+        - TZ=America/Sao_Paulo
     working_dir: /usr/app
-    command: npm run dev
-    volumes:
-      - .:/usr/app
     ports:
       - 5000:5000
-    links:
-      - database
-    depends_on:
-      - database
     env_file:
       - .env
     environment:
       MONGO_DB_USERNAME: ${MONGO_DB_USERNAME}
       MONGO_DB_PASSWORD: ${MONGO_DB_PASSWORD}
       MONGO_DB_ADDRESS: ${MONGO_DB_ADDRESS}
-
-  database:
-    image: mongo
-    container_name: mongodb
-    volumes:
-      - ./sysbkp/data:/data
-    ports:
-      - 27017:27017
-    restart: always
-    env_file:
-      - .env
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+      NODE_ENV: production
+      TZ: America/Sao_Paulo
