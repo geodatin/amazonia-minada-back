@@ -7,6 +7,7 @@ import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionR
 import { IReserveRepository } from '../../repositories/IReserveRepository'
 import { IUnityRepository } from '../../repositories/IUnityRepository'
 import { groupResults } from '../../utils/group'
+import { ignoreAccentuation } from '../../utils/regex'
 import { searchStates } from '../../utils/states'
 
 @injectable()
@@ -30,6 +31,7 @@ class SearchService {
 
   async execute(searchTerm: string): Promise<ISearchDTO[]> {
     searchTerm = searchTerm.trim()
+    searchTerm = ignoreAccentuation(searchTerm)
 
     const states = searchStates(searchTerm)
 
