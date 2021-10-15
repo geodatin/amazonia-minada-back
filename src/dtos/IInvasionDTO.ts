@@ -4,6 +4,8 @@ interface IInvasionDTO {
   area: number
   year: number
   state: string
+  use: string
+  lastEvent: string
   miningProcess: string
   miningProcessType?: string
   substance: string

@@ -164,7 +164,9 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
               "miningProcessType": "miningResearchRequest",
-              "substance": "OURO"
+              "substance": "OURO",
+              "use": "Industrial",
+              "lastEvent": "619 - REQ PESQ/PROCESSO SITUADO EM ÁREA INDÍGENA EM 29/03/2011"
             },
             {
               "company": "Falcon Metais Ltda",
@@ -178,7 +180,9 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "type": "indigenousLand",
               "miningProcess": "REQUERIMENTO DE PESQUISA",
               "miningProcessType": "miningResearchRequest",
-              "substance": "OURO"
+              "substance": "OURO",
+              "use": "Industrial",
+              "lastEvent": "157 - REQ PESQ/DESISTÊNCIA REQ PESQ HOMOLOGADA PUB EM 15/04/2021"
             }
           ],
           "pages": 10,
@@ -283,9 +287,12 @@ Método que retorna os shapes dos requerimentos minerários em Unidades de Conse
                   "year": 2021,
                   "state": "AM",
                   "miningProcess": "REQUERIMENTO DE PESQUISA",
+                  "miningProcessType": "miningResearchRequest",
                   "territory": "PARQUE NACIONAL DO PICO DA NEBLINA",
                   "type": "protectedArea",
-                  "substance": "MINÉRIO DE ESTANHO"
+                  "substance": "MINÉRIO DE ESTANHO",
+                  "use": "Industrial",
+                  "lastEvent": "157 - REQ PESQ/DESISTÊNCIA REQ PESQ HOMOLOGADA PUB EM 15/04/2021"
                 }
               },
               ...
