@@ -190,6 +190,57 @@ class InvasionRepository implements IInvasionRepository {
     return years
   }
 
+  async getRequirementsPhase(): Promise<ISearchDTO[]> {
+    const requirementsPhase = await Invasion.aggregate([
+      {
+        $match: {
+          'properties.FASE': {
+            $ne: null,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$properties.FASE',
+        },
+      },
+      {
+        $project: {
+          type: 'requirementPhase',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+    ])
+    return requirementsPhase
+  }
+
+  async getUses(): Promise<ISearchDTO[]> {
+    const uses = await Invasion.aggregate([
+      {
+        $match: {
+          'properties.USO': {
+            $ne: "DADO NÃO CADASTRADO"
+          }
+        },
+      },
+      {
+        $group: {
+          _id: '$properties.USO',
+        },
+      },
+      {
+        $project: {
+          type: 'use',
+          value: '$_id',
+          _id: 0,
+        },
+      }
+    ])
+
+    return uses
+  }
+
   private getMatchProperty(filters: IFiltersDTO) {
     const match: any = {}
 
@@ -232,32 +283,13 @@ class InvasionRepository implements IInvasionRepository {
       }
     }
 
-    return match
-  }
+    if (filters.use && filters.use.length > 0) {
+      match['properties.USO'] = {
+        $in: filters.use,
+      }
+    }
 
-  async getRequirementsPhase(): Promise<ISearchDTO[]> {
-    const requirementsPhase = await Invasion.aggregate([
-      {
-        $match: {
-          'properties.FASE': {
-            $ne: null,
-          },
-        },
-      },
-      {
-        $group: {
-          _id: '$properties.FASE',
-        },
-      },
-      {
-        $project: {
-          type: 'requirementPhase',
-          value: '$_id',
-          _id: 0,
-        },
-      },
-    ])
-    return requirementsPhase
+    return match
   }
 }
 

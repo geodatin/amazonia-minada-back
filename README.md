@@ -121,6 +121,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
       "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
       "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
       "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
+      "use": [], //Array de strings com os usos declarados dos requerimentos de mineração
     },
     "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
     "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
@@ -230,6 +231,7 @@ Método que retorna os shapes dos requerimentos minerários em Unidades de Conse
       "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
       "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
       "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
+      "use": [], //Array de strings com os usos declarados dos requerimentos de mineração
     },
     "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
     "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)
@@ -341,6 +343,7 @@ Método que retorna as estatísticas gerais (número de requerimentos e área to
       "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
       "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
       "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
+      "use": [], //Array de strings com os usos declarados dos requerimentos de mineração
     }
   }
   ```
@@ -568,6 +571,94 @@ Método que retorna as opções de fase do requerimento de mineração.
       ```
       **Descrição:** Erro interno do servidor.
 
+**Listar Usos do Requerimento de Mineração**
+----
+Método que retorna as opções de usos dos requerimentos em ucs ou terras indígenas no banco de dados.
+
+* **URL:**
+  
+      /api/invasions/uses
+
+* **Método:**
+
+  `GET`
+
+* **Parâmetros na URL:**
+
+  Nenhum
+
+* **Parâmetros no Body:**
+
+  Nenhum
+
+* **Resposta:**
+
+    * **Código:** <span style="color:green">**200**</span> <br/>
+      **Conteúdo:**
+
+      ```javascript
+        [
+          {
+            "type": "use",
+            "value": "Brita"
+          },
+          {
+            "type": "use",
+            "value": "Construção civil"
+          },
+          {
+            "type": "use",
+            "value": "Engarrafamento"
+          },
+          {
+            "type": "use",
+            "value": "Fabricação de cimento"
+          },
+          {
+            "type": "use",
+            "value": "Fabricação de ligas"
+          },
+          {
+            "type": "use",
+            "value": "Fertilizantes"
+          },
+          {
+            "type": "use",
+            "value": "Gema"
+          },
+          {
+            "type": "use",
+            "value": "Industrial"
+          },
+          {
+            "type": "use",
+            "value": "Metalurgia"
+          },
+          {
+            "type": "use",
+            "value": "Não informado"
+          },
+          {
+            "type": "use",
+            "value": "Ourivesaria"
+          },
+          {
+            "type": "use",
+            "value": "Revestimento"
+          }
+        ]
+      ```
+      **Descrição:** Retorna um array contendo as opções de usos.
+      
+    * **Código:** <span style="color:red">**500**</span> <br />
+      **Conteúdo:**
+      ```javascript
+      {
+        "message": "Internal Server Error"
+      }
+      ```
+      **Descrição:** Erro interno do servidor.
+
 **Ranking de frequência e de área**
 ----
 Método que retorna o ranking de acordo com a propiedade e o tipo de dado especificado
@@ -601,6 +692,7 @@ Método que retorna o ranking de acordo com a propiedade e o tipo de dado especi
       "reservePhase": [], //Array de strings com as fases do processo de homologação das terras indígenas
       "reserveEthnicity": [], //Array de strings com o nome das etinias de terras indígenas
       "requirementPhase": [], //Array de strings com as fases dos requerimentos de mineração
+      "use": [], //Array de strings com os usos declarados dos requerimentos de mineração
     },
     "enableUnity": true, //Boolean para ativar/desativar dados de ucs (default: true)
     "enableReserve": true, //Boolean para ativar/desativar dados de Terras Indígenas (default: true)

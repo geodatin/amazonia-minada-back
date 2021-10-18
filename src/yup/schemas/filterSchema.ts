@@ -12,6 +12,7 @@ const filterSchema = yup
     requirementPhase: yup.array().of(yup.string()),
     reservePhase: yup.array().of(yup.string()),
     reserveEthnicity: yup.array().of(yup.string()),
+    use: yup.array().of(yup.string()),
   })
   .noUnknown(true)
   .strict()

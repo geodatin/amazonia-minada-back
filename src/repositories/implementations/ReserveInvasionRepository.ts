@@ -255,6 +255,57 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     return years
   }
 
+  async getUses(): Promise<ISearchDTO[]> {
+    const uses = await ReserveInvasion.aggregate([
+      {
+        $match: {
+          'properties.USO': {
+            $ne: "DADO NÃO CADASTRADO"
+          }
+        },
+      },
+      {
+        $group: {
+          _id: '$properties.USO',
+        },
+      },
+      {
+        $project: {
+          type: 'use',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+    ])
+
+    return uses
+  }
+
+  async getRequirementsPhase(): Promise<ISearchDTO[]> {
+    const requirementsPhase = await ReserveInvasion.aggregate([
+      {
+        $match: {
+          'properties.FASE': {
+            $ne: null,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$properties.FASE',
+        },
+      },
+      {
+        $project: {
+          type: 'requirementPhase',
+          value: '$_id',
+          _id: 0,
+        },
+      },
+    ])
+    return requirementsPhase
+  }
+
   private getMatchProperty(filters: IFiltersDTO) {
     const match: any = {}
 
@@ -312,32 +363,13 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       }
     }
 
-    return match
-  }
+    if (filters.use && filters.use.length > 0) {
+      match['properties.USO'] = {
+        $in: filters.use,
+      }
+    }
 
-  async getRequirementsPhase(): Promise<ISearchDTO[]> {
-    const requirementsPhase = await ReserveInvasion.aggregate([
-      {
-        $match: {
-          'properties.FASE': {
-            $ne: null,
-          },
-        },
-      },
-      {
-        $group: {
-          _id: '$properties.FASE',
-        },
-      },
-      {
-        $project: {
-          type: 'requirementPhase',
-          value: '$_id',
-          _id: 0,
-        },
-      },
-    ])
-    return requirementsPhase
+    return match
   }
 }
 
