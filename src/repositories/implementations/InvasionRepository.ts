@@ -150,6 +150,9 @@ class InvasionRepository implements IInvasionRepository {
           UF: { $first: '$properties.UF' },
           UC_NOME: { $first: '$properties.UC_NOME' },
           NOME: { $first: '$properties.NOME' },
+          SUBS: { $first: '$properties.SUBS' },
+          USO: { $first: '$properties.USO' },
+          FASE: { $first: '$properties.FASE' },
         },
       },
       {

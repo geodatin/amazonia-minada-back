@@ -214,6 +214,9 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           UF: { $first: '$properties.UF' },
           TI_NOME: { $first: '$properties.TI_NOME' },
           NOME: { $first: '$properties.NOME' },
+          SUBS: { $first: '$properties.SUBS' },
+          USO: { $first: '$properties.USO' },
+          FASE: { $first: '$properties.FASE' },
         },
       },
       {

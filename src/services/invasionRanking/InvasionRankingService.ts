@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe'
 
 import { IRequestRankingDTO, IResponseRankingDTO } from '../../dtos/IRankingDTO'
+import { AppError } from '../../errors/AppError'
 import { IInvasionRepository } from '../../repositories/IInvasionRepository'
 import { IReserveInvasionRepository } from '../../repositories/IReserveInvasionRepository'
 import {
@@ -24,7 +25,7 @@ class InvasionRankingService {
     enableUnity: boolean = true,
     enableReserve: boolean = true
   ) {
-    if (propertyType === 'state' || propertyType === 'company') {
+    if (propertyType === 'state' || propertyType === 'company' || propertyType === 'substance' || propertyType === 'requirementPhase' || propertyType === 'use') {
       let reserveResults: IResponseRankingDTO[] = []
       if (checkIfShouldListReserveInvasions(filters)) {
         reserveResults =
@@ -144,6 +145,7 @@ class InvasionRankingService {
       }
       return null
     }
+    throw new AppError('Invalid property type: ' + propertyType)
   }
 
   formatSingleRanking(

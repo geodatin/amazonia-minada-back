@@ -7,6 +7,9 @@ const rankingFilter: filterOptions = {
   reserve: '$TI_NOME',
   unity: '$UC_NOME',
   company: '$NOME',
+  substance: '$SUBS',
+  requirementPhase: '$FASE',
+  use: '$USO'
 }
 
 export { rankingFilter }
