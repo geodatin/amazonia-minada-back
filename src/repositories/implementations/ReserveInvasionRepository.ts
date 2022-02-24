@@ -16,6 +16,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       {
         $project: {
           _id: 0,
+          id: '$properties.ID',
           company: '$properties.NOME',
           process: '$properties.PROCESSO',
           area: '$properties.AREA_HA',
@@ -68,40 +69,25 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     const invasions = await ReserveInvasion.aggregate([
       { $match: match },
       {
-        $group: {
-          _id: '$properties.PROCESSO',
-          company: { $first: '$properties.NOME' },
-          area: { $sum: '$properties.AREA_HA' },
-          year: { $first: '$properties.ANO' },
-          state: { $first: '$properties.UF' },
-          territory: { $first: '$properties.TI_NOME' },
-          reservePhase: { $first: '$properties.TI_FASE' },
-          reserveEthnicity: { $first: '$properties.TI_ETNIA' },
-          miningProcess: { $first: '$properties.FASE' },
-          substance: { $first: '$properties.SUBS' },
-          use: { $first: '$properties.USO' },
-          lastEvent: { $first: '$properties.ULT_EVENTO' },
-        },
-      },
-      {
         $project: {
-          company: '$company',
-          process: '$_id',
-          area: '$area',
-          year: '$year',
-          state: '$state',
-          miningProcess: '$miningProcess',
-          territory: '$territory',
-          reservePhase: '$reservePhase',
-          reserveEthnicity: '$reserveEthnicity',
-          type: 'indigenousLand',
-          substance: '$substance',
-          use: '$use',
-          lastEvent: '$lastEvent',
           _id: 0,
+          id: '$properties.ID',
+          company: '$properties.NOME',
+          process: '$properties.PROCESSO',
+          area: '$properties.AREA_HA',
+          year: '$properties.ANO',
+          state: '$properties.UF',
+          miningProcess: '$properties.FASE',
+          territory: '$properties.TI_NOME',
+          reservePhase: '$properties.TI_FASE',
+          reserveEthnicity: '$properties.TI_ETNIA',
+          type: 'indigenousLand',
+          substance: '$properties.SUBS',
+          use: '$properties.USO',
+          lastEvent: '$properties.ULT_EVENTO',
         },
       },
-      { $sort: { year: -1, process: 1 } },
+      { $sort: { year: -1, id: 1 } },
     ])
 
     return invasions
@@ -149,18 +135,11 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     const ethnicities = await ReserveInvasion.aggregate([
       { $match: match },
       {
-        $group: {
-          _id: '$properties.PROCESSO',
-          area: { $sum: '$properties.AREA_HA' },
-          ethnicity: { $first: '$properties.TI_ETNIA' },
-        },
-      },
-      {
         $project: {
           ethnicity: {
-            $split: ['$ethnicity', ', '],
+            $split: ['$properties.TI_ETNIA', ', '],
           },
-          area: 1,
+          area: '$properties.AREA_HA',
         },
       },
       { $unwind: '$ethnicity' },
@@ -209,18 +188,6 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       { $match: match },
       {
         $group: {
-          _id: '$properties.PROCESSO',
-          AREA_HA: { $sum: '$properties.AREA_HA' },
-          UF: { $first: '$properties.UF' },
-          TI_NOME: { $first: '$properties.TI_NOME' },
-          NOME: { $first: '$properties.NOME' },
-          SUBS: { $first: '$properties.SUBS' },
-          USO: { $first: '$properties.USO' },
-          FASE: { $first: '$properties.FASE' },
-        },
-      },
-      {
-        $group: {
           _id: property,
           count: {
             $sum: dataType === 'requiredArea' ? '$AREA_HA' : 1,
@@ -263,8 +230,8 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       {
         $match: {
           'properties.USO': {
-            $ne: "DADO NÃO CADASTRADO"
-          }
+            $ne: 'DADO NÃO CADASTRADO',
+          },
         },
       },
       {
@@ -310,27 +277,32 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
   }
 
   private getMatchProperty(filters: IFiltersDTO) {
-    const match: any = {}
+    const match: any = {
+      // eslint-disable-next-line camelcase
+      last_action: {
+        $ne: 'delete',
+      },
+    }
 
-    if (filters.reserve && filters.reserve.length > 0) {
+    if (filters?.reserve && filters?.reserve?.length > 0) {
       match['properties.TI_NOME'] = {
         $in: filters.reserve,
       }
     }
 
-    if (filters.company && filters.company.length > 0) {
+    if (filters?.company && filters?.company?.length > 0) {
       match['properties.NOME'] = {
         $in: filters.company,
       }
     }
 
-    if (filters.year && filters.year.length > 0) {
+    if (filters?.year && filters?.year?.length > 0) {
       match['properties.ANO'] = {
         $in: filters.year,
       }
     }
 
-    if (filters.state && filters.state.length > 0) {
+    if (filters?.state && filters?.state?.length > 0) {
       const acronymsRegex = filters.state.map(
         (state) => new RegExp(`.*${getStateAcronym(state)}.*`, 'i')
       )
@@ -339,19 +311,19 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       }
     }
 
-    if (filters.substance && filters.substance.length > 0) {
+    if (filters?.substance && filters?.substance?.length > 0) {
       match['properties.SUBS'] = {
         $in: filters.substance,
       }
     }
 
-    if (filters.reservePhase && filters.reservePhase.length > 0) {
+    if (filters?.reservePhase && filters?.reservePhase?.length > 0) {
       match['properties.TI_FASE'] = {
         $in: filters.reservePhase,
       }
     }
 
-    if (filters.reserveEthnicity && filters.reserveEthnicity.length > 0) {
+    if (filters?.reserveEthnicity && filters?.reserveEthnicity?.length > 0) {
       const ethnicitiesRegex = filters.reserveEthnicity.map(
         (ethnicity) => new RegExp(`.*${ethnicity}.*`, 'i')
       )
@@ -360,13 +332,13 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       }
     }
 
-    if (filters.requirementPhase && filters.requirementPhase.length > 0) {
+    if (filters?.requirementPhase && filters?.requirementPhase?.length > 0) {
       match['properties.FASE'] = {
         $in: filters.requirementPhase,
       }
     }
 
-    if (filters.use && filters.use.length > 0) {
+    if (filters?.use && filters?.use?.length > 0) {
       match['properties.USO'] = {
         $in: filters.use,
       }

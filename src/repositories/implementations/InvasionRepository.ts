@@ -16,6 +16,7 @@ class InvasionRepository implements IInvasionRepository {
       {
         $project: {
           _id: 0,
+          id: '$properties.ID',
           company: '$properties.NOME',
           process: '$properties.PROCESSO',
           area: '$properties.AREA_HA',
@@ -40,36 +41,23 @@ class InvasionRepository implements IInvasionRepository {
     const invasions = await Invasion.aggregate([
       { $match: match },
       {
-        $group: {
-          _id: '$properties.PROCESSO',
-          company: { $first: '$properties.NOME' },
-          area: { $sum: '$properties.AREA_HA' },
-          year: { $first: '$properties.ANO' },
-          state: { $first: '$properties.UF' },
-          territory: { $first: '$properties.UC_NOME' },
-          miningProcess: { $first: '$properties.FASE' },
-          substance: { $first: '$properties.SUBS' },
-          use: { $first: '$properties.USO' },
-          lastEvent: { $first: '$properties.ULT_EVENTO' },
-        },
-      },
-      {
         $project: {
-          company: '$company',
-          process: '$_id',
-          area: '$area',
-          year: '$year',
-          state: '$state',
-          miningProcess: '$miningProcess',
-          territory: '$territory',
-          type: 'protectedArea',
-          substance: '$substance',
-          use: '$use',
-          lastEvent: '$lastEvent',
           _id: 0,
+          id: '$properties.ID',
+          company: '$properties.NOME',
+          process: '$properties.PROCESSO',
+          area: '$properties.AREA_HA',
+          year: '$properties.ANO',
+          state: '$properties.UF',
+          miningProcess: '$properties.FASE',
+          territory: '$properties.UC_NOME',
+          type: 'protectedArea',
+          substance: '$properties.SUBS',
+          use: '$properties.USO',
+          lastEvent: '$properties.ULT_EVENTO',
         },
       },
-      { $sort: { year: -1, process: 1 } },
+      { $sort: { year: -1, id: 1 } },
     ])
 
     return invasions
@@ -145,18 +133,6 @@ class InvasionRepository implements IInvasionRepository {
       { $match: match },
       {
         $group: {
-          _id: '$properties.PROCESSO',
-          AREA_HA: { $sum: '$properties.AREA_HA' },
-          UF: { $first: '$properties.UF' },
-          UC_NOME: { $first: '$properties.UC_NOME' },
-          NOME: { $first: '$properties.NOME' },
-          SUBS: { $first: '$properties.SUBS' },
-          USO: { $first: '$properties.USO' },
-          FASE: { $first: '$properties.FASE' },
-        },
-      },
-      {
-        $group: {
           _id: property,
           count: {
             $sum: dataType === 'requiredArea' ? '$AREA_HA' : 1,
@@ -223,8 +199,8 @@ class InvasionRepository implements IInvasionRepository {
       {
         $match: {
           'properties.USO': {
-            $ne: "DADO NÃO CADASTRADO"
-          }
+            $ne: 'DADO NÃO CADASTRADO',
+          },
         },
       },
       {
@@ -238,34 +214,39 @@ class InvasionRepository implements IInvasionRepository {
           value: '$_id',
           _id: 0,
         },
-      }
+      },
     ])
 
     return uses
   }
 
   private getMatchProperty(filters: IFiltersDTO) {
-    const match: any = {}
+    const match: any = {
+      // eslint-disable-next-line camelcase
+      last_action: {
+        $ne: 'delete',
+      },
+    }
 
-    if (filters.unity && filters.unity.length > 0) {
+    if (filters?.unity && filters?.unity?.length > 0) {
       match['properties.UC_NOME'] = {
         $in: filters.unity,
       }
     }
 
-    if (filters.company && filters.company.length > 0) {
+    if (filters?.company && filters?.company?.length > 0) {
       match['properties.NOME'] = {
         $in: filters.company,
       }
     }
 
-    if (filters.year && filters.year.length > 0) {
+    if (filters?.year && filters?.year?.length > 0) {
       match['properties.ANO'] = {
         $in: filters.year,
       }
     }
 
-    if (filters.state && filters.state.length > 0) {
+    if (filters?.state && filters?.state?.length > 0) {
       const acronymsRegex = filters.state.map(
         (state) => new RegExp(`.*${getStateAcronym(state)}.*`, 'i')
       )
@@ -274,19 +255,19 @@ class InvasionRepository implements IInvasionRepository {
       }
     }
 
-    if (filters.substance && filters.substance.length > 0) {
+    if (filters?.substance && filters?.substance?.length > 0) {
       match['properties.SUBS'] = {
         $in: filters.substance,
       }
     }
 
-    if (filters.requirementPhase && filters.requirementPhase.length > 0) {
+    if (filters?.requirementPhase && filters?.requirementPhase?.length > 0) {
       match['properties.FASE'] = {
         $in: filters.requirementPhase,
       }
     }
 
-    if (filters.use && filters.use.length > 0) {
+    if (filters?.use && filters?.use?.length > 0) {
       match['properties.USO'] = {
         $in: filters.use,
       }

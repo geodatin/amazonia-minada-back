@@ -9,10 +9,10 @@ export function checkIfShouldListReserveInvasions(
   filters: IFiltersDTO
 ): boolean {
   return (
-    !(filters.unity && filters.unity.length > 0) ||
-    (filters.reserve && filters.reserve.length > 0) ||
-    (filters.reserveEthnicity && filters.reserveEthnicity.length > 0) ||
-    (filters.reservePhase && filters.reservePhase.length > 0) ||
+    !(filters?.unity && filters?.unity.length > 0) ||
+    (filters?.reserve && filters?.reserve.length > 0) ||
+    (filters?.reserveEthnicity && filters?.reserveEthnicity.length > 0) ||
+    (filters?.reservePhase && filters?.reservePhase.length > 0) ||
     false
   )
 }
@@ -25,11 +25,11 @@ export function checkIfShouldListReserveInvasions(
 export function checkIfShouldListUnityInvasions(filters: IFiltersDTO): boolean {
   return (
     !(
-      (filters.reserve && filters.reserve.length > 0) ||
-      (filters.reserveEthnicity && filters.reserveEthnicity.length > 0) ||
-      (filters.reservePhase && filters.reservePhase.length > 0)
+      (filters?.reserve && filters?.reserve.length > 0) ||
+      (filters?.reserveEthnicity && filters?.reserveEthnicity.length > 0) ||
+      (filters?.reservePhase && filters?.reservePhase.length > 0)
     ) ||
-    (filters.unity && filters.unity.length > 0) ||
+    (filters?.unity && filters?.unity.length > 0) ||
     false
   )
 }

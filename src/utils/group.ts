@@ -8,11 +8,11 @@ export function groupInvasions(
   const invasionsMap = new Map<String, IInvasionDTO>()
 
   reserveInvasions.forEach((invasion: IInvasionDTO) =>
-    invasionsMap.set(invasion.process, invasion)
+    invasionsMap.set(invasion.id, invasion)
   )
 
   invasions.forEach((invasion: IInvasionDTO) =>
-    invasionsMap.set(invasion.process, invasion)
+    invasionsMap.set(invasion.id, invasion)
   )
 
   return Array.from(invasionsMap.values())
