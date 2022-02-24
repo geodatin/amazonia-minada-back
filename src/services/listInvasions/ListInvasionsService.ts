@@ -48,9 +48,9 @@ class ListInvasionsService {
       } else if (b.year < a.year) {
         return -1
       } else {
-        if (b.process > a.process) {
+        if (b.id > a.id) {
           return 1
-        } else if (b.process < a.process) {
+        } else if (b.id < a.id) {
           return -1
         }
         return 0
