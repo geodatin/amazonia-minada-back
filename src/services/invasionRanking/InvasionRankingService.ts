@@ -25,7 +25,13 @@ class InvasionRankingService {
     enableUnity: boolean = true,
     enableReserve: boolean = true
   ) {
-    if (propertyType === 'state' || propertyType === 'company' || propertyType === 'substance' || propertyType === 'requirementPhase' || propertyType === 'use') {
+    if (
+      propertyType === 'state' ||
+      propertyType === 'company' ||
+      propertyType === 'substance' ||
+      propertyType === 'requirementPhase' ||
+      propertyType === 'use'
+    ) {
       let reserveResults: IResponseRankingDTO[] = []
       if (checkIfShouldListReserveInvasions(filters)) {
         reserveResults =

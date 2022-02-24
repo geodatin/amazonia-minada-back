@@ -71,6 +71,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       {
         $project: {
           _id: 0,
+          key: '$_id',
           id: '$properties.ID',
           company: '$properties.NOME',
           process: '$properties.PROCESSO',
@@ -190,7 +191,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
         $group: {
           _id: property,
           count: {
-            $sum: dataType === 'requiredArea' ? '$AREA_HA' : 1,
+            $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
           },
         },
       },
