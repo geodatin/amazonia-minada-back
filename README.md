@@ -91,7 +91,7 @@ Método que permite uma busca geral para Substância, Estado, Solicitante (Empre
 
 **Listar Requerimentos**
 ----
-Método que permite uma filtragem dos requerimentos minerários em Unidades de Conservação e em Terras Indígenas. Os requerimentos são agrupados pelo número do processo e aqueles que possuem o mesmo número tem seus valores de área somados.
+Método que permite uma filtragem dos requerimentos minerários em Unidades de Conservação e em Terras Indígenas. 
 
 * **URL:**
   
@@ -154,6 +154,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
         {
           "values": [
             {
+              "id": "{C15B9FA9-3823-4902-8C87-F171C2B53032}",
               "company": "Falcon Metais Ltda",
               "process": "880816/2008",
               "area": 9928.68,
@@ -170,6 +171,7 @@ Método que permite uma filtragem dos requerimentos minerários em Unidades de C
               "lastEvent": "619 - REQ PESQ/PROCESSO SITUADO EM ÁREA INDÍGENA EM 29/03/2011"
             },
             {
+              "id": "{A26AE72A-6395-42ED-817B-179E6EA1D4BC}",
               "company": "Falcon Metais Ltda",
               "process": "880819/2008",
               "area": 9932.87,
@@ -283,6 +285,7 @@ Método que retorna os shapes dos requerimentos minerários em Unidades de Conse
                   ]
                 },
                 "properties": {
+                  "id": "{A26AE72A-6395-42ED-817B-179E6EA1D4BC}",
                   "company": "Willian Araújo dos Santos",
                   "process": "880084/2021",
                   "area": 176.54,
@@ -315,7 +318,7 @@ Método que retorna os shapes dos requerimentos minerários em Unidades de Conse
 
 **Estatísticas**
 ----
-Método que retorna as estatísticas gerais (número de requerimentos e área total requerida) de Terras Indígenas e Unidades de Conservação de acordo com os filtros. Os requerimentos são agrupados pelo número do processo e aqueles que possuem o mesmo número tem seus valores de área somados.
+Método que retorna as estatísticas gerais (número de requerimentos e área total requerida) de Terras Indígenas e Unidades de Conservação de acordo com os filtros.
 
 * **URL:**
   
