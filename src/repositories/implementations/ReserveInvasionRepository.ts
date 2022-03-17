@@ -77,15 +77,144 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           process: '$properties.PROCESSO',
           area: '$properties.AREA_HA',
           year: '$properties.ANO',
-          state: '$properties.UF',
+          state: {
+            $split: ['$properties.UF', '/'],
+          },
           miningProcess: '$properties.FASE',
-          territory: '$properties.TI_NOME',
-          reservePhase: '$properties.TI_FASE',
-          reserveEthnicity: '$properties.TI_ETNIA',
-          type: 'indigenousLand',
+          territory: {
+            $split: ['$properties.TI_NOME', ', '],
+          },
+          reservePhase: {
+            $split: ['$properties.TI_FASE', ', '],
+          },
+          reserveEthnicity: {
+            $split: ['$properties.TI_ETNIA', ', '],
+          },
           substance: '$properties.SUBS',
           use: '$properties.USO',
           lastEvent: '$properties.ULT_EVENTO',
+        },
+      },
+      { $unwind: '$state' },
+      { $unwind: '$territory' },
+      { $unwind: '$reservePhase' },
+      { $unwind: '$reserveEthnicity' },
+      {
+        $group: {
+          _id: '$id',
+          key: { $first: '$key' },
+          company: { $first: '$company' },
+          process: { $first: '$process' },
+          area: { $first: '$area' },
+          year: { $first: '$year' },
+          state: { $addToSet: '$state' },
+          miningProcess: { $first: '$miningProcess' },
+          territory: { $addToSet: '$territory' },
+          reservePhase: { $addToSet: '$reservePhase' },
+          reserveEthnicity: { $addToSet: '$reserveEthnicity' },
+          substance: { $first: '$substance' },
+          use: { $first: '$use' },
+          lastEvent: { $first: '$lastEvent' },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          key: '$key',
+          id: '$_id',
+          company: '$company',
+          process: '$process',
+          area: '$area',
+          year: '$year',
+          state: {
+            $reduce: {
+              input: '$state',
+              initialValue: '',
+              in: {
+                $concat: [
+                  '$$value',
+                  {
+                    $cond: {
+                      if: {
+                        $eq: ['$$value', ''],
+                      },
+                      then: '',
+                      else: ', ',
+                    },
+                  },
+                  '$$this',
+                ],
+              },
+            },
+          },
+          miningProcess: '$miningProcess',
+          territory: {
+            $reduce: {
+              input: '$territory',
+              initialValue: '',
+              in: {
+                $concat: [
+                  '$$value',
+                  {
+                    $cond: {
+                      if: {
+                        $eq: ['$$value', ''],
+                      },
+                      then: '',
+                      else: ', ',
+                    },
+                  },
+                  '$$this',
+                ],
+              },
+            },
+          },
+          reservePhase: {
+            $reduce: {
+              input: '$reservePhase',
+              initialValue: '',
+              in: {
+                $concat: [
+                  '$$value',
+                  {
+                    $cond: {
+                      if: {
+                        $eq: ['$$value', ''],
+                      },
+                      then: '',
+                      else: ', ',
+                    },
+                  },
+                  '$$this',
+                ],
+              },
+            },
+          },
+          reserveEthnicity: {
+            $reduce: {
+              input: '$reserveEthnicity',
+              initialValue: '',
+              in: {
+                $concat: [
+                  '$$value',
+                  {
+                    $cond: {
+                      if: {
+                        $eq: ['$$value', ''],
+                      },
+                      then: '',
+                      else: ', ',
+                    },
+                  },
+                  '$$this',
+                ],
+              },
+            },
+          },
+          type: 'indigenousLand',
+          substance: '$substance',
+          use: '$use',
+          lastEvent: '$lastEvent',
         },
       },
       { $sort: { year: -1, id: 1 } },
@@ -137,10 +266,19 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
       { $match: match },
       {
         $project: {
+          id: '$properties.ID',
+          area: '$properties.AREA_HA',
           ethnicity: {
             $split: ['$properties.TI_ETNIA', ', '],
           },
-          area: '$properties.AREA_HA',
+        },
+      },
+      { $unwind: '$ethnicity' },
+      {
+        $group: {
+          _id: '$id',
+          area: { $first: '$area' },
+          ethnicity: { $addToSet: '$ethnicity' },
         },
       },
       { $unwind: '$ethnicity' },
@@ -188,10 +326,42 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
     const territories = await ReserveInvasion.aggregate([
       { $match: match },
       {
+        $project: {
+          id: '$properties.ID',
+          company: '$properties.NOME',
+          area: '$properties.AREA_HA',
+          state: {
+            $split: ['$properties.UF', '/'],
+          },
+          requirementPhase: '$properties.FASE',
+          reserve: {
+            $split: ['$properties.TI_NOME', ', '],
+          },
+          substance: '$properties.SUBS',
+          use: '$properties.USO',
+        },
+      },
+      { $unwind: '$state' },
+      { $unwind: '$reserve' },
+      {
+        $group: {
+          _id: '$id',
+          company: { $first: '$company' },
+          area: { $first: '$area' },
+          state: { $addToSet: '$state' },
+          requirementPhase: { $first: '$requirementPhase' },
+          reserve: { $addToSet: '$reserve' },
+          substance: { $first: '$substance' },
+          use: { $first: '$use' },
+        },
+      },
+      { $unwind: '$state' },
+      { $unwind: '$reserve' },
+      {
         $group: {
           _id: property,
           count: {
-            $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
+            $sum: dataType === 'requiredArea' ? '$area' : 1,
           },
         },
       },
