@@ -43,18 +43,98 @@ class InvasionRepository implements IInvasionRepository {
       {
         $project: {
           _id: 0,
+          key: '$_id',
           id: '$properties.ID',
           company: '$properties.NOME',
           process: '$properties.PROCESSO',
           area: '$properties.AREA_HA',
           year: '$properties.ANO',
-          state: '$properties.UF',
+          state: {
+            $split: ['$properties.UF', '/'],
+          },
           miningProcess: '$properties.FASE',
-          territory: '$properties.UC_NOME',
-          type: 'protectedArea',
+          territory: {
+            $split: ['$properties.UC_NOME', ', '],
+          },
           substance: '$properties.SUBS',
           use: '$properties.USO',
           lastEvent: '$properties.ULT_EVENTO',
+        },
+      },
+      { $unwind: '$state' },
+      { $unwind: '$territory' },
+      {
+        $group: {
+          _id: '$id',
+          key: { $first: '$key' },
+          company: { $first: '$company' },
+          process: { $first: '$process' },
+          area: { $first: '$area' },
+          year: { $first: '$year' },
+          state: { $addToSet: '$state' },
+          miningProcess: { $first: '$miningProcess' },
+          territory: { $addToSet: '$territory' },
+          substance: { $first: '$substance' },
+          use: { $first: '$use' },
+          lastEvent: { $first: '$lastEvent' },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          key: '$key',
+          id: '$_id',
+          company: '$company',
+          process: '$process',
+          area: '$area',
+          year: '$year',
+          state: {
+            $reduce: {
+              input: '$state',
+              initialValue: '',
+              in: {
+                $concat: [
+                  '$$value',
+                  {
+                    $cond: {
+                      if: {
+                        $eq: ['$$value', ''],
+                      },
+                      then: '',
+                      else: ', ',
+                    },
+                  },
+                  '$$this',
+                ],
+              },
+            },
+          },
+          miningProcess: '$miningProcess',
+          territory: {
+            $reduce: {
+              input: '$territory',
+              initialValue: '',
+              in: {
+                $concat: [
+                  '$$value',
+                  {
+                    $cond: {
+                      if: {
+                        $eq: ['$$value', ''],
+                      },
+                      then: '',
+                      else: ', ',
+                    },
+                  },
+                  '$$this',
+                ],
+              },
+            },
+          },
+          type: 'protectedArea',
+          substance: '$substance',
+          use: '$use',
+          lastEvent: '$lastEvent',
         },
       },
       { $sort: { year: -1, id: 1 } },
@@ -132,10 +212,42 @@ class InvasionRepository implements IInvasionRepository {
     const territories = await Invasion.aggregate([
       { $match: match },
       {
+        $project: {
+          id: '$properties.ID',
+          company: '$properties.NOME',
+          area: '$properties.AREA_HA',
+          state: {
+            $split: ['$properties.UF', '/'],
+          },
+          requirementPhase: '$properties.FASE',
+          unity: {
+            $split: ['$properties.UC_NOME', ', '],
+          },
+          substance: '$properties.SUBS',
+          use: '$properties.USO',
+        },
+      },
+      { $unwind: '$state' },
+      { $unwind: '$unity' },
+      {
+        $group: {
+          _id: '$id',
+          company: { $first: '$company' },
+          area: { $first: '$area' },
+          state: { $addToSet: '$state' },
+          requirementPhase: { $first: '$requirementPhase' },
+          unity: { $addToSet: '$unity' },
+          substance: { $first: '$substance' },
+          use: { $first: '$use' },
+        },
+      },
+      { $unwind: '$state' },
+      { $unwind: '$unity' },
+      {
         $group: {
           _id: property,
           count: {
-            $sum: dataType === 'requiredArea' ? '$AREA_HA' : 1,
+            $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
           },
         },
       },
