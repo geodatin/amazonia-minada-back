@@ -244,7 +244,7 @@ class InvasionRankingService {
       }
       invasionY.push(element.invasionValue)
       reserveY.push(element.reserveValue)
-      pos.push(i + 1)
+      pos.push(i + 1 + 5 * (page - 1))
     })
 
     return {
