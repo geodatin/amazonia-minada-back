@@ -238,14 +238,6 @@ class InvasionRepository implements IInvasionRepository {
             },
           },
         },
-        { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
-        {
-          $project: {
-            x: '$_id',
-            y: '$count',
-            _id: 0,
-          },
-        },
       ]
     } else if (propertyType === 'state') {
       aggregations = [
@@ -273,14 +265,6 @@ class InvasionRepository implements IInvasionRepository {
             count: {
               $sum: dataType === 'requiredArea' ? '$area' : 1,
             },
-          },
-        },
-        { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
-        {
-          $project: {
-            x: '$_id',
-            y: '$count',
-            _id: 0,
           },
         },
       ]
@@ -315,18 +299,20 @@ class InvasionRepository implements IInvasionRepository {
             },
           },
         },
-        { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
-        {
-          $project: {
-            x: '$_id',
-            y: '$count',
-            _id: 0,
-          },
-        },
       ]
     }
 
-    const ranking = await Invasion.aggregate(aggregations)
+    const ranking = await Invasion.aggregate([
+      ...aggregations,
+      { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
+      {
+        $project: {
+          x: '$_id',
+          y: '$count',
+          _id: 0,
+        },
+      },
+    ])
     return ranking
   }
 
