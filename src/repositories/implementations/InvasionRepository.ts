@@ -209,58 +209,125 @@ class InvasionRepository implements IInvasionRepository {
       }
     }
 
-    const territories = await Invasion.aggregate([
-      { $match: match },
-      {
-        $project: {
-          id: '$properties.ID',
-          company: '$properties.NOME',
-          area: '$properties.AREA_HA',
-          state: {
-            $split: ['$properties.UF', '/'],
-          },
-          requirementPhase: '$properties.FASE',
-          unity: {
-            $split: ['$properties.UC_NOME', ', '],
-          },
-          substance: '$properties.SUBS',
-          use: '$properties.USO',
-        },
-      },
-      { $unwind: '$state' },
-      { $unwind: '$unity' },
-      {
-        $group: {
-          _id: '$id',
-          company: { $first: '$company' },
-          area: { $first: '$area' },
-          state: { $addToSet: '$state' },
-          requirementPhase: { $first: '$requirementPhase' },
-          unity: { $addToSet: '$unity' },
-          substance: { $first: '$substance' },
-          use: { $first: '$use' },
-        },
-      },
-      { $unwind: '$state' },
-      { $unwind: '$unity' },
-      {
-        $group: {
-          _id: property,
-          count: {
-            $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
+    let aggregations
+    if (propertyType === 'unity') {
+      aggregations = [
+        { $match: match },
+        {
+          $project: {
+            id: '$properties.ID',
+            unity: {
+              $split: ['$properties.UC_NOME', ', '],
+            },
+            area: '$properties.AREA_HA',
           },
         },
-      },
-      { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
-      {
-        $project: {
-          x: '$_id',
-          y: '$count',
-          _id: 0,
+        { $unwind: '$unity' },
+        {
+          $group: {
+            _id: '$id',
+            unity: { $addToSet: '$unity' },
+          },
         },
-      },
-    ])
-    return territories
+        { $unwind: '$unity' },
+        {
+          $group: {
+            _id: property,
+            count: {
+              $sum: dataType === 'requiredArea' ? '$area' : 1,
+            },
+          },
+        },
+        { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
+        {
+          $project: {
+            x: '$_id',
+            y: '$count',
+            _id: 0,
+          },
+        },
+      ]
+    } else if (propertyType === 'state') {
+      aggregations = [
+        { $match: match },
+        {
+          $project: {
+            id: '$properties.ID',
+            state: {
+              $split: ['$properties.UF', '/'],
+            },
+            area: '$properties.AREA_HA',
+          },
+        },
+        { $unwind: '$state' },
+        {
+          $group: {
+            _id: '$id',
+            state: { $addToSet: '$state' },
+          },
+        },
+        { $unwind: '$state' },
+        {
+          $group: {
+            _id: property,
+            count: {
+              $sum: dataType === 'requiredArea' ? '$area' : 1,
+            },
+          },
+        },
+        { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
+        {
+          $project: {
+            x: '$_id',
+            y: '$count',
+            _id: 0,
+          },
+        },
+      ]
+    } else {
+      aggregations = [
+        { $match: match },
+        {
+          $project: {
+            id: '$properties.ID',
+            company: '$properties.NOME',
+            requirementPhase: '$properties.FASE',
+            substance: '$properties.SUBS',
+            use: '$properties.USO',
+            area: '$properties.AREA_HA',
+          },
+        },
+        {
+          $group: {
+            _id: '$id',
+            company: { $first: '$company' },
+            area: { $first: '$area' },
+            requirementPhase: { $first: '$requirementPhase' },
+            substance: { $first: '$substance' },
+            use: { $first: '$use' },
+          },
+        },
+        {
+          $group: {
+            _id: property,
+            count: {
+              $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
+            },
+          },
+        },
+        { $sort: { count: sortOrder === 'ASC' ? 1 : -1 } },
+        {
+          $project: {
+            x: '$_id',
+            y: '$count',
+            _id: 0,
+          },
+        },
+      ]
+    }
+
+    const ranking = await Invasion.aggregate(aggregations)
+    return ranking
   }
 
   async getYears(): Promise<ISearchDTO[]> {
