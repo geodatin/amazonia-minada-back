@@ -341,6 +341,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           $group: {
             _id: '$id',
             reserve: { $addToSet: '$reserve' },
+            area: { $first: '$area' },
           },
         },
         { $unwind: '$reserve' },
@@ -370,6 +371,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           $group: {
             _id: '$id',
             state: { $addToSet: '$state' },
+            area: { $first: '$area' },
           },
         },
         { $unwind: '$state' },
@@ -409,7 +411,7 @@ class ReserveInvasionRepository implements IReserveInvasionRepository {
           $group: {
             _id: property,
             count: {
-              $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
+              $sum: dataType === 'requiredArea' ? '$area' : 1,
             },
           },
         },

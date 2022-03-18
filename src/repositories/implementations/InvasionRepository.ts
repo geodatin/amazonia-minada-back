@@ -227,6 +227,7 @@ class InvasionRepository implements IInvasionRepository {
           $group: {
             _id: '$id',
             unity: { $addToSet: '$unity' },
+            area: { $first: '$area' },
           },
         },
         { $unwind: '$unity' },
@@ -256,6 +257,7 @@ class InvasionRepository implements IInvasionRepository {
           $group: {
             _id: '$id',
             state: { $addToSet: '$state' },
+            area: { $first: '$area' },
           },
         },
         { $unwind: '$state' },
@@ -295,7 +297,7 @@ class InvasionRepository implements IInvasionRepository {
           $group: {
             _id: property,
             count: {
-              $sum: dataType === 'requiredArea' ? '$properties.AREA_HA' : 1,
+              $sum: dataType === 'requiredArea' ? '$area' : 1,
             },
           },
         },
