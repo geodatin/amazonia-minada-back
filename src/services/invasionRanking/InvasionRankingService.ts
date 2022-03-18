@@ -190,51 +190,77 @@ class InvasionRankingService {
     sortOrder: string,
     page = 1
   ) {
-    const x: string[] = []
-    const invasionY: number[] = []
-    const reserveY: number[] = []
-    const newRanking: any[] = []
-    const pos: number[] = []
+    const rankingValues = new Map<string, any>()
     invasionResults.forEach((invasion) => {
-      const reserve = reserveResults.find((reserve) => reserve.x === invasion.x)
-      newRanking.push({
+      rankingValues.set(invasion.x, {
         name: invasion.x,
         invasionValue: invasion.y,
-        reserveValue: reserve?.y || 0,
-        total: (reserve?.y || 0) + invasion.y,
       })
     })
-    newRanking
+    reserveResults.forEach((reserveInvasion) => {
+      if (rankingValues.has(reserveInvasion.x)) {
+        const obj = rankingValues.get(reserveInvasion.x)
+        rankingValues.set(reserveInvasion.x, {
+          name: reserveInvasion.x,
+          reserveValue: reserveInvasion.y,
+          invasionValue: obj.invasionValue,
+        })
+      } else {
+        rankingValues.set(reserveInvasion.x, {
+          name: reserveInvasion.x,
+          reserveValue: reserveInvasion.y,
+        })
+      }
+    })
+
+    const newRanking = Array.from(rankingValues.values())
+      .map((entry) => {
+        return {
+          name: entry.name,
+          reserveValue: entry.reserveValue ?? 0,
+          invasionValue: entry.invasionValue ?? 0,
+          total: (entry.reserveValue ?? 0) + (entry.invasionValue ?? 0),
+        }
+      })
       .sort((a, b) => {
         if (sortOrder === 'ASC') {
           return a.total - b.total
         }
         return b.total - a.total
       })
-      .forEach((element, i) => {
-        if (propertyType === 'state') {
-          x.push(getStateFromAcronym(element.name))
-        } else {
-          x.push(element.name)
-        }
-        invasionY.push(element.invasionValue)
-        reserveY.push(element.reserveValue)
-        pos.push(i + 1)
-      })
+
+    const pagination = paginate(newRanking, page, 5)
+
+    const x: string[] = []
+    const invasionY: number[] = []
+    const reserveY: number[] = []
+    const pos: number[] = []
+
+    pagination.values.forEach((element, i) => {
+      if (propertyType === 'state') {
+        x.push(getStateFromAcronym(element.name))
+      } else {
+        x.push(element.name)
+      }
+      invasionY.push(element.invasionValue)
+      reserveY.push(element.reserveValue)
+      pos.push(i + 1)
+    })
+
     return {
-      x: paginate(x, page, 5).values,
-      position: paginate(pos, page, 5).values,
+      x: x,
+      position: pos,
       series: [
         {
           id: 'protectedArea',
-          data: paginate(invasionY, page, 5).values,
+          data: invasionY,
         },
         {
           id: 'indigenousLand',
-          data: paginate(reserveY, page, 5).values,
+          data: reserveY,
         },
       ],
-      pageAmount: paginate(pos, page, 5).pages,
+      pageAmount: pagination.pages,
       dataType,
     }
   }
